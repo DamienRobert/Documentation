@@ -1,0 +1,179 @@
+<p>vim: foldmethod=expr ft=markdownlight</p>
+
+<ul>
+  <li>
+    <p>Wikipedia: http://en.wikipedia.org/wiki/Call-with-current-continuation
+call/cc f prend la continuation cont et applique f(cont) avec pour
+continuation cont.</p>
+  </li>
+  <li>
+    <p>Links
+https://wingolog.org/archives/2016/02/08/a-lambda-is-not-necessarily-a-closure
+=&gt; lambda: contified</p>
+  </li>
+</ul>
+
+<h1 id="continuations">Continuations</h1>
+
+<p>(par convention une continuation, en plus de changer le flot d’execution,
+retourne la valeur passée:)
+callcc {|cont|  cont.call }           #=&gt; nil
+callcc {|cont|  cont.call 1 }         #=&gt; 1
+callcc {|cont|  cont.call 1, 2, 3 }   #=&gt; [1, 2, 3]</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>callcc {</td>
+      <td>cont</td>
+      <td>p 1; cont.call; p 2} #execution resume here, p 2 is not executed</td>
+    </tr>
+  </tbody>
+</table>
+
+<pre><code class="language-ruby">ruby &lt;&lt;'EOS'
+require 'continuation'
+x=0; callcc {|cont| $cont=cont}; p x; x+=1; $cont.call
+EOS
+#=&gt; loops endlessly, printing increasing values of x.
+</code></pre>
+
+<h2 id="yinyang-httpeverything2comtitlecall252fccyin-yangpuzzle">yin/yang: http://everything2.com/title/call%252Fcc+yin-yang+puzzle</h2>
+<pre><code class="language-ruby">#The yin yang puzzle in ruby: http://blog.gonzih.me/blog/2013/11/26/yin-yang-callcc-puzzle-in-ruby/
+require "continuation"
+lambda do |yin, yang|
+  yin.call(yang)
+end.call(lambda { |cc| print "@"; cc }.call(callcc { |c| c }),
+         lambda { |cc| print "*"; cc }.call(callcc { |c| c }))
+ #=&gt; @*@**@***@****@*****@******@...
+
+ #Warning, doing it this way
+require "continuation"
+yin  = -&gt;(cc) { print "@"; cc }.call(callcc { |c| c })
+yang = -&gt;(cc) { print "*"; cc }.call(callcc { |c| c })
+yin.call(yang)
+ #gives =&gt; @*@******************...
+
+ # "Debug" version
+lambda do |yin, yang|
+  yin.call yang
+end.call(lambda {|cc| print "@ - #{cc}\n"; sleep 0.1; cc }.call(callcc {|c| c}),
+         lambda {|cc| print "* - #{cc}\n"; sleep 0.1; cc }.call(callcc {|c| c}))
+</code></pre>
+
+<h2 id="continuation-passing-style">Continuation passing style</h2>
+<p>(k est “le reste du programme”, ie la continuation):</p>
+
+<p>f=-&gt;(x,y){(x+1)<em>y} devient
+add=-&gt;(x,y,k) {k.(x+y)}
+time=-&gt;(x,y,k) {k.(x</em>y)}
+f=-&gt;(x,y,k) {add.(x,1, -&gt;(xp1){ time.(xp1,y,k) })}
+fc=f.curry.(1,2)
+fc.(-&gt;(k){k})</p>
+
+<p>f=-&gt;(x,y){x<em>x+y</em>y} devient
+f=-&gt;(x,y,k) {time.(x,x, -&gt;xx { time.(y,y,-&gt;yy { add.(xx,yy,k) })})}
+f.(2,3,-&gt;k {k})
+[en pratique f est définie par
+(x,y,k) -&gt; (x<em>x)@ xx -&gt; (y</em>y)@ yy -&gt; (xx+yy)@ z -&gt; z@k
+où l’on n’a pas besoin de parenthèse sur @ car par associativité
+u@x-&gt;f(x)@y-&gt;g(y)=u@(x-&gt;(f(x)@(y-&gt;g(y))))=(u@(x-&gt;f(x)))@(y-&gt;g(y))=u@f@g]</p>
+
+<p>factorial=-&gt;(n,k) { 
+  n==1 ? k.(1) : add.(n,-1, -&gt; nm1 {
+    factorial.(nm1, -&gt; f { time.(n,f,k) })
+  })
+}
+factorial.(3,-&gt;k {k})</p>
+
+<p>callcc est définit via
+callcc=-&gt;(f,k) { k f.(k) }</p>
+
+<h2 id="cps-et-defonctionalisaton">CPS et defonctionalisaton</h2>
+
+<ul>
+  <li>http://gallium.inria.fr/blog/generators-iterators-control-and-continuations/</li>
+  <li>https://news.ycombinator.com/item?id=20444143
+Defunctionalize the Continuation (pathsensitive.com)</li>
+</ul>
+
+<h1 id="monades-et-continuations-passing-style">Monades et Continuations passing style</h1>
+<p>[voir aussi Monades]</p>
+
+<ul>
+  <li>http://en.wikibooks.org/wiki/Haskell/Continuation_passing_style</li>
+</ul>
+
+<p>add_cps :: Int -&gt; Int -&gt; (Int -&gt; r) -&gt; r
+add_cps x y k = k (add x y)
+square_cps :: Int -&gt; (Int -&gt; r) -&gt; r
+square_cps x k = k (square x)
+pythagoras_cps :: Int -&gt; Int -&gt; (Int -&gt; r) -&gt; r
+pythagoras_cps x y k =
+ square_cps x $ \x_squared -&gt;
+  square_cps y $ \y_squared -&gt;
+   add_cps x_squared y_squared $ \sum_of_squares -&gt;
+    k sum_of_squares</p>
+
+<p>newtype Cont r a = Cont { runCont :: (a -&gt; r) -&gt; r }
+import Control.Monad.Cont
+add_cont :: Int -&gt; Int -&gt; Cont r Int
+add_cont x y = return (add x y)
+square_cont :: Int -&gt; Cont r Int
+square_cont x = return (square x)
+pythagoras_cont :: Int -&gt; Int -&gt; Cont r Int
+pythagoras_cont x y =
+    do x_squared &lt;- square_cont x
+       y_squared &lt;- square_cont y
+       sum_of_squares &lt;- add_cont x_squared y_squared
+       return sum_of_squares</p>
+
+<p>square_C :: Int -&gt; Cont r Int
+square_C x = return (x ^ 2)
+addThree_C :: Int -&gt; Cont r Int
+addThree_C x = return (x + 3)
+main = runCont (square_C 4 »= addThree_C) print
+{- Result: 19 -}</p>
+
+<p>The Monad instance for (Cont r) is given below:
+instance Monad (Cont r) where
+  return n = Cont (\k -&gt; k n)
+    m »= f  = Cont (\k -&gt; runCont m (\a -&gt; runCont (f a) k))
+So return n is a Cont-value that throws n straight away into whatever
+continuation it is applied to. m »= f is a Cont-value that runs m with
+the continuation \a -&gt; f a k, which maybe, receive the result of
+computation inside m (the result is bound to a) , then applies that
+result to f to get another Cont-value. This is then called with the
+continuation we got at the top level (the continuation is bound to k);
+in essence m »= f is a Cont-value that takes the result from m,
+applies it to f, then throws that into the continuation.</p>
+
+<p>callCC :: ((a -&gt; Cont r b) -&gt; Cont r a) -&gt; Cont r a
+           ^^^^^^^^^^^^^^     ^^^^^^^^
+            continuation k     résultat de f
+callCC f = Cont $ \k -&gt; runCont (f (\a -&gt; Cont $ _ -&gt; k a)) k</p>
+
+<p>Example: square using callCC
+– Without callCC
+square :: Int -&gt; Cont r Int
+square n = return (n ^ 2)
+– With callCC
+square :: Int -&gt; Cont r Int
+square n = callCC $ \k -&gt; k (n ^ 2)</p>
+
+<h2 id="continuations-are-the-mothers-of-all-monads">Continuations are the mothers of all monads</h2>
+
+<p>http://blog.paralleluniverse.co/2015/08/07/scoped-continuations/
+Discussion on HN: https://news.ycombinator.com/item?id=9852073
+http://blog.sigfpe.com/2008/12/mother-of-all-monads.html
+Reddit discussion: https://www.reddit.com/r/haskell/comments/1cyajx/the_mother_of_all_monads_school_of_haskell/
+Counter exemple for a monad using lazy evaluation: https://blog.melding-monads.com/2009/12/20/are-continuations-really-the-mother-of-all-monads/</p>
+
+<h1 id="delimited-vs-undelemited-continuations">Delimited vs undelemited continuations</h1>
+
+<p>https://en.wikipedia.org/wiki/Delimited_continuation
+http://okmij.org/ftp/continuations/against-callcc.html
+http://okmij.org/ftp/continuations/undelimited.html#delim-vs-undelim</p>
+
+<p>Delimited continuations:
+- shift/reset vs delimcc https://stackoverflow.com/questions/14431257/how-to-translate-shift-reset-into-delimcc</p>

@@ -1,0 +1,275 @@
+<p>vim: ft=markdownlight fdm=expr</p>
+
+<h1 id="rsums-sur-la-flatness">Résumés sur la flatness:</h1>
+
+<ul>
+  <li>Déf</li>
+</ul>
+
+<p>M plat &lt;=&gt; I \tens M=IM pour tout idéal de type fini de A
+&lt;=&gt; Tor^A_1(M,A/I)=0 pour tout I de type fini de A
+&lt;=&gt; Tor^A_1(M,N)=0 pour tout module N/A fini
+&lt;=&gt; Si \sum a_i x_i = 0 dans M, il existe b_ij dans A, y_j dans M tels que
+    \sum_i a_i b_ij=0 et x_i= \sum b_ij y_j</p>
+
+<ul>
+  <li>
+    <p>Base change</p>
+  </li>
+  <li>Si B/A plat, alors Tor^A_i(M,N) \tens B = Tor^B_i(M \tens B, N \tens B)</li>
+  <li>
+    <p>Si de plus A noeth, M/A fini, alors Ext^A_i(M,N) \tens B = Ext^B_i(M \tens B, N \tens B)</p>
+  </li>
+  <li>
+    <p>Propriétés élémentaires</p>
+  </li>
+  <li>Si a régulier sur A, il l’est sur M (car 0-&gt;A- a-&gt;A exact implique \tens
+M est exact aussi).</li>
+  <li>
+    <p>Si (A,m) local, M/A fini ou m nilpotent, alors
+M libre &lt;=&gt; M proj &lt;=&gt; M plat</p>
+  </li>
+  <li>Corollaire du critère local de platitude</li>
+</ul>
+
+<p>Si (B,n) est local et contient un corps k, x_1,…,x_n une suite
+B-régulière de n. Alors A=k[x_1,…x_n] \subset B est isomorphe à une algèbre
+de polynômes et B/A plat.</p>
+
+<ul>
+  <li>Fidèle platitude</li>
+</ul>
+
+<p>B/A ff &lt;=&gt; B/A flat et Spec B -&gt; Spec A surjective
+       &lt;=&gt; B/A plat, et pour tout m maximal dans A, il existe m’ \subset B au dessus de m.</p>
+
+<p>Prop: si B/A ff, alors M flat (ff)/A &lt;=&gt; M \tens B flat (resp ff)/B
+      si A local et M/A fini, M libre sur A &lt;=&gt; M \tens B libre sur B.</p>
+
+<h1 id="i-platitude">I Platitude</h1>
+
+<h2 id="transitivit">Transitivité</h2>
+
+<p>Si M/B f, B/A plat alors M/A plat
+Si M/B ff, B/A fidèlement plat alors M/A fidèlement plat</p>
+
+<p>Réciproquement, si M/B fidèlement plat, alors
+  - M/A plat =&gt; B/A plat
+  - M/A fidèlement plat =&gt; B/A fidèlement plat.</p>
+
+<h2 id="changement-de-base">Changement de base</h2>
+
+<p>M/A plat (ou fidèlement plat) =&gt; M\tens B/B plat (resp fidèlement plat)</p>
+
+<h2 id="local">Local</h2>
+
+<p>M B-module, M/A plat ssi M_p/A_p plat pour tout P \in Spec B, p=P \inter A.</p>
+
+<h2 id="fidle-platitude">Fidèle platitude</h2>
+<p>M/A fidèlement plat &lt;=&gt; M/A plat et M \tens N \ne 0 pour tout N
+                    &lt;=&gt; M/A plat et mM \ne M pour tout m maximal de A</p>
+
+<p>ex: - si f: A-&gt;B morphisme d’anneau locaux, f plat &lt;=&gt; f fidèlement plat
+    - une localisation est plate mais pas fidèlement plate</p>
+
+<h2 id="intersections">Intersections</h2>
+
+<p>M/A plat, B/A plat, N_1, N_2 des sous-modules de N (A-module), I_1, I_2
+idéaux de A, alors
+- (N_1 \inter N_2) \tens M = (N_1 \tens M) \inter (N_2 \tens M)
+- (I_1 \inter I_2) B = (I_1 B) \inter (I_2 B)
+- (I_1 : I_2) B = (I_1 B : I_2 B) si I2 fini.</p>
+
+<p>[En particulier si B/A plat, I idéal de B, alors (I \inter A)B=I]</p>
+
+<h2 id="images-rciproques">Images réciproques</h2>
+<p>B/A fidèlement plat
+(i) M -&gt; M \tens B, m-&gt;m \tens 1 est injectif, en particulier A -&gt; B est un monomorphisme (et de plus on a vu que Spec B -&gt; Spec A surjectif)
+(ii) IB \inter A=I</p>
+
+<h2 id="libert-des-modules-plats">Liberté des modules plats</h2>
+
+<p>(A,m) anneau local. M/A plat. Si x_1, … x_n \in M sont A/m-libres dans M/mM,
+ils sont A-libres dans M.
+Donc M fini ou m nilpotent =&gt; M libre</p>
+
+<h2 id="hom-et-base-change">Hom et base change</h2>
+
+<p>Si B/A plat, M de présentation finie
+Hom_A(M,N)\tens B = Hom_B(M \tens B, N \tens B)</p>
+
+<h2 id="lien-avec-les-modules-projectifs">Lien avec les modules projectifs</h2>
+
+<p>M plat &lt;=&gt; M loc plat
+Si M fini, M plat &lt;=&gt; M loc libre (car M fini plat sur A local &lt;=&gt; M libre)</p>
+
+<p>P projectif =&gt; P loc projectif, la réciproque est vraie si P de prés finie
+P proj sur A local &lt;=&gt; P libre</p>
+
+<p>Donc M de prés finie, M plat &lt;=&gt; M proj</p>
+
+<h1 id="ii-platitude-et-compltion">II Platitude et complétion</h1>
+
+<p>A -&gt; B, M/B fini</p>
+
+<p>1) J \subset Rad B.
+M_n := M/J^(n+1)M.</p>
+
+<p>M_n/A plat (for all n) =&gt; M plat</p>
+
+<p>2) Si B A-alg noethérienne, b \in Rad B, régulier sur M.
+M/bM plat sur A =&gt; M plat</p>
+
+<p>Rappel: si I idéal de A, on dit que M est I-adically sep si a \tens M est
+séparé pour la topo I-addique pour tout idéal a fini.
+ex: si B noeth, IB \subset rad B, M fini sur B =&gt; M I-adically sep.</p>
+
+<h2 id="theorem">Theorem</h2>
+<p>Si I nilpotent ou A noeth et M I-adically sep, alors on a l’équivalence
+(1) M/A plat
+(2) Tor_1^A(M,N)=0 pour tout N A_0=A/I-module
+(3) M_0 plat sur A_0 et I \tens M = IM
+(3’) M_0 plat sur A_0 et Tor^A_1(A_0,M)=0
+(4) M_0 plat sur A_0 et I^n/I^n+1 \tens_{A_0} M_0 = I^n M/I^n+1 M (for all n)
+(4’) M_0 plat sur A_0 et gr(A) \tens A_0 M_0 \iso gr(M)
+(5) M_n plat sur A_n</p>
+
+<p>Rem: - on a toujours (1) =&gt; (2) &lt;=&gt; (3) &lt;=&gt; (3’) =&gt; (4) &lt;=&gt; (4’) =&gt; (5)
+     - le critère local de platitude est un cas particulier</p>
+
+<p>Th: (A,m) -&gt; (B,n) morphisme d’anneaux locaux
+M/B fini; M^ := M \tens_B B^.
+Alors M/A plat &lt;=&gt; M^/A plat &lt;=&gt; M^/A^ plat
+De même si on remplace M^ par M*:=la complétion mB-addique de M.</p>
+
+<h1 id="iii-platitude-et-rgularit">III Platitude et régularité</h1>
+
+<h2 id="prop">Prop</h2>
+<p>(A,m,k) et (B,n,k’) locaux noetherien
+u:M -&gt; N morphisme de B-modules finis, N plat sur A
+(i) u injectif et N/u(M) plat sur A
+&lt;=&gt;(ii) u0 : M \tens k -&gt; N \tens k injectif</p>
+
+<h2 id="corollaire">Corollaire</h2>
+<p>(i) x_1, … x_n M-séquence et M_n := M/\sum x_iM plat sur A
+&lt;=&gt; (ii) l’image des x_i est une M \tens_A k-séquence et M plat sur A.</p>
+
+<h2 id="th">Th</h2>
+<p>A,B noeth, A-&gt;B, M/B fini, b \in B
+M plat/A et b est M/(q \inter A) régulier pour tout q \in Spm B
+=&gt; b régulier sur M et M/bM est plat sur A.</p>
+
+<h2 id="cor">Cor</h2>
+<p>A noeth, B=A[X_1,…,X_n] (ou B=A[[X_i]]), f(X) \in B
+I idéal de A engendré par les coeffs de f.
+Si I=A, alors f non diviseur de zéro dans B et B/fB plat sur A.</p>
+
+<h1 id="iv-platitude-danneaux-gradus">IV Platitude d’anneaux gradués</h1>
+
+<p>G groupe abélien, R, M G-gradués.
+M plat sur R &lt;=&gt; pour tout complexe de R-modules gradués préservant le
+degré, \tens M est exact &lt;=&gt; Tor^R_1(M,R/H)=0 pour tout H idéal homogène
+fini de R.</p>
+
+<h2 id="cor-1">Cor</h2>
+<p>Si I idéal de R (pas forcément homogène). On suppose que
+- Pour tout idéal H homogène de R, H \tens M est I-adically separated
+- M/IM est R/I plat
+- Tor^R_1(M,R/I)=0
+Alors M/R est plat.</p>
+
+<h2 id="cor-2">Cor</h2>
+<p>Si A, B sont N-gradués; A_0, B_0 locaux d’idéaux max m,n.
+f: A-&gt;B morphisme de degré 0, f(m) \subset n
+Alors B/A plat &lt;=&gt; B_N plat sur A &lt;=&gt; B_N plat sur A_M
+où M=m+A_1+…, N=n+B_1+…</p>
+
+<h1 id="v-platitude-et-fibres">V Platitude et fibres</h1>
+
+<p>Si A-&gt;B morphisme d’anneaux locaux, alors dim B&lt;= dim A + dim fibre
+spéciale; égalité si B/A plat</p>
+
+<p>Réciproque: (A,B locaux noeth)
+Si A régulier, B Cohen-Macauley et dim B = dim A + dim fibre spéciale,
+alors B/A plat</p>
+
+<h2 id="cor-3">Cor</h2>
+<p>X,Y k-schémas irré, f:Y -&gt; X /
+- X régulier
+- Y Cohen-Macauley
+- f envoie les points fermés de Y sur les points fermés de X (ex: f propre)
+- pour tout x \in X point fermé, f^-1(x) est de dimension dim Y -dim X
+Alors f est plat.</p>
+
+<h1 id="vi-transfert">VI Transfert</h1>
+
+<p>Th: f: A-&gt;B morphisme d’anneaux noeth
+E A-mod, G B-mod, G/A plat. Alors
+- pour tout p \in Spec A, si G/pG \ne 0, f_*(Ass_B(G/pG))=Ass_A(G/pG)={p}
+- Ass_A(E\tens G)= \union_{Ass_A(E)} Ass_B(G/pG)</p>
+
+<p>Th: (A,m) -&gt; (B,n) noeth locaux
+M/A fini, N/B fini, N/A plat. Alors
+depth_B(M \tens_A N)= depth_A M+depth_B(N/mN)</p>
+
+<p>Cor: Si B/A plat, F=B/mB
+- depth B=depth A + depth F
+- B is CM &lt;=&gt; A et F sont CM</p>
+
+<p>Th (même notations):
+- B régulier =&gt; A régulier (mais pas forcément F)
+- A et F rég =&gt; B rég</p>
+
+<h2 id="conditions-r-et-s">Conditions R et S</h2>
+
+<p>(Ri): A_P régulier si P de codim &lt;= i
+(Si): depth A_P &gt;= min(codim P,i) \forall P in Spec A
+(ie depth A_P = codim P si codim P &lt;=i)</p>
+
+<p>ex: S1 &lt;=&gt; les premiers associés sont minimaux
+    Si pour tout i &lt;=&gt; A CM
+    R0+S1 =&gt; A réduit
+    Si A intègre, S2 &lt;=&gt; tout diviseur premier d’un idéal principal non nul
+    est de codimension 1.</p>
+
+<p>Th (Serre): A normal &lt;=&gt; R1+S2
+(A normal ssi A_p intégralement clos pour tout p \in Spec A ssi A=\prod
+A_i, A_i int clos)</p>
+
+<p>Th: (A,m) -&gt; (B,n) locaux noeth, B/A plat
+(i) B satisfait (Ri) =&gt; A aussi
+(ii) A et B\tens k(p) satisfont (Ri) pour tout p =&gt; B aussi
+De même pour (Si)</p>
+
+<p>Cor: B normal (resp réduit) =&gt; A aussi
+     A et les fibres de A-&gt;B sont normales (resp réduit) =&gt; B aussi</p>
+
+<h1 id="vii-platitude-gnrique">VII Platitude générique</h1>
+
+<p>A intégral noeth, M/A fini, alors il existe f\in A tel que M_f libre sur A_f.</p>
+
+<p>Pr: en général si A anneau, M/A fini, alors U_r={p \in Spec A | M_p peut
+être généré par r éléments} est ouvert, et si M/A prés fini, alors U={p \in
+Spec A | M_p libre} est ouvert.</p>
+
+<p>Vient du
+Th: (Topological Nagata criterion)
+A noeth, U \subset Spec A. Alors U ouvert &lt;=&gt;
+  (i) \for all p,q \in Spec A, p \in U et q se spécialise en p =&gt; q \in U
+  (ii) si p \in U, U \inter Var(p) est non vide</p>
+
+<p>Application:
+Th: A noeth, B/A de type fini, M/B fini
+    Alors {q \in Spec B, M_q plat sur A} est ouvert</p>
+
+<p>Rem: si A noethérien, B/A type fini est plat, Spec B -&gt; Spec A ouvert.</p>
+
+<h2 id="gnralisation">Généralisation</h2>
+
+<p>Lemme: Si B noeth, C=B[x], E/C fini, F \subset E finie sur B, E=CF
+Alors D=E/F a une filtration 0=G_0 \subset G_i \subset D tel que D=\union
+G_i et G_i+1/G_i sont isomorphes à un nombre fini de B-modules finis.</p>
+
+<p>Th: si A noeth intégral, R/A algèbre de type fini, S/R algèbre de type fini,
+E/S fini, M \subset E finie sur R, N \subset E fini sur A, D=E/(M+N); alors
+il existe a \in A tel que D_a soit libre.</p>

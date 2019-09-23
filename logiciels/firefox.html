@@ -1,0 +1,59 @@
+<p>vim: ft=markdownlight fdm=expr</p>
+
+<h1 id="privacy">Privacy</h1>
+
+<p>Réglages dans about:config
+https://wiki.archlinux.org/index.php/Firefox/Privacy
+https://restoreprivacy.com/firefox-privacy/</p>
+
+<p>Urls:
+- https://www.privacytools.io/
+- duckduckgo</p>
+
+<h1 id="pdf">Pdf</h1>
+
+<p>Modifier le programme qui ouvre les pdf: Preferences -&gt; Applications -&gt; pdf
+Si les pdf sont dl automatiquement, régler ça en enlevant mimetypes.rdf du
+profil</p>
+
+<p>See: http://kb.mozillazine.org/MimeTypes.rdf
+https://www.math.ubc.ca/MathNet/FAQ/?FirefoxHelper.html
+For example for pdf I have
+  #MIME type to the list of helpers Firefox should handle</p>
+<RDF:li RDF:resource="urn:mimetype:application/pdf" />
+
+<p>#declare the mime/type</p>
+<RDF:Description RDF:about="urn:mimetype:application/pdf" NC:value="application/pdf" NC:editable="true">
+    <NC:handlerProp RDF:resource="urn:mimetype:handler:application/pdf" />
+  </RDF:Description>
+<p>#how to handle the mimetype</p>
+<RDF:Description RDF:about="urn:mimetype:handler:application/pdf" NC:alwaysAsk="true" NC:saveToDisk="false" NC:useSystemDefault="false" NC:handleInternal="false">
+    <NC:externalApplication RDF:resource="urn:mimetype:externalApplication:application/pdf" />
+    <NC:possibleApplication RDF:resource="urn:handler:local:/usr/bin/evince" />
+  </RDF:Description>
+<p>#wich external application to use</p>
+<RDF:Description RDF:about="urn:mimetype:externalApplication:application/pdf" NC:path="/usr/bin/evince" NC:prettyName="evince" />
+
+<p>So the default application is to use
+urn:mimetype:externalApplication:application/pdf which here is evince.
+Firefox also looks at the xdg mime info and the mailcap file, and I don’t
+quite understand the precedence of these things.</p>
+
+<h1 id="plugins">Plugins</h1>
+
+<p>https://support.mozilla.org/en-US/kb/set-adobe-flash-click-play-firefox</p>
+
+<h1 id="tabs">Tabs</h1>
+
+<p>about:plugins
+about:config
+about:preferences#applications #which app to use</p>
+
+<h1 id="cookies">Cookies</h1>
+
+<p>Page info (le (i) dans l’adresse) =&gt; Security / View Cookies</p>
+
+<h1 id="dns">DNS</h1>
+
+<p>DNS-over-HTTPS (DOH):
+https://wiki.mozilla.org/Trusted_Recursive_Resolver</p>

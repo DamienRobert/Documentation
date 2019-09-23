@@ -1,0 +1,227 @@
+<p>vim: foldmethod=expr ft=markdownlight</p>
+
+<h1 id="mathematical-definition">Mathematical definition</h1>
+
+<ul>
+  <li>
+    <p>Monoidal category:
+http://en.wikipedia.org/wiki/Monoidal_category
+A monoidal category (or tensor category) is a category C equipped with a bifunctor ⊗ : C × C → C which is associative up to a natural isomorphism, and an object I which is both a left and right identity for ⊗, again up to a natural isomorphism.</p>
+  </li>
+  <li>
+    <p>Braided and Symmetric Monoidal Category:
+http://en.wikipedia.org/wiki/Braided_monoidal_category
+http://en.wikipedia.org/wiki/Symmetric_monoidal_category
+Braided: \gamma_A,B: A \tens B \iso B \tens A avec des conditions de commutativité de diagrammes
+Symmetric: A braided monoidal category is called symmetric if \gamma also satisfies \gamma_{B,A} \circ \gamma_{A,B} = Id</p>
+  </li>
+  <li>
+    <p>Monoid object:
+http://en.wikipedia.org/wiki/Monoid_%28category_theory%29
+In category theory, a monoid (or monoid object) (M, μ, η) in a monoidal category (C, ⊗, I) is an object M together with two morphisms
+  μ: M ⊗ M → M called multiplication,
+  η: I → M called unit,
+tel que \mu soit associatif et I soit une unité (droite et gauche).
+Suppose that the monoidal category C has a symmetry γ. A monoid M in C is symmetric when μ o γ = μ.</p>
+  </li>
+</ul>
+
+<p>Examples:
+- Any category with finite coproducts is monoidal with the coproduct as the monoidal product and the initial object as the unit. Such a monoidal category is called cocartesian monoidal
+- Any category with finite products can be regarded as monoidal with the product as the monoidal product and the terminal object as the unit. Such a category is sometimes called a cartesian monoidal category. For example:
+* Set, the category of sets with the Cartesian product, one-element sets serving as the unit.
+-&gt; A monoid object in Set is a monoid in the usual sense.
+-&gt; A monoid object in the category of monoids (with the direct product of monoids) is just a commutative monoid. This follows easily from the Eckmann–Hilton theorem.
+* Cat, the bicategory of small categories with the product category, where the category with one object and only its identity map is the unit.
+-&gt; A monoid object in Cat is a strict monoidal category
+- R-Mod, the category of modules over a commutative ring R, is a monoidal category with the tensor product of modules ⊗R serving as the monoidal product and the ring R (thought of as a module over itself) serving as the unit.
+-&gt; monoid=R-algebra.
+- For any commutative ring R, the category of R-algebras is monoidal with the tensor product of algebras as the product and R as the unit.
+- The category of all endofunctors on a category C is a strict monoidal category with the composition of functors as the product and the identity functor as the unit.
+-&gt; Monoid=monade
+- Just like for any category E, the full subcategory spanned by any given object is a monoid, it is the case that for any 2-category E, and any object C∈Ob(E), the full 2-subcategory of E spanned by {C} is a monoidal category. In the case E=Cat, we get the endofunctors example above.
+[terminologie: n-flêche=flêche entre n-objets, un n-objet étant une (n-1)-flêche. Dans une 1-catégorie, objet=1-objet=0-flêche et flêche=1-flêche=2-objets
+La catégorie des catégories est une 2-catégorie ou
+0-flêche: Catégorie; 1-flêche: Foncteurs; 2-flêche: transformation naturelle.
+Dans une n-catégorie la restriction a un objet est une (n-1)-catégorie qui est un objet en monoïde pour la catégorie des (n-1)-catégorie.
+On retrouve Hom(C,C)=monoide (ie monoide dans Set=0-CAT) et Hom_CAT(C,C)=catégorie monoidale]</p>
+
+<p>Résumé: 
+- on a une notion d’objet en monoïde dans une catégorie monoïdale
+- une catégorie monoïdale stricte est un objet en monoïde dans CAT
+- une monade est un objet en monoïde pour la catégorie monoïdale des endofoncteurs</p>
+
+<p>[On a aussi une notion de catégorie close, ie une catégorie qui admet des
+hom internes (qui doivent satisfaire certains diagramme). Dans une
+catégorie monoïdale symmétrique, on définit plus simplement le hom interne
+comme l’adjoint à droite du produit tensoriel:
+http://ncatlab.org/nlab/show/closed+monoidal+category]</p>
+
+<h1 id="monades">Monades</h1>
+
+<p>Une monade est un endofoncteur muni d’une unité
+\eta: 1-&gt;T et d’une multiplication
+\mu: T^2-&gt;T
+satisfaisant:
+\mu o T\mu = \mu o \mu T (associativité)
+\mu o T \eta = \mu o \eta T = 1_{T} (identité)</p>
+
+<p>Une adjonction (F,G) définit une monade via T=GoF, l’unité \eta, et
+\mu=G\epsilonF où \epsilon: FG-&gt;Id est la counité.
+Inversement toute monade vient d’une adjonction, cf:
+the Kleisli category and the category of Eilenberg-Moore algebras
+http://en.wikipedia.org/wiki/Kleisli_category</p>
+
+<p>[cf Maths/Categorie/Monades pour plus de détails sur les adjonctions]</p>
+
+<h1 id="categorie-de-kleisli">Categorie de Kleisli</h1>
+
+<p>Hom_K(X,Y)=Hom(X,TY)
+Si f \in Hom_K(X,Y), g \in Hom_K(Y,Z) alors
+la compositin gof dans K est notée par Haskell
+f &gt;=&gt; g.
+On la définit de la manière suivante:
+f: X-&gt;T(Y) [dans la catégorie initiale],
+g: Y-&gt;T(Z)
+g<em>: T(Y)-&gt;T(Z) via g</em>=\mu o T(g)
+et f &gt;=&gt; g = g* o f
+&gt;=&gt; est associatif et a pour identité \eta_X, ie on a bien une catégorie.</p>
+
+<p>Réciproquement, si on a
+- For each object A in C, a morphism \eta_A:A\to T(A);
+- For each morphism f:A\to T(B) in C, a morphism f^*:T(A)\to T(B)
+telle que &gt;=&gt; soit associatif d’idendité \eta_X, alors on a une monade.</p>
+
+<p>Rem: 
+- On retrouve \mu via \mu(X)=Id_T(X)<em>: Id: T(X)-T(X), Id</em>: T^2(X)-&gt;T(X)
+- A partir de la composition &gt;=&gt;, on retrouve f<em>= Id&gt;=&gt;f
+  et donc \mu(X)= (Id: T^2(X)-&gt;T^2(X))&gt;=&gt;(Id: T(X)-&gt;T(X))
+- On retrouve une adjonction via
+F X=X, F (f:X-&gt;Y)= \eta o F: X-&gt;T Y \in Hom_K(X,Y)
+G Y=TY, G (f:X-&gt;TY)=f</em>
+- A partir de f<em>, on retrouve Tf via
+  Tf: TX-&gt;TY= (\eta o f)</em></p>
+
+<h1 id="bind">Bind:</h1>
+<p>on a l’unité toujours \eta (encore appelée ‘wrap’ ou ‘return’) et le bind
+T X -&gt; (f: X-&gt;TY) -&gt; TY
+via x-&gt;f*(x \in TX)</p>
+
+<p>Avec les lois
+ - wrap acts approximately as a neutral element of »=, in that:
+      (wrap x) »= f   ≡   f x
+ -     m »= wrap   ≡   m
+ - Binding two functions in succession is the same as binding one function that can be determined from them:
+      (m »= f) »= g   ≡   m »= ( \x -&gt; (f x »= g) )
+Rem:
+- m »= f = (Id &gt;=&gt; f)(m)
+- On a réciproquement (f &gt;=&gt; g) x = (f x) »= g</p>
+
+<p>http://en.wikipedia.org/wiki/Monad_%28functional_programming%29#Formal_definition
+A binding operation of polymorphic type (M t)→(t→M u)→(M u), which Haskell represents by the infix operator »=. Its first argument is a value in a monadic type, its second argument is a function that maps from the underlying type of the first argument to another monadic type, and its result is in that other monadic type. Typically, the binding operation can be understood as having four stages:
+- The monad-related structure on the first argument is “pierced” to expose any number of values in the underlying type t.
+- The given function is applied to all of those values to obtain values of type (M u).
+- The monad-related structure on those values is also pierced, exposing values of type u.
+- Finally, the monad-related structure is reassembled over all of the results, giving a single value of type (M u).</p>
+
+<h1 id="codensity-and-continuation-monad">Codensity and continuation monad</h1>
+<p>[cf aussi Continuations pour la monade continuation]</p>
+
+<ul>
+  <li>
+    <p>https://www.reddit.com/r/haskell/comments/6qn4y0/when_to_use_cps_vs_codensity_vs_reflection/
+https://stackoverflow.com/questions/45334985/when-to-use-cps-vs-codensity-vs-reflection-without-remorse-in-haskell</p>
+  </li>
+  <li>
+    <p>http://comonad.com/reader/2012/unnatural-transformations-and-quantifiers/
+Haskell point of view on the codensity monad: https://golem.ph.utexas.edu/category/2012/09/where_do_monads_come_from.html</p>
+  </li>
+  <li>
+    <p>https://lmcs.episciences.org/4924/pdf
+CODENSITY  LIFTING  OF  MONADS  AND  ITS  DUAL</p>
+  </li>
+  <li>
+    <p>http://blog.sigfpe.com/2008/12/mother-of-all-monads.html</p>
+  </li>
+  <li>
+    <p>https://news.ycombinator.com/item?id=10175296
+From Imperative to Pure-Functional and Back: Monads vs. Scoped Continuations (paralleluniverse.co)
+=&gt; http://blog.paralleluniverse.co/2015/08/07/scoped-continuations/</p>
+  </li>
+</ul>
+
+<h2 id="mathematic-aspects-of-the-continuation-monad">Mathematic aspects of the continuation monad</h2>
+<ul>
+  <li>https://math.stackexchange.com/questions/2347437/continuations-in-mathematics-nice-examples</li>
+</ul>
+
+<h1 id="monads-in-prog-languages">Monads in prog. languages</h1>
+
+<ul>
+  <li>https://ncatlab.org/nlab/show/monad%20%28in%20computer%20science%29</li>
+</ul>
+
+<h2 id="introduction-aux-monades-dans-ruby">Introduction aux monades dans ruby</h2>
+<p>http://moonbase.rydia.net/mental/writings/programming/monads-in-ruby/00introduction.html
+http://stackoverflow.com/questions/2709361/monad-equivalent-in-ruby</p>
+
+<h2 id="dans-ml">Dans ML</h2>
+
+<p>https://existentialtype.wordpress.com/2011/05/01/of-course-ml-has-monads/</p>
+
+<h2 id="monades-dans-haskell">Monades dans Haskell:</h2>
+<ul>
+  <li>la monade continuation:
+http://www.haskellforall.com/2012/12/the-continuation-monad.html
+http://www.haskellforall.com/2012/08/the-category-design-pattern.html
+http://www.haskellforall.com/2012/09/the-functor-design-pattern.html</li>
+  <li>Monads made difficult:
+http://www.stephendiehl.com/posts/monads.html</li>
+  <li>Yet another monad tutorial:
+http://mvanier.livejournal.com/3917.html</li>
+</ul>
+
+<p>Exemples de monades:
+https://en.wikipedia.org/wiki/Monad_(functional_programming)#Other_examples</p>
+
+<p>Free monad in Haskell
+https://www.reddit.com/r/haskell/comments/7q4sku/are_people_using_freer_monads_or_still_mostly/</p>
+
+<p>Right kan extensions
+https://www.reddit.com/r/haskell/comments/6vu2i4/fun_exploration_right_kan_extensions_swapped/
+=&gt; https://gist.github.com/Icelandjack/83e77449d2857f24a7c94fede6d7311b</p>
+
+<h1 id="algebraic-effects">Algebraic effects</h1>
+<p>cf aussi Info/bookmarks (rust, ocaml)</p>
+
+<ul>
+  <li>
+    <p>http://www.cs.ox.ac.uk/people/samuel.staton/papers/popl2015.pdf
+Algebraic Effects, Linearity, and Quantum Programming Languages</p>
+  </li>
+  <li>
+    <p>https://www.reddit.com/r/haskell/comments/9l0ey4/trycatch_and_asyncawait_are_just_a_specialized/
+=&gt; https://www.microsoft.com/en-us/research/wp-content/uploads/2016/08/algeff-tr-2016-v2.pdf
+Algebraic Effects for Functional Programming(Type Directed Compilation of Row-typed Algebraic Effects)</p>
+  </li>
+  <li>https://www.reddit.com/r/haskell/comments/39wpi8/fusion_for_free_efficient_algebraic_effect/</li>
+  <li>https://www.reddit.com/r/haskell/comments/1b64xh/programming_and_reasoning_with_algebraic_effects/</li>
+</ul>
+
+<h1 id="free--freeer">Free / Freeer</h1>
+
+<ul>
+  <li>
+    <p>Free: https://ncatlab.org/nlab/show/free+monad
+https://stackoverflow.com/questions/13352205/what-are-free-monads
+http://www.haskellforall.com/2012/06/you-could-have-invented-free-monads.html
+https://www.parsonsmatt.org/2017/09/22/what_does_free_buy_us.html
+https://markkarpov.com/post/free-monad-considered-harmful.html</p>
+  </li>
+  <li>
+    <p>Freeer:
+https://reasonablypolymorphic.com/blog/freer-monads/
+http://okmij.org/ftp/Computation/free-monad.html
+=&gt; http://okmij.org/ftp/Haskell/extensible/more.pdf</p>
+  </li>
+</ul>

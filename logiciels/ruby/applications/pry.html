@@ -1,0 +1,143 @@
+<h1 id="vim-foldmethodmarker-ftmarkdownlight">vim: foldmethod=marker ft=markdownlight</h1>
+
+<h1 id="call-from-code">call from code</h1>
+
+<p>require ‘pry’
+binding.pry #see http://kyrylo.org/posts/so-what-is-binding-pry-exactly
+(see also pry-rescue below)</p>
+
+<h1 id="navigating-objects">Navigating objects</h1>
+
+<p>cd #go in an object
+ls #list methods
+whereami #in which object I am
+nesting #hierarchy of objects I am</p>
+
+<p>cd ploum
+exit (return ploum)
+cd .. (don’t return ploum)
+exit-all: exit the pry session (differ from !!! if pry was called from a program)
+exit-program, !!!: exit completly</p>
+
+<h1 id="historique">historique</h1>
+
+<p>hist
+hist –replay</p>
+
+<h1 id="editer">Editer</h1>
+
+<p>amend-line line: amend the line
+edit: edit the last line
+edit -t: starts with an empty file
+edit -ex: edit the file that generated the last exception
+edit -i line: edit line</p>
+
+<p>cat -i line: see line
+play -i line: replay line</p>
+
+<h1 id="shell">shell</h1>
+
+<p>.ls #{dir}
+shell-mode (see the current dir rather than the current object)
+cat file
+save-file #save history to a file</p>
+
+<h1 id="exceptions">Exceptions:</h1>
+
+<p>pyr-backtrace: the backtrace of the current pry session
+wtf? show last stack trace
+cat -ex: show the code responsible for the exception (use -n up to go up the backtrace)</p>
+
+<h1 id="documentation">Documentation</h1>
+
+<p>find-method
+find-method -c (grep in the source)
+edit-method
+show-method (alias: show-source, $)
+show-method (-a to get all matching source)
+show-doc (alias: ?)
+(<em>file</em> and <em>dir</em> then give the file and dir where the method was found)</p>
+
+<h1 id="divers">Divers</h1>
+<p>gem-cd
+gem-install
+gem-list</p>
+
+<p>gist</p>
+
+<p>simple-prompt #small prompt</p>
+
+<h1 id="plugins">Plugins:</h1>
+<p>? https://github.com/ConradIrwin/pry-syntax-hacks
+(allow access to instance variables, call private methods and access to the
+methods of an object, pry-self looks better)</p>
+
+<ul>
+  <li>
+    <p>pry-editline
+https://github.com/tpope/pry-editline
+Invoke editor via C-x+C-e</p>
+  </li>
+  <li>
+    <p>pry-doc
+Pry Doc extends two core Pry commands: show-doc and show-source (aliased as ? and $ respectively).</p>
+  </li>
+  <li>
+    <p>pry-self
+https://github.com/ConradIrwin/self
+When you are inside pry, you can use the self method on any object to
+access its instance variables and private methods</p>
+  </li>
+  <li>
+    <p>pry-byebug (replace pry-debugger for ruby-2+)
+https://github.com/deivid-rodriguez/pry-byebug
+next,step (the difference is that step goes inside functions but next see a
+function as an atom)
+finish,continue (finish finish the current frame, continue resume the program)
+break
+backtrace, frame
+(Usage: dans un programme, mettre binding.pry)</p>
+  </li>
+  <li>
+    <p>pry-stack_explorer
+https://github.com/pry/pry-stack_explorer
+up, down, frame (to go to frame number n), show-stack</p>
+  </li>
+  <li>
+    <p>pry-rescue (replace pry-exception_explorer)
+https://github.com/ConradIrwin/pry-rescue</p>
+
+    <p>-&gt; cd-cause: go to the line causing the exception (can use ‘cat -ex’ to see it)
+   try-again
+cf http://cirw.in/blog/pry-to-the-rescue</p>
+
+    <p>-&gt; Minitest: require ‘pry-rescue/minitest’</p>
+
+    <p>-&gt; Wrapper autour d’un code: use ‘rescue ploum.rb’ plutôt que ‘ruby ploum.rb’</p>
+
+    <p>-&gt; Wrapper autour d’un bout de code:
+      Pry.rescue do
+        raise ploum
+      end
+   the exception ploum will launch a pry session</p>
+
+    <p>Finally. If you’re doing your own exception handling, you can ask Pry
+   to open on an exception that you’ve caught. For this to work you must
+   be inside a Pry::rescue{ } block.
+      def test
+        raise “foo”
+        rescue =&gt; e
+          Pry::rescued(e)
+      end
+      Pry::rescue{ test }</p>
+
+    <p>-&gt; Peeking:
+   Sometimes bugs in your program don’t cause exceptions. Instead your
+   program just gets stuck. Examples include infinite loops, slow network
+   calls, or tests that take a surprisingly long time to run. In this
+   case it’s useful to be able to open a Pry console when you notice that
+   your program is not going anywhere. To do this, send your process a
+   SIGQUIT using &lt;ctrl+&gt;.
+   (cf github page for more details)</p>
+  </li>
+</ul>

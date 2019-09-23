@@ -1,0 +1,339 @@
+<h1 id="vim-foldmethodmarker-ftmarkdownlight">vim: foldmethod=marker ft=markdownlight</h1>
+
+<h1 id="facets-1">facets {{{1</h1>
+<p>Numenor ~gems/facets-2.9.3/lib/core/facets/file $ ls
+append.rb        create.rb       read_list.rb  split_all.rb
+atomic_id.rb     ext.rb          rewrite.rb    split_root.rb
+atomic_open.rb   null.rb         rootname.rb   write.rb
+atomic_write.rb  read_binary.rb  sanitize.rb   writelines.rb</p>
+
+<p>Numenor ~gems/facets-2.9.3/lib/core/facets $ ls dir
+ascend.rb  descend.rb  each_child.rb  multiglob.rb  parent.rb  recurse.rb</p>
+
+<p>Numenor ~gems/facets-2.9.3/lib/standard/facets/fileutils $ ls
+amass.rb  head.rb  outofdate.rb  slice.rb  tail.rb  whereis.rb
+cp_rx.rb  ln_r.rb  safe_ln.rb    stage.rb  wc.rb    which.rb</p>
+
+<p>Mithrim …s-3.0.0/lib/standard/facets/pathname $ ls                          ⚡36
+chdir.rb   home.rb      outofdate.rb  safe.rb        uptodate.rb
+empty.rb   null.rb      readline.rb   split_root.rb  visit.rb
+exists.rb  op_div.rb    root.rb       to_path.rb     work.rb
+glob.rb    op_fetch.rb  rootname.rb   to_str.rb</p>
+
+<h1 id="standardfacetsshellwords">standard/facets/shellwords</h1>
+<p>rajoute shellwords aux hash et array</p>
+
+<p>-&gt; Ecrire un fichier: file.write(“ploum”)
+Ou File.write(path,data) avec facets
+}}}1</p>
+
+<h1 id="fileutils-1">FileUtils: {{{1</h1>
+
+<p>cd(dir, options)
+  cd(dir, options) {|dir| …. }
+  pwd()
+  mkdir(dir, options)
+  mkdir(list, options)
+  mkdir_p(dir, options)
+  mkdir_p(list, options)
+  rmdir(dir, options)
+  rmdir(list, options)
+  ln(old, new, options) [=link]
+  ln(list, destdir, options)
+  ln_s(old, new, options)
+  ln_s(list, destdir, options) [=symlink]
+  ln_sf(src, dest, options)
+  cp(src, dest, options)
+  cp(list, dir, options)
+  cp_r(src, dest, options)
+  cp_r(list, dir, options)
+  mv(src, dest, options)
+  mv(list, dir, options)
+  rm(list, options)
+  rm_r(list, options)
+  rm_rf(list, options)
+  install(src, dest, mode = <srcs>, options)
+  chmod(mode, list, options)
+  chmod_R(mode, list, options)
+  chown(user, group, list, options)
+  chown_R(user, group, list, options)
+  touch(list, options)
+Low level functions:
+  copy_entry(src, dest, preserve = false, dereference = false) #can copy directories
+  copy_file(src, dest, preserve = false, dereference = true)
+  copy_stream(srcstream, deststream)
+  remove_entry(path, force = false)
+  remove_entry_secure(path, force = false)
+  remove_file(path, force = false)
+  compare_file(path_a, path_b) [= cmp, identical?]
+  compare_stream(stream_a, stream_b)
+  uptodate?(file, cmp_list)
+module FileUtils::Verbose
+  This module has all methods of FileUtils module, but it outputs messages
+  before acting. This equates to passing the :verbose flag to methods in
+  FileUtils.
+module FileUtils::NoWrite
+  This module has all methods of FileUtils module, but never changes
+  files/directories. This equates to passing the :noop flag to methods in
+  FileUtils.
+module FileUtils::DryRun
+  This module has all methods of FileUtils module, but never changes
+  files/directories. This equates to passing the :noop and :verbose flags to
+  methods in FileUtils.</srcs></p>
+
+<p>FileUtils Options:
+{“chdir”/”cd”=&gt;[:verbose],
+ “mkdir”=&gt;[:mode, :noop, :verbose],
+ “mkdir_p”/”mkpath”/”makedirs”=&gt;[:mode, :noop, :verbose],
+ “rmdir”=&gt;[:parents, :noop, :verbose],
+ “ln”/”link”=&gt;[:force, :noop, :verbose],
+ “ln_s”,”symlink”=&gt;[:force, :noop, :verbose],
+ “ln_sf”=&gt;[:noop, :verbose],
+ “cp”/”copy”=&gt;[:preserve, :noop, :verbose],
+ “cp_r”=&gt;[:preserve, :noop, :verbose, :dereference_root, :remove_destination],
+ “mv”/”move”=&gt;[:force, :noop, :verbose, :secure],
+ “rm”/”remove”=&gt;[:force, :noop, :verbose],
+ “safe_unlink”=&gt;[:noop, :verbose],
+ “rm_f”=&gt;[:noop, :verbose],
+ “rm_r”=&gt;[:force, :noop, :verbose, :secure],
+ “rm_rf”/”rmtree”=&gt;[:noop, :verbose, :secure],
+ “install”=&gt;[:mode, :preserve, :noop, :verbose],
+ “chmod”=&gt;[:noop, :verbose],
+ “chmod_R”=&gt;[:noop, :verbose, :force],
+ “chown”=&gt;[:noop, :verbose],
+ “chown_R”=&gt;[:noop, :verbose, :force],
+ “touch”=&gt;[:noop, :verbose, :mtime, :nocreate]}
+[preserve: mean preserve metadata, aka owner, group, mtime]
+Note: strangely the low level copy_file has the option ‘dereference’, which
+is true by default [dereference the source]; this option is not available
+for ‘cp’; but it is available for cp_r which use copy_entry as a low level
+function, so these options are available for cp_r:
+- dereference_root: dereference source
+- remove_destination: remove all files in dest before copy
+- preserve: preserve modes
+Warning: these options are all false for copy_entry, but dereference_root
+is true for cp_r!]</p>
+
+<p>Notes on rm:
+- FileUtils.rm(%w(file1 file2), verbose: true, noop: true, force: true)
+(Remove file(s) specified in list.  This method cannot remove directories.
+All StandardErrors are ignored when the :force option is set.)
+- FileUtils.rm_r(%w(file1 file2), verbose: true, noop: true, force: true)
+(similar but can remove directories)
+- FileUtils.rm_rf or FileUtils.rmtree: alias for FileUtils.rm_r(…,force: true)
+- FileUtils.rmdir %w(otherdir somedir), :verbose =&gt; true, :noop =&gt; true, parents: false
+(wrapper autour de Dir.rmdir, qui permet de gérer les options, en
+particulier parents qui est similaire à rmdir -p, ie essaie d’enlever les
+parents également)</p>
+
+<p>[They can all also accept just a file rather than a list]</p>
+
+<p>cp and mv:
+on the shell, mv symlink dest does not dereference ‘symlink’, and
+mv source symlink overwrites ‘symlink’ if it refers to a file otherwise it
+will put source in the directory referenced by ‘symlink’
+The same is true for cp -r, except that cp -r -H symlink dest does dereference
+‘symlink’ [and also cp -r -L, where the latter also affects the -r options:
+http://superuser.com/questions/593196/cp-h-vs-cp-l-what-is-a-command-line-symbolic-link]
+However ‘cp symlink foo’ dereferences symlink, one needs ‘cp -P symlink foo’
+to not dereference
+ln -s foo bar dereference bar except if -n is used
+Ex: ln -s foo symlink_to_dir =&gt; put the symlink in dir
+    ln -sf foo symlink_to_dir =&gt; overwrite dir/foo
+    ln -snf foo symlink_to_dir =&gt; overwrite symlink
+    ln -s foo symlink_to_file =&gt; error
+    ln -sf foo symlink_to_file =&gt; overwrite symlink</p>
+
+<p>FileUtils.{mv,ln_sf} behave similarly
+FileUtils.{cp,cp_r} dereference symlinks, one need to use FileUtils.copy_entry to not dereference, or use FileUtils.cp_r(dereference_root: false)
+}}}1</p>
+
+<h1 id="dir-1">Dir {{{1</h1>
+<pre><code>::[]
+::chdir
+::chroot
+::delete ::rmdir ::unlink
+::entries
+::exist?
+::exists?
+::foreach
+::glob
+::home
+::mkdir
+::new
+::open
+::pwd ::getwd
+#close
+#each
+#inspect
+#path #to_path
+#pos #tell
+#read
+#rewind
+#seek #pos=
+</code></pre>
+
+<p>require ‘tmpdir’
+Dir.tmpdir #=&gt; “/tmp”
+Dir::Tmpname.create(prefix) do |path, n, opts| end
+Dir::Tmpname.create([prefix, suffix], tmpdir, max_try, **opts) do |path, n, opts| end</p>
+
+<pre><code class="language-Dir.mktmpdir">def self.mktmpdir(prefix_suffix=nil, *rest)
+  path = Tmpname.create(prefix_suffix || "d", *rest) {|n| mkdir(n, 0700)}
+  if block_given?
+    begin
+      yield path
+    ensure
+      ...
+      FileUtils.remove_entry path
+    end
+  else
+    path
+  end
+end
+</code></pre>
+
+<p>require ‘tmpfile’
+Tempfile.new(basename = “”, [tmpdir = Dir.tmpdir], [options])
+  # calls :Dir::Tmpname.create(basename, tmpdir, options)
+Tempfile.open(‘foo’, ‘/home/temp’) do |f|
+   … do something with f …
+end
+ # Note: Tempfile.create(…) do the same thing as Tempfile.open, but
+ # creates a regular File, not a Tempfile
+}}}1</p>
+
+<h1 id="pathname-1">Pathname {{{1</h1>
+
+<h2 id="core-methods">Core methods</h2>
+<pre><code>These methods are effectively manipulating a String, because that’s all a
+path is. Except for mountpoint?, children, each_child, realdirpath and
+realpath, they don’t access the filesystem. (Note: la différence entre entries et children c'est que entries sort aussi '.' et '..')
+</code></pre>
+
+<ul>
+  <li>join parent root? absolute? relative? relative_path_from each_filename
+cleanpath realpath realdirpath children each_child mountpoint?</li>
+</ul>
+
+<h2 id="file-status-predicate-methods">File status predicate methods</h2>
+<pre><code>These methods are a facade for FileTest:
+</code></pre>
+
+<p>blockdev? chardev? directory? executable? executable_real? exist? file?
+grpowned? owned? pipe? readable? world_readable? readable_real? setgid? setuid?
+size size? socket? sticky? symlink? writable? world_writable? writable_real?
+zero?</p>
+
+<h2 id="file-property-and-manipulation-methods">File property and manipulation methods</h2>
+<pre><code>These methods are a facade for File:
+</code></pre>
+
+<p>atime ctime mtime chmod(mode) lchmod(mode) chown(owner, group) lchown(owner,
+group) fnmatch(pattern, <em>args) fnmatch?(pattern, *args) ftype make_link(old)
+open(</em>args, &amp;block) readlink rename(to) stat lstat make_symlink(old)
+truncate(length) utime(atime, mtime) basename(<em>args) dirname extname
+expand_path(</em>args) split</p>
+
+<h2 id="directory-methods">Directory methods</h2>
+<pre><code>These methods are a facade for Dir:
+</code></pre>
+
+<p>::glob ::getwd / ::pwd rmdir entries each_entry(&amp;block) mkdir(<em>args)
+opendir(</em>args)</p>
+
+<h2 id="io">IO</h2>
+<pre><code>These methods are a facade for IO:
+</code></pre>
+
+<p>each_line(<em>args, &amp;block) read(</em>args) binread(<em>args) readlines(</em>args)
+sysopen(*args)</p>
+
+<h2 id="utilities">Utilities</h2>
+<pre><code>These methods are a mixture of Find, FileUtils, and others:
+</code></pre>
+
+<p>find(&amp;block) mkpath rmtree unlink / delete</p>
+
+<h2 id="special-features">Special features</h2>
+
+<p>p1 = Pathname.new(“/usr/lib”)   # Pathname:/usr/lib
+p2 = p1 + “ruby/1.8”            # Pathname:/usr/lib/ruby/1.8
+p3 = p1.parent                  # Pathname:/usr
+p4 = p2.relative_path_from(p3)  # Pathname:lib/ruby/1.8
+pwd = Pathname.pwd              # Pathname:/home/gavin
+pwd.absolute?                   # true
+p5 = Pathname.new “.”           # Pathname:.
+p5 = p5 + “music/../articles”   # Pathname:music/../articles
+p5.cleanpath                    # Pathname:articles
+p5.realpath                     # Pathname:/home/gavin/articles
+p5.children                     # [Pathname:/home/gavin/articles/linux, …]</p>
+
+<h2 id="notes-for-relativeabsolute-paths">Notes for relative/absolute paths</h2>
+
+<p>f.cleanpath
+  Returns clean pathname of self with consecutive slashes and useless dots
+  removed. The filesystem is not accessed.
+  If consider_symlink is true, then a more conservative algorithm is used to
+  avoid breaking symbolic linkages. This may retain more .. entries than
+  absolutely necessary, but without accessing the filesystem, this can’t be
+  avoided.
+f.relative_path_from(base_directory)
+  Returns a relative path from the given base_directory to the receiver.
+  If self is absolute, then base_directory must be absolute too.
+  If self is relative, then base_directory must be relative too.
+  This method doesn’t access the filesystem. It assumes no symlinks.
+f.realpath
+  Returns the real (absolute) pathname for self in the actual filesystem.
+  Does not contain symlinks or useless dots, .. and ..
+  All components of the pathname must exist when this method is called.
+f.realdirpath
+  Like f.realpath but the last component can not exist</p>
+
+<h2 id="pathname-vs-fileutils">Pathname vs FileUtils</h2>
+
+<p>FileUtils:                            Pathname:
+  cd(dir, options) {|dir| …. }
+  mkdir(dir, options)                 #From Dir
+  mkdir_p(dir, options)               #mkpath from FileUtils
+  rmdir(dir, options)                 #From Dir
+  ln(old, new, options)
+  ln_s(old, new, options)
+  ln_sf(src, dest, options)
+  cp(src, dest, options)
+  cp_r(src, dest, options)
+  mv(src, dest, options)
+  rm(list, options)                  #delete/unlink from Dir and File
+  rm_r(list, options)
+  rm_rf(list, options)               #rmtree from FileUtils
+  install(src, dest, mode = <srcs>, options)
+  chmod(mode, list, options)         #from File
+  chown(user, group, list, options)  #from File
+  touch(list, options)
+}}}1</srcs></p>
+
+<h1 id="shellwords-1">Shellwords {{{1</h1>
+<pre><code>::shellescape Escapes a string so that it can be safely used in a Bourne shell command line. String#shellescape is a shorthand for this function.
+
+::shelljoin Builds a command line string from an argument list array joining all elements escaped for Bourne shell and separated by a space.
+
+::shellsplit Splits a string into an array of tokens in the same way the UNIX Bourne shell does String#shellsplit is a shorthand for this function. }}}1
+</code></pre>
+
+<h1 id="thoractions-1">Thor::Actions {{{1</h1>
+
+<p>Thor::Actions#methods: 
+  action          destination_root      prepend_file                       <br />
+  add_file        destination_root=     prepend_to_file                    <br />
+  add_link        directory             relative_to_original_destination_root
+  append_file     empty_directory       remove_dir                         <br />
+  append_to_file  find_in_source_paths  remove_file                        <br />
+  apply           get                   run                                <br />
+  behavior        gsub_file             run_ruby_script                    <br />
+  behavior=       in_root               source_paths                       <br />
+  chmod           inject_into_class     template                           <br />
+  comment_lines   inject_into_file      thor                               <br />
+  copy_file       insert_into_file      uncomment_lines                    <br />
+  create_file     inside            <br />
+  create_link     link_file         <br />
+Voir aussi thor/shell/*.rb pour des commandes d’output et d’input</p>

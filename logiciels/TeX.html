@@ -1,0 +1,340 @@
+<p>vim: ft=markdownlight fdm=expr</p>
+
+<h1 id="macro">Macro</h1>
+
+<p>https://tug.org/TUGboat/tb22-4/tb72perlS.pdf
+ A complement to \smash, \llap, and \rlap =&gt; \clap, \math?lap
+ \def\llap#1{\hbox to 0pt{\hss#1}}
+ \def\rlap#1{\hbox to 0pt{#1\hss}}</p>
+
+<h1 id="tex">TeX</h1>
+
+<p>http://tex.stackexchange.com/questions/33096/which-lua-environment-should-i-use-with-luatex-lualatex/33102#33102
+  #different environments to embed lua inside a luatex tex file</p>
+
+<p>http://tex.stackexchange.com/questions/50069/how-to-change-white-background-of-an-included-pdf-to-transparent</p>
+
+<p>http://tex.stackexchange.com/questions/87520/how-to-install-tex-on-android-phones</p>
+
+<p>Using recode to convert '{e} into é:
+recode -d Tex..u8 foobar</p>
+
+<h1 id="texlive">TexLive</h1>
+
+<p>mktexlsr=texhash : create ls-R database
+mktexfmt=fmtutil, fmtutil-sys: TeX format files</p>
+
+<p>updmap, updmap-sys: manage TeX font maps</p>
+
+<p>mktextfm: create tfm file for a font
+mktexmf: create metafont
+mktexpk: create pk file for a font</p>
+
+<ul>
+  <li>
+    <p>Après une update:
+sudo fmtutil-sys –all
+sudo updmap-sys
+luaotfload-tool -u</p>
+  </li>
+  <li>
+    <p>Userspace
+fmtutil –all
+updmap
+luaotfload-tool -u #should be done automatically but can be usefull if it bugs</p>
+  </li>
+  <li>
+    <p>kpathsea
+Usage: kpsexpand [options] string
+Usage: kpsetool -w [options] pathtype filename
+Usage: kpsepath  [options] pathtype</p>
+  </li>
+</ul>
+
+<p>Valid options are the following:
+  -n progname  : pretend to be progname to kpathsea
+  -m mode      : set Metafont mode
+  -w           : locate files (similar to kpsewhich)
+  -p           : act like kpsepath
+  -v           : act like kpsexpand</p>
+
+<p>Ex: kpsewhich updmap.cfg
+    kpsepath tex</p>
+
+<h2 id="configuration-see-conf-texconfig-conf">Configuration: see conf: texconfig conf</h2>
+
+<p>From /etc/texmf/web2c/texmf.cnf, we have:
+  TEXMFCONFIG = ~/.texlive/texmf-config
+In /home/dams/latex/texmf/texmf-config/web2c/texmf.cnf:
+  TEXMFCONFIG = $HOME/texmf/texmf-config
+  OSFONTDIR = ~/.fonts//:/usr/share/fonts//
+  %TEXMFCONFIG = $HOME/.texmf-config;$HOME/texmf/texmf-config
+  %TEXMFLOCAL = $HOME/texmf/texmf-config
+  %TEXINPUTS =  ./packages//; 
+  % modifier ~/opt/packages/texlive/texmf.cnf!
+But the texmf.cnf is not read yet because it won’t search in this
+directory! Solution: export TEXMFCNF=/home/dams/latex/texmf/texmf-config/web2c:</p>
+
+<p>But simpler method: just do a symlink
+OSFONTDIR: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=683943
+luatex uses fontconfig to find fonts if no OSFONTDIR is configurer
+=&gt; I want to unset it</p>
+
+<h1 id="maths">Maths</h1>
+
+<p>https://tex.stackexchange.com/questions/84302/what-is-the-difference-of-mathop-operatorname-and-declaremathoperator</p>
+
+<h2 id="mathtools">mathtools</h2>
+
+<p>\smash, \llap, \rlap -&gt;
+\mathllap, …, \clap
+\mathmbox, \mathmakebox</p>
+
+<p>\cramped: pour passer en mode cramp (les indices sont moins relevés).
+\cramped[\scriptstyle] pour du mode cramp en \scriptstyle
++ \crampedclap pour combiner \cramped et \clap</p>
+
+<p>\smashoperator: pour faire du \mathclap sur les indices en haut et en bas</p>
+
+<p>\adjustlimits pour ajuster les limites de différents opérateurs</p>
+
+<ul>
+  <li>tags
+\newtagform{name}[\command]{left_del}{right_delimiter}
+\renewtagform…
+\usetagform{name}</li>
+</ul>
+
+<p>\showonlyrefs=true|false (pour ne pas afficher un numéro d’équation s’il
+n’est pas référencé)</p>
+
+<p>(+ \refeq pour les références d’équations faites par \tag*)</p>
+
+<ul>
+  <li>Extensible symbols:
+\xleftrightarrow[under][over]
+…</li>
+</ul>
+
+<p>\underbracket[rule thickness][bracket height]{arg}
+\overbracket… (comme \underbrace et \overbrace mais avec des brackets)</p>
+
+<p>\begin{matrix*}[alignement]</p>
+
+<ul>
+  <li>nouvel environnement pour indiquer l’alignement des colonnes</li>
+</ul>
+
+<p>Environnement multlined
+\begin{multlined}[pos][width] (pos=t|b|c: alignement vertical)
+  …
+  \shoveleft[dim]{args}
+  \shoveright…</p>
+
+<p>Environnement dcases: comme cases mais les maths sont en displaystyle
+              dcases*: la seconde colonne est en texte par défaut</p>
+
+<p>\shortintertext: moins d’espacement vertical que \intertext</p>
+
+<p>\DeclarePairedDelimiter\abs{\vert}{\rvert}
+  -&gt; \abs* donne des délimiteurs avec \left et \right
+  -&gt; \abs[big|Big|bigg|Bigg]</p>
+
+<p>\coloneqq, \Colonapprox, …(C pour ::)</p>
+
+<p>\spreadlines[dim] -&gt; espacement vertical dans gather
+lgathered, rgathered: comme gathered mais alignement l ou r</p>
+
+<p>\mathtoolset{mathic=true}: corrections italiques en mode math (utiliser (
+) plutôt que $$ pour l’avoir).</p>
+
+<p>\prescript: indices à gauche</p>
+
+<p>\splitfrac: fractions sur plusieurs lignes</p>
+
+<ul>
+  <li>empheq
+\begin{empheq}{align*}</li>
+</ul>
+
+<p>empheq permet de mettre des trucs autour des équations: des trucs à gauche
+ou droite, des boxes.</p>
+
+<p>utiliser {empheq}{multine} ou {empheq}{gather} donne de meilleurs résultats
+que amsmaths quand on a des grands tags (pour multline) ou des tags de
+différentes longueurs pour gather (car gather centre par ligne).</p>
+
+<p>On peut utiliser overload pour remplacer ces environnements
+automatiquement, et overload2 pour remplacer [] aussi. Et puis ça marche
+mieux avec le marqueur de fin de ntheorem aussi.</p>
+
+<h1 id="unicode">Unicode</h1>
+
+<ul>
+  <li>newunicodechar
+To enter commands like
+\newunicodechar{ò}{\u{o}}
+instead of \DeclareUnicodeCharacter{014F}{\u{o}}
+calling \newunicodechar{ù}{={u}} is equivalent to say
+\makeatletter
+\@namedef{u8:\detokenize{ù}}{={u}}
+\makeatother</li>
+</ul>
+
+<h1 id="fonts">Fonts</h1>
+
+<p>\defaultfontfeatures+{Ligatures=Tex}%append the font features (Ligatures=Tex is now on by default)
+\fontspec{Font}[Numbers=OldStyle] % change the features for this font
+\addfontfeatures % change the features for the current font
+Sizes: http://tex.stackexchange.com/questions/46087/how-do-i-change-the-font-size-in-lualatex</p>
+
+<ul>
+  <li>
+    <p>Maths:
+http://tex.stackexchange.com/questions/145522/what-is-the-best-math-font-for-use-with-minion-pro-font
+http://tex.stackexchange.com/questions/37561/getting-started-with-minion-pro-xelatex-and-mathspec
+-&gt; Minion Math: http://www.typoma.com/en/fonts.html
+http://tex.stackexchange.com/questions/219392/state-of-unicode-math-typesetting-fonts</p>
+  </li>
+  <li>Small Caps with lmodern by using the CM-Super substitute:</li>
+  <li>http://tex.stackexchange.com/questions/22240/choosing-font-for-bold-small-caps-or-any-other-particular-familyseriesshape-c</li>
+  <li>
+    <p>http://tex.stackexchange.com/questions/79086/how-to-use-all-variants-of-latin-modern-roman-with-fontspec
+# with fontspec</p>
+  </li>
+  <li>
+    <p>Cursive fonts:
+http://tex.stackexchange.com/questions/48002/hand-written-fonts-in-latex-xetex-luatex
+-&gt; http://www.tug.dk/FontCatalogue/calligraphicalfonts.html
+-&gt; http://www.fontsquirrel.com/fonts/list/style/Handdrawn
+-&gt; http://www.fontsquirrel.com/fonts/list/style/Calligraphic</p>
+  </li>
+  <li>
+    <p>Zapfino: http://tex.stackexchange.com/questions/29123/can-i-get-lualatex-to-do-font-variations-on-the-zapfino-font-just-as-xelatex-doe
+-&gt; Zapfino Extra LT Pro is newer font, it combines the older four Linotype Zapfino fonts with extensive OpenType features (http://www.twardoch.com/download/typotechnica2005_zapfino.pdf)</p>
+  </li>
+  <li>Embed the full fonts</li>
+  <li>In pdftex: https://tex.stackexchange.com/questions/24002/turning-off-font-subsetting-in-pdftex</li>
+  <li>In luatex: https://tex.stackexchange.com/questions/485774/how-can-i-verify-that-the-fonts-are-all-embedded-in-my-lualatex-document</li>
+</ul>
+
+<h1 id="font-packages">Font Packages</h1>
+
+<p>fontspec: use otf fonts in lualatex [also replace the fonts used for mathrm, mathsf and so on]
+unicode-math: use otf fonts for math in lualatex</p>
+
+<p>mathspec: use the same font in math and text (for xetex, not compatible
+with luatex); see http://tex.stackexchange.com/questions/118244/what-is-the-difference-between-unicode-math-and-mathspec
+mathastext: use the same font in math and text (for legacy latex), partial support for luatex</p>
+
+<p>Ex of text and math fonts rendering: http://www.princeton.edu/~gkv/aofd/fonts/</p>
+
+<p>Ex:
+\fontsize{25pt}{30pt}
+\fontspec{Zapfino Extra LT Pro}
+fontsize works in standard tex too, it selects the size and the baseline
+size. It needs to be followed by a \selectfont but \fontspec calls
+\selectfont already.</p>
+
+<h1 id="math-fonts">Math fonts</h1>
+
+<ul>
+  <li>http://en.wikipedia.org/wiki/Asana-Math
+Asana-Math is a Palatino-like OpenType mathematical font</li>
+  <li>http://en.wikipedia.org/wiki/Cambria_%28typeface%29</li>
+  <li>http://en.wikipedia.org/wiki/Computer_Modern
+Computer Modern -&gt; LatinModern</li>
+  <li>http://en.wikipedia.org/wiki/Lucida</li>
+  <li>http://en.wikipedia.org/wiki/Minion_%28typeface%29</li>
+  <li>http://en.wikipedia.org/wiki/AMS_Euler
+AME_Euler -&gt; NeoEuler</li>
+  <li>http://en.wikipedia.org/wiki/STIX_Fonts_project
+    <ul>
+      <li>Math -&gt; http://en.wikipedia.org/wiki/XITS_font_project</li>
+    </ul>
+  </li>
+</ul>
+
+<p>http://www.gust.org.pl/projects/e-foundry/math/gust_e-foundry-math_fonts-presentation.pdf examples of the following math fonts:
+Latin Modern Math,
+TG Bonum Math, TG Schola Math, TG Pagella Math, TG Termes Math
+DejaVu Math, Cambria Math, Asana Math, Lucida Math, XITS Math</p>
+
+<p>https://developer.mozilla.org/en-US/docs/Mozilla/MathML_Project/Fonts
+On ArchLinux: texlive-core (Latin Modern Math, TeX Gyre Math), texlive-fontsextra (XITS Math, STIX Math, Asana Math).</p>
+
+<h1 id="typography">Typography</h1>
+
+<ul>
+  <li>Classic Thesis</li>
+  <li>Ars Classica</li>
+  <li>Tufte Latex
+https://www.ctan.org/pkg/tufte-latex?lang=en</li>
+</ul>
+
+<h1 id="latex-packages">Latex Packages</h1>
+
+<ul>
+  <li>
+    <p>embed: embed a file in a pdf (like the source code)</p>
+  </li>
+  <li>
+    <p>navigator: Navigator offers access to PDF features such as outlines (book-
+marks), links, actions and embedded files ; it differs from other
+existing packages on two main points : first, it doesn’t depend on
+any format and can be used with plain TEX, LaTEX, ConTeXt (with
+some limitations, see here and here), and anywhere else ; second,
+it defines commands to create PDF objects, and can be used as a
+base to produce raw PDF code across pdfTEX, LuaTEX and XeTEX.</p>
+  </li>
+</ul>
+
+<p>http://tex.stackexchange.com/questions/5599/theorem-packages-which-to-use-which-conflict</p>
+
+<h1 id="beamer">Beamer</h1>
+
+<p>How to have verbatime in beamer:
+- use the ‘semiverbatim’ beamer environment
+  http://tex.stackexchange.com/questions/147363/how-can-i-insert-verbatim-text-to-beamer-notes
+- use a fragile frame
+  http://tex.stackexchange.com/questions/140719/verbatim-in-beamer-showing-error-file-ended-while-scanning-use-of-xverbatim</p>
+
+<pre><code>\documentclass{beamer}
+%\theme{AnnArbor}
+\begin{document}
+\begin{frame}[fragile]
+\begin{verbatim}
+   \begin{frame}[&lt;alignment&gt;]
+   \frametitle{Frame Title Goes Here}
+   Frame body text and/or LATEX code
+   \end{frame}
+\end{verbatim}
+\end{frame}
+\end{document}
+</code></pre>
+
+<h1 id="bugs">Bugs</h1>
+
+<ul>
+  <li>Bug with \hrulefill with mathdesign: http://tex.stackexchange.com/questions/135352/conflict-between-mathdesign-and-memoir-chapterstyle-ell</li>
+</ul>
+
+<h1 id="tools">Tools</h1>
+
+<p>Compilation:
+- https://github.com/aclements/latexrun
+latexrun: modern latexmk, but not developed anymore…
+- https://github.com/cereda/arara
+  arara is a TeX automation tool based on rules and directives. It gives you a way to enhance your TeX experience.
+  Another ‘modern’ latexmk, still seems developed
+- https://github.com/stefanhepp/pplatex
+  Pretty-Print LaTeX: A tool to reformat the output of latex and friends into readable messages
+- Dicy: another one. See the comparison in
+  https://yitzchak.github.io/dicy/comparison-of-builders.html</p>
+
+<p>Convert images to LaTeX:
+https://mathpix.com/</p>
+
+<p>Latex online:
+- https://www.overleaf.com/
+  (there was sharelatex too, but it has been merged to overleaf)</p>

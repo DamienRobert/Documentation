@@ -1,0 +1,132 @@
+<p>vim: ft=markdownlight fdm=expr</p>
+
+<h1 id="tools">Tools</h1>
+
+<ul>
+  <li>Configuration manager: chef, puppet, salt, ansible</li>
+  <li>VPS: Digital Ocean, linode, RamNode, OVH, LunaNode</li>
+  <li>Integration continue: travis (github), jenkins</li>
+  <li>Monitoring: ganglia</li>
+  <li>
+    <p>Cloud configuration: https://cloud-init.io/</p>
+  </li>
+  <li>Non root containers:
+Cf https://rootlesscontaine.rs/ [tools described there are used by buildah and podman]
+=&gt; https://github.com/mgoltzsche/ctnr rootless runc-based container engine</li>
+</ul>
+
+<p>Namespace wrappers:
++ https://github.com/rootless-containers/rootlesskit
+  kind of Linux-native “fake root” utility, made for mainly running Docker and Kubernetes as an unprivileged user
+  RootlessKit creates user_namespaces(7) and mount_namespaces(7), and executes newuidmap(1)/newgidmap(1) along with subuid(5) and subgid(5).
+  RootlessKit also supports isolating network_namespaces(7) with userspace NAT using “slirp”. Kernel NAT using SUID-enabled lxc-user-nic(1) is also experimentally supported.
+  Projects using RootlessKit
+  - Docker/Moby
+  - Usernetes: Docker &amp; Kubernetes, installable under a non-root user’s $HOME.
+  - k3s: Lightweight Kubernetes
+  - BuildKit: Next-generation docker build backend
+- https://github.com/giuseppe/become-root
+  minimal tool for creating a new user namespace with multiple UIDs/GIDs mapped inside</p>
+
+<p>Tools for non root containers:
++ patchelf https://nixos.org/patchelf.html
+  PatchELF is a small utility to modify the dynamic linker and RPATH of ELF executables.
++ https://proot-me.github.io/
+  PRoot is a user-space implementation of chroot, mount –bind, and binfmt_misc. (uses ptrace)
+  -&gt; used by junest: The lightweight Arch Linux based distro that runs upon any Linux distros without root access.
+  Voir aussi https://github.com/rootless-containers/PRoot
+  Fork of proot for supporting <code>user.rootlesscontainers</code> xattr so as to support persistent <code>chown(2)</code>
+- mbox: http://pdos.csail.mit.edu/mbox/ [undeveloped]
+  Mbox is a lightweight sandboxing mechanism that any user can use without special privileges in commodity operating systems.
++ slirp: userspace networking
+  cf https://github.com/rootless-containers/slirp4netns
+  slirp4netns: User-mode networking for unprivileged network namespaces</p>
+
+<h1 id="x-forwarding">X forwarding</h1>
+
+<p>Xephyr: version moderne de Xnest, supportant les extensions X modernes</p>
+
+<p>Protocols: nx, rdp (windows), vnc, spice
+  ssh -X/ssh -Y</p>
+
+<p>xpra: rootless (ie la fenêtre s’affiche dans le wm hote) + winswitch (gui helper)</p>
+
+<p>VNC/Spice: Remmina, vinagre (gnome); VNC: tigervnc, tightvnc; NX: x2go
+  https://en.wikipedia.org/wiki/Comparison_of_remote_desktop_software
+  http://www.techradar.com/news/5-of-the-best-linux-remote-desktop-clients</p>
+
+<h1 id="containers">Containers</h1>
+
+<ul>
+  <li>Containers:</li>
+  <li>libvirt-lxc, lxc</li>
+  <li>systemd-nspawn/machinectl
+casync: Content-Addressable Data Synchronization Tool http://0pointer.net/blog/casync-a-tool-for-distributing-file-system-images.html 
+mkosi: create legacy-free OS images
+Note: since systemd 242, nspawn understand the OCI interface</li>
+  <li>docker / [rkt] / podman. Cf [docker]
+[Depuis que CoreOs a été racheté par redhat, rkt est deprecated.]
+runC: low level, used by docker and podman
+singularity: “docker for hpc”</li>
+  <li>
+    <p>chef/habitat: https://medium.com/@bdangit/habitat-and-docker-c8b19d7e5d8c
+Build applications to run anywhere and manage them throughout their lifecycle.
+Habitat is open source software that creates platform-independent build artifacts and provides built-in deployment and management capabilities.
+A modern version of omnibus, cf https://discourse.chef.io/t/habitat-vs-omnibus/12983/3</p>
+  </li>
+  <li>Containers orchestration:
+    <ul>
+      <li>kubernetes
+https://jvns.ca/blog/2017/10/10/operating-a-kubernetes-network/
+https://jvns.ca/blog/2017/10/05/reasons-kubernetes-is-cool/
+https://www.reddit.com/r/kubernetes/comments/7y54n6/deploying_the_control_plane_kubelet_manifests_vs/ -&gt; https://github.com/kelseyhightower/kubernetes-the-hard-way
+video: https://www.driftingruby.com/episodes/introduction-to-kubernetes
+Minikube: https://github.com/kubernetes/minikube Run Kubernetes locally</li>
+      <li>https://helm.sh/
+The package manager for Kubernetes
+Helm is the best way to find, share, and use software built for Kubernetes.</li>
+      <li>openshift: red hat distribution for kubernetes</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="virtual-box">Virtual box</h1>
+
+<p>openstack: le cloud open source</p>
+
+<ul>
+  <li>
+    <p>Virtual: hashicorp/vagrant
+To achieve its magic, Vagrant stands on the shoulders of giants. Machines are provisioned on top of VirtualBox, VMware, AWS, or any other provider. Then, industry-standard provisioning tools such as shell scripts, Chef, or Puppet, can be used to automatically install and configure software on the machine.</p>
+  </li>
+  <li>
+    <p>Provision:</p>
+    <ul>
+      <li>hashicorp/terraform =&gt; Infrastructure as code</li>
+      <li>hashicorp/packer =&gt; build virtual machines
+https://github.com/elasticdog/packer-arch: un packer pour archlinux</li>
+      <li>https://pulumi.io/
+ Cloud Native Infrastructure as Code
+ Build software for any cloud using your favorite language. 
+ https://pulumi.io/reference/vs/terraform.html</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="binary-packagers">binary packagers</h1>
+
+<ul>
+  <li>snap (ubuntu), flatpak (was xdg-app),  guix/nix, 0install, slackware build tools, gentoo (https://wiki.gentoo.org/wiki/Project:Prefix), Suse open build service, appimage…
+cf https://www.reddit.com/r/linux/comments/4ohvur/nix_vs_snap_vs_flatpak_what_are_the_differences/, https://github.com/probonopd/AppImageKit/wiki/Similar-projects</li>
+  <li>bubblewrap: bubblewrap is a lightweight setuid sandbox application developed from Flatpak (=used by flatpak to run in a sandbox); firejail: another sandbox
+Note: bubblewrap uses namespaces, snap and appimage uses apparmor</li>
+  <li>Containers: lxc, systemd-nspawn, docker</li>
+</ul>
+
+<p>Note: flatpak uses libostree, cf https://ostree.readthedocs.io/en/latest/</p>
+
+<ul>
+  <li>guix https://www.gnu.org/software/guix/
+can build pack and docker images: https://guix-hpc.bordeaux.inria.fr/blog/2017/10/using-guix-without-being-root/
+=&gt; In the absence of user namespaces, we can resort to PRoot</li>
+</ul>
