@@ -32,6 +32,10 @@ Documentation
 - tc show / manipulate traffic control settings (qos)
 - ss: replacement of netstat
 
+* Linux:
+- http://vger.kernel.org/~davem/skb.html socket buffer, or "SKB"
+  http://vger.kernel.org/~davem/skb_data.html
+
 * TOS
 - https://en.wikipedia.org/wiki/Type_of_service
   https://en.wikipedia.org/wiki/Explicit_Congestion_Notification
@@ -113,6 +117,7 @@ https://www.kernel.org/doc/html/latest/networking/alias.html
     per interface. Newer tools such as iproute2 support multiple
     address/prefixes per interface, but aliases are still supported for
     backwards compatibility.
+(ifconfig won't show extra addresses if they are not added with an alias)
 
 * Show
 $ ip a s wlan0 / ip addr show wlan0
@@ -130,6 +135,11 @@ $ ip a s wlan0 / ip addr show wlan0
 $ ip -br show wlan0
 wlp6s0           UP             192.168.0.11/24 fe80::de85:deff:fe74:f5f5/64 
 
+* peer:
+$ sudo ip a add dev foobar 42.1.0.2 peer 42.2.0.1/24
+    inet 42.1.0.2 peer 42.2.0.1/24 scope global foobar
+$ ip r
+    42.2.0.0/24 dev foobar proto kernel scope link src 42.1.0.2 
 
 ## ip neigh
 
@@ -254,14 +264,81 @@ ip route ... encap ...: attach tunnel encapsulation to this route
   link | valid only on this device
   host | valid only inside this host (machine)
 - onlink: pretend that the nexthop is directly attached to this link, even if it does not match any interface prefix.
-- dsfield TOS
-- realm REALMID
+- dsfield TOS (route only packets with a specific tos)
+- realm REALMID (set up the dest. realm of the route)
+- metric METRIC (routing order is most specific first, then according to metric. Lower metric have higher precedence, no metric means metric=0)
 
 * Flush the cache:
 $ ip route flush cache
 
 * Simulate a route:
 $ ip route get 20.10.3.3
+
+### Encap
+- https://lwn.net/Articles/651497/ lightweight tunnels:
+  VXLAN:
+  $ ip route add 40.1.1.1/32 encap vxlan id 10 dst 50.1.1.2 dev vxlan0
+  MPLS:
+  $ ip route add 10.1.1.0/30 encap mpls 200 via inet 10.1.1.1 dev swp1
+
+  [mpls: https://archive.nanog.org/meetings/nanog49/presentations/Sunday/mpls-nanog49.pdf]
+
+- https://lwn.net/Articles/722804/ IPv6 segment routing (srh)
+
+  Tutorial:
+  https://segment-routing.org/index.php/Implementation/ConfigureEncapsulation
+  # ip -6 route add fc42::/64 via NH encap seg6 mode encap segs fc00:12,fc00:89
+    - fc42::/64: the matching prefix for encapsulation
+    - via NH: the "default" next-hop for the route. It can be the next-hop that would normally be used to forward the traffic for the matching prefix, but it does not really matter as the kernel will restart its routing decision process to route the SR-enabled packet to the first segment. Also, the Linux IPv6 stack requires a route to have a valid IPv6 next-hop in order to support features such as ECMP, in order to avoid issues with routes such as ff00::/8 and fe80::/64 that are automatically assigned to each IPv6-enabled interface.
+    - encap seg6: this tells the kernel to give the packet to the SR-IPv6 subsystem.
+    - mode encap: this specifies the encapsulation mode. Two values are possible: encap creates an outer IPv6 header with the SRH attached, followed by the original, unmodified inner packet. The other value, inline, directly attach the SRH to the original IPv6 packet. The encap mode should be used, unless you know what you are doing.
+    - segs fc00:12,fc00:89: a list of comma-separated segments 
+
+- Details:
+  https://translate.google.com/translate?sl=auto&tl=en&u=https%3A%2F%2Fblog.csdn.net%2Fsinat_20184565%2Farticle%2Fdetails%2F84952713
+
+  Rather than configuring the local routes via 'ip link', one use 'ip link
+  ... external' and then uses encapsulation routes
+
+   $ ip link add dev vxlan1 type vxlan id 30001 remote 20.1.1.2 dstport 4789
+   $ ip route add 10.1.1.1 dev vxlan1
+
+   $ ip link add dev gnv0 type geneve remote 192.168.100.3 vni 1234 dstport 5678
+   $ ip route add 172.16.20.1 dev gnv0
+
+   becomes
+
+   $ ip link add vxlan1 type vxlan dstport 4789 external
+   $ ip link set dev vxlan1 up
+   $ ip addr add 20.1.1.1/24 dev vxlan1
+   $ ip route add 10.1.1.1 encap ip id 30001 dst 20.1.1.2 dev vxlan1
+
+   $ ip link add gnv0 type geneve external
+   $ ip link set dev gnv0 up
+   $ ip route add 172.16.20.1/32 encap ip id 1234 dst 192.168.100.3 dev gnv0
+
+  https://linux.cn/article-10672-1.html
+  Décrit comment ils combinent des gretap + vrf (pour l'isolation) + nft
+  (pour l'offloading) et les patchs soumis au noyau linux pour tout faire
+  marcher
+
+    $ ip l add dev tun type gretap external
+    $ ifconfig tun 1.1.1.7/24 up
+    $ ip r r 2.2.2.11 via 1.1.1.11 dev tun encap ip id 1000 dst 172.168.0.1 key
+    (le id 1000 crée un tunnel interne avec le TUNNEL_ID=1000; 'key' sans
+    rien => j'imagine qu'il utilise le TUNNEL_ID)
+    => set tunnel properties by routing, which avoids managing a large number of tunnel devices
+   cf le patch
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=3d65cefbefc86a53877f1e6461a9461e5b8fd7b3
+   qui permet de rajouter key, csum, seq à 'encap ip...'
+   cf aussi ce patch 
+   https://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next.git/commit/?id=0fb4d21956f4a9af225594a46857ccf29bd747bc
+   http://patchwork.ozlabs.org/patch/1025554/
+   qui ajoute
+   `nft add rule firewall rules-all meta iifkind "vrf" counter accept`
+   pour empecher des interactions bizarres entre le nat, les rules et le
+   vrf (le même paquet étant vu deux fois, une fois via l'interface
+   esclave, l'autre via le vrf, on peut avoir des règles contradictoires)
 
 ## ip rule
 
@@ -372,19 +449,43 @@ ip tunnel -> ipip, sit, isatap, vti, gre
 ip tuntap #ex: ip tuntap add name tap0 mode tap
 ip fou, ip gue #for receive port configuration; use ip link for transmit
 
-* Exemples:
+* IPIP and Gre
+
+- Can be created by ip tunnel or ip link:
 sudo ip tunnel add ipiptun mode ipip local 10.3.3.3 remote 10.4.4.4 ttl 64 dev eno1
 sudo ip link add ipiptun2 type ipip local 10.6.6.6 remote 10.7.7.7 ttl 64 dev eno1 #curiously the mode is any/ip here
     ipiptun: ip/ip remote 10.4.4.4 local 10.3.3.3 dev eno1 ttl 64
     ipiptun2: any/ip remote 10.7.7.7 local 10.6.6.6 dev eno1 ttl 64
 
+  local address:
+    local ADDRESS [can also put an interface name (or maybe this is set in `dev
+    device`)]
+    set the fixed local address for tunneled packets.  It must be an address on another interface of this host.
+
 - gre: ip link add name gre1 type gre local LOCAL_IPv4_ADDR remote REMOTE_IPv4_ADDR [seq] key KEY
 
+- Full ipip exemple:
+  https://developers.redhat.com/blog/2019/05/17/an-introduction-to-linux-virtual-interfaces-tunnels/#gre
+  Note: When the ipip module is loaded, or an IPIP device is created for the first time, the Linux kernel will create a tunl0 default device in each namespace, with attributes local=any and remote=any. When receiving IPIP protocol packets, the kernel will forward them to tunl0 as a fallback device if it can’t find another device whose local/remote attributes match their source or destination address more closely.
+
+  $ ip link add name ipip0 type ipip local LOCAL_IPv4_ADDR remote REMOTE_IPv4_ADDR
+  $ ip link set ipip0 up
+  $ ip addr add INTERNAL_IPV4_ADDR/24 dev ipip0
+  Add a remote internal subnet route if the endpoints don't belong to the same subnet
+  $ ip route add REMOTE_INTERNAL_SUBNET/24 dev ipip0
+
+  Note that https://wiki.linuxfoundation.org/networking/tunneling show that
+  we can use peer also: 
+  $ ip tunnel add ipiptun mode ipip local 10.3.3.3 remote 10.4.4.4 ttl 64 dev eth0
+  $ ip addr add dev ipiptun 10.0.0.1 peer 10.0.0.2/32
+  $ ip route add 10.4.10.0/24 via 10.0.0.2 #this allow to use via rather than dev
+
+- One can also encapsulate in fou/gue:
 $  ip link add name tun1 type ipip remote 192.168.1.1 local 192.168.1.2 ttl 225  encap fou encap-sport auto encap-dport 5555
 
 * Fou / Gue
 Both sides fou:
-  receive  $ ip fou add port 5555 ipproto 4
+  receive  $ ip fou add port 5555 ipproto 4 #for gre: ipproto 47.
   transmit $  ip link add name tun1 type ipip \
        remote 192.168.1.1 local 192.168.1.2 ttl 225 \
        encap fou encap-sport auto encap-dport 5555
@@ -440,6 +541,9 @@ Route Configuration:
 
 Ip link configuration:
 - group GROUP: /etc/iproute2/group [default]
+
+Tc configuration:
+- /etc/iproute2/tc_cls #map class id to class name
 
 iw
 ==
@@ -498,8 +602,13 @@ network={
 tc
 ==
 
+Bandwidth tests: iperf3
+
 * Articles:
 - https://web.archive.org/web/20190427083833/https://www.coverfire.com/articles/queueing-in-the-linux-network-stack/
+- Nice tutorial: https://medium.com/criteo-labs/demystification-of-tc-de3dfe4067c2
+
+* Some modern qdiscs:
 - codel: https://queue.acm.org/detail.cfm?id=2209336
 - cake: https://www.bufferbloat.net/projects/codel/wiki/Cake/
         http://man7.org/linux/man-pages/man8/tc-cake.8.html
@@ -525,9 +634,12 @@ $ tc -s -d qdisc show [dev device]
 
 Note: for tc filter, it seems that 'classid' is a synonym for 'flowid'
 
+* Default qdisc: cat /proc/sys/net/core/default_qdisc
+  ie sysctl net.core.default_qdisc
+
 ## Stateless qdisc
 - noqueue
-- pfifo_fast
+- pfifo_fast [original default]
 - mq https://serverfault.com/questions/474230/linux-traffic-control-qdisc-mq
    classful multiqueue ("mq") dummy scheduler; used by default for multiqueue devices instead of the regular pfifo_fast qdisc (ie with several processors, one can get a mq with a queue by processor, and then each queue is a pfifo_fast)
 - fq_codel (cf https://lists.fedoraproject.org/pipermail/devel/2015-March/209508.html)
@@ -626,9 +738,34 @@ CAKE will interpret  the  major number of the classid as the host hash used in h
                  Voice  (CS7, CS6, EF, VA, TOS4), 25% threshold, reduced Codel
        interval.
 
-## Hierarchical Token Bucket (HTB) qdisc / Hierarchical fair-service curve (hfsc)
+Cake with hfsc: https://lists.bufferbloat.net/pipermail/cake/2019-March/004768.html
+$ tc qdisc add dev eth1 root handle 1: hfsc default 1
+$ tc class add dev eth1 parent 1: classid 1:1 hfsc ls rate 5mbit ul rate 5mbit
+$ tc qdisc add dev eth1 parent 1:1 cake unlimited besteffort internet nat memlimit 32m
 
-* https://wiki.debian.org/TrafficControl
+## Classful qdisc
+
+* Hierarchical Token Bucket (HTB) qdisc
+
+Within  the  one  HTB  instance  many  classes may exist. Each of these
+classes contains another qdisc, by default tc-pfifo(8).
+
+At each node we look for an instruction,  and  then  go  to  the class  the
+instruction  refers  us  to. If the class found is a barren leaf-node
+(without children), we enqueue the packet there. If it is not yet  a  leaf
+node, we do the whole thing over again starting from that node.
+
+The following actions are performed, in order at each  node  we  visit,
+until one sends us to another node, or terminates the process.
+(i) Consult filters attached to the class. If sent to a leafnode, we are
+done.  Otherwise, restart.
+(ii)If none of the above returned with an  instruction,  enqueue  at this
+node.
+
+- http://luxik.cdi.cz/~devik/qos/htb/manual/userg.htm
+HTB Linux queuing discipline manual - user guide
+
+- https://wiki.debian.org/TrafficControl
 
 Creating root 1: and 1:1 using HTB (default 6 means follow 1:6 if no rule matched) 
 $ tc qdisc add dev eth1 root handle 1: htb default 6
@@ -646,7 +783,7 @@ Leaf 1:7
 $ tc class add dev eth1 parent 1:1 classid 1:7 htb rate 0.2mbit ceil 1mbit
 $ tc filter add dev eth1 protocol ip parent 1:0 prio 5 u32 match ip src VIDEO_STREAM_IP/32 flowid 1:7
 
-Add a qdisc leaf (otherwise the leaf behaves as a pfifo_fast qdisc):
+Add a qdisc leaf (otherwise the leaf behaves as a pfifo qdisc):
 $ tc qdisc add dev eth1 parent 1:5 handle 20: sfq perturb 10
 
 => Result
@@ -660,7 +797,14 @@ class htb 1:6 parent 1:1 prio 0 rate 500Kbit ceil 1500Kbit burst 1600b cburst 15
 class htb 1:7 parent 1:1 prio 0 rate 200Kbit ceil 1Mbit burst 1600b cburst 1600b
 $ tc filter show dev eth1
 
-* HFSC:
+* Hierarchical fair-service curve (HFSC)
+
+  HFSC qdisc has only one optional parameter - default. CLASSID specifies
+  the  minor part of the default classid, where packets not classified by
+  other means (e.g. u32 filter, CLASSIFY target of iptables) will be  en‐
+  queued.  If  default  is  not  specified,  unclassified packets will be
+  dropped.
+
 - http://man7.org/linux/man-pages/man7/tc-hfsc.7.html
 - http://linux-ip.net/articles/hfsc.en/
 
@@ -669,6 +813,14 @@ $ tc filter show dev eth1
 $ tc qdisc add dev $dev root handle $ID: hfsc [default $classID ] 
 In the second step, the class hierarchy is constructed with consecutive class additions.
 $ tc add class dev $dev parent parentID classid $ID hfsc [ [ rt  SC ] [ ls  SC ] | [ sc  SC ] ]  [ ul  SC ]
+
+- Script exemples:
+  https://gist.github.com/bradoaks/940616
+  with a nice introduction to tbf, htb and hfsc
+  Latest version: https://gist.github.com/eqhmcow/939373
+- More details on hfsc: https://serverfault.com/questions/105014/does-anyone-really-understand-how-hfsc-scheduling-in-linux-bsd-works
+- Tutorials: http://linux-tc-notes.sourceforge.net/tc/doc/sch_hfsc.txt
+             http://manpages.ubuntu.com/manpages/precise/man7/tc-hfsc.7.html
 
 ## Netem qdisc
 
@@ -685,7 +837,8 @@ $  tc qdisc add dev eth0 root netem loss 10%
 $ tc qdisc change dev eth0 root netem corrupt 5%
 $ tc qdisc change dev eth0 root netem duplicate 1% 
 
-## https://www.tldp.org/HOWTO/html_single/Traffic-Control-HOWTO/
+## Documentations
+### https://www.tldp.org/HOWTO/html_single/Traffic-Control-HOWTO/
 
 [root@leander]# tc class add    \ (1)
 >                  dev eth0     \ (2)
@@ -732,15 +885,15 @@ $ tc qdisc change dev eth0 root netem duplicate 1%
 (13) The minimum policed unit. To count all traffic, use an mpu of zero (0). 
 (14) The action indicates what should be done if the rate based on the attributes of the policer. The first word specifies the action to take if the policer has been exceeded. The second word specifies action to take otherwise. 
 
-## lartc
+### lartc
 
-### Classless qdisc
+#### Classless qdisc
 * https://lartc.org/howto/lartc.qdisc.classless.html
 
 9.2.1. pfifo_fast [3 bands]
 Do not confuse this classless simple qdisc with the classful PRIO one! Although they behave similarly, pfifo_fast is classless and you cannot add other qdiscs to it with the tc command.
 
-###  Classful qdisc
+####  Classful qdisc
 * https://lartc.org/howto/lartc.qdisc.classful.html
 
                      1:   root qdisc
@@ -798,10 +951,11 @@ $ U32="tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32"
 $ $U32 match ip dport 80 0xffff flowid 1:10
 $ $U32 match ip sport 25 0xffff flowid 1:20
 
-### Filter
+#### Filter
 
 https://lartc.org/howto/lartc.qdisc.filters.html
-### Imq
+
+#### Imq
 
 * https://lartc.org/howto/lartc.imq.html
 
@@ -822,10 +976,89 @@ Note: now replaced by ifb
 cf https://wiki.linuxfoundation.org/networking/ifb
    https://wiki.archlinux.org/index.php/Advanced_traffic_control
 
+## Ingress qdisc
+
+* https://serverfault.com/questions/350023/tc-ingress-policing-and-ifb-mirroring
+
+IFB is an alternative to tc filters for handling ingress traffic, by redirecting it to a virtual interface and treat is as egress traffic there.You need one ifb interface per physical interface, to redirect ingress traffic from eth0 to ifb0, eth1 to ifb1 and so on.
+
+When inserting the ifb module, tell it the number of virtual interfaces you need. The default is 2:
+$ modprobe ifb numifbs=1
+Now, enable all ifb interfaces:
+$ ip link set dev ifb0 up # repeat for ifb1, ifb2, ...
+
+And redirect ingress traffic from the physical interfaces to corresponding ifb interface. For eth0 -> ifb0:
+$ tc qdisc add dev eth0 handle ffff: ingress
+$ tc filter add dev eth0 parent ffff: protocol ip u32 match u32 0 0 action mirred egress redirect dev ifb0
+Again, repeat for eth1 -> ifb1, eth2 -> ifb2 and so on, until all the interfaces you want to shape are covered.
+
+Now, you can apply all the rules you want. Egress rules for eth0 go as usual in eth0. Let's limit bandwidth, for example:
+$ tc qdisc add dev eth0 root handle 1: htb default 10
+$ tc class add dev eth0 parent 1: classid 1:1 htb rate 1mbit
+$ tc class add dev eth0 parent 1:1 classid 1:10 htb rate 1mbit
+
+Ingress rules for eth0, now go as egress rules on ifb0 (whatever goes into ifb0 must come out, and only eth0 ingress traffic goes into ifb0). Again, a bandwidth limit example:
+$ tc qdisc add dev ifb0 root handle 1: htb default 10
+$ tc class add dev ifb0 parent 1: classid 1:1 htb rate 1mbit
+$ tc class add dev ifb0 parent 1:1 classid 1:10 htb rate 1mbit
+
+The advantage of this approach is that egress rules are much more flexible than ingress filters. Filters only allow you to drop packets, not introduce wait times, for example. By handling ingress traffic as egress you can setup queue disciplines, with traffic classes and, if need be, filters. You get access to the whole tc tree, not only simple filters.
+
+Note: ingress shaping is not really useful https://stackoverflow.com/questions/15881921/why-tc-cannot-do-ingress-shaping-does-ingress-shaping-make-sense
+  The caveat with ingress shaping is that it may take a long time for an
+incoming stream to respond to your shaping actions, due to all the buffers
+in routers between the stream source and your interface.
+
+## Filter actions
+* man tc-actions
+Add action to a filter
+-> tc-simple: for debugging actions
+-> tc-mirred: copy / redirect packets
+-> Packet manipulation:
+   tc-pedit+tc-csum: edit packet data and recalculate checksum
+   tc-skbmod: user friendly pedit
+   tc-skbedit: edit meta data
+   tc-ife: encaspulate/decapsulate metadata into packet data
+-> High level manipulation:
+   tc-nat: stateless nat
+   tc-connmark: The connmark action is used to restore the connection's mark value into the packet's fwmark.
+   tc-tunnelçkey: tunnel metadata manipulation
+   tc-vlan: vlan manipulation
+   tc-xt: iptables action [some exemples / links in https://github.com/firehol/firehol/issues/49]
+
+-> tc-police
+The  police  action allows to limit bandwidth of traffic matched by the filter it is attached to.
+  # tc qdisc add dev eth0 handle ffff: ingress
+  # tc filter add dev eth0 parent ffff: u32 \
+       match u32 0 0 police rate 1mbit burst 100k #shortcut for 'action police'
+
+  Exemple combining police and mirred:
+              # tc qdisc add dev eth0 handle ffff: ingress
+              # tc filter add dev eth0 parent ffff: u32 \
+                   match u32 0 0 \
+                   action police rate 1mbit burst 100k conform-exceed pipe \
+                   action mirred egress redirect dev lo
+
+* chains: https://lwn.net/Articles/723067/
+By default we have one filter chain (orderer by priority).
+But we can build different chains and add goto action to them:
+
+$ tc qdisc add dev eth0 ingress
+$ tc filter add dev eth0 parent ffff: protocol ip pref 33 flower dst_mac 52:54:00:3d:c7:6d action goto chain 11
+$ tc filter add dev eth0 parent ffff: protocol ip pref 22 chain 11 flower dst_ip 192.168.40.1 action drop
+
+* block: share filter chains
+$ tc qdisc add dev ens7 ingress block 22
+$ tc qdisc add dev ens8 ingress block 22
+$ tc filter add block 22 protocol ip pref 25 flower dst_ip 192.168.0.0/16 action drop
+
 Virtual networking
 ==================
 
 ## VRF
+
+* https://cumulusnetworks.com/blog/vrf-for-linux/
+  Details on the implementation
 
 * https://lwn.net/Articles/632522/
 Original patch, with exemple usages
@@ -833,7 +1066,7 @@ Original patch, with exemple usages
 Exemple:
   - eth1: 1.1.1.1/24: group 1, vrf 11
   - eth5: 1.1.1.1/24 (not a typo, duplicate address in different vrfs) group 1, vrf 13
-  $ ip vrf exec 11 ip addr show dev eth1
+  $ ip vrf exec 11 ip addr show dev eth1 #newer syntax: ip addr show vrf 11 dev eth1
           inet 1.1.1.1/24 brd 1.1.1.255 scope global eth1
 
   3. start ssh in group1 namespace
@@ -911,6 +1144,17 @@ $ ip link set dev red up
 $ ip vrf exec red ssh 10.100.1.254
 cf man 'ip-vrf'
 
+* Complete syntax
+ $ ip link add dev NAME type vrf table ID
+ $ ip [-d] link show type vrf
+ $ ip link set dev NAME master NAME
+ $ ip link show vrf NAME #devices that have been assigned to a specific VRF
+ $ ip addr show vrf NAME #show the ip adresses
+ $ ip [-6] neigh show vrf NAME
+ $ ip [-6] route show vrf NAME / $ ip [-6] route show table ID
+ $ ip [-6] route get vrf NAME ADDRESS / $ ip [-6] route get oif NAME ADDRESS
+ $ ip link set dev NAME nomaster
+
 ## Virtual interfaces
 
 * Documentation
@@ -961,10 +1205,14 @@ where 2001:db8:2/3::1 are the ip addresses of the vtep (VXLAN Tunnel Endpoint)
 
 Raccourci: https://blog.wescale.fr/2018/02/15/les-reseaux-doverlay-principes-et-fonctionnement/
   # ip link add vxlan10 type vxlan id 10 local 10.0.0.2 remote 10.0.0.3
+  # ip link set vxlan10 up
   => ajoute automatiquement dans la fdb: $bridge fdb show
   00:00:00:00:00:00 dev vxlan10 dst 10.0.0.3 self permanent
+
   Et l'autodécouverte donne, par exemple avec un
-  # ping 192.168.0.3
+  vm01# ip addr add 192.168.0.2/24 dev vxlan10
+  vm02# ip addr add 192.168.0.3/24 dev vxlan10
+  vm01# ping 192.168.0.3
   ajoute l'adresse mac de 192.168.0.3 sur la fdb
   96:3d:d7:db:24:ee dev vxlan10 dst 10.0.0.3 self
   et notre adresse mac sur la fdb de 10.0.0.3:
@@ -998,9 +1246,19 @@ via l2miss and l3miss options
 * Control pane
 The dynamic mode allow to have a control pane.
 
+** Plus d'infos
 Cf the book https://www.cisco.com/c/dam/en/us/td/docs/switches/datacenter/nexus9000/sw/vxlan_evpn/VXLAN_EVPN.pdf sur VXLAN + BGP EVPN
 MP-BGP => comme BGP mais les infos de routage contiennent layer 2 mac +
 layer 3 ip (ce qu'on appelle du EVPN).
+
+http://www.fiber-optic-equipment.com/understanding-two-terms-evpn-vs-vxlan.html
+ ie EVPN could be the control plane of VXLAN
+
+Voir aussi les slides: https://www.netdevconf.org/2.2/slides/prabhu-linuxbridge-tutorial.pdf
+
+Et une overview des outils modernes sous linux: ebpf, VXLAN, VRF, EVPN, MPLS…
+https://cumulusnetworks.com/blog/linux-programmable-pipelines-tunnels/
+Solving challenges with Linux networking, programmable pipelines and tunnels
 
 ### Tun/Tap
 

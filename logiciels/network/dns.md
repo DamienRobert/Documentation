@@ -87,6 +87,27 @@ xip.io alternatives: https://moss.sh/free-wildcard-dns-services/
 getent hosts www.google.com #the adress used by the dns from nsswitch.conf
 getent ahosts www.google.com #return all adresses
 
+nsswitch.conf: hosts: files mymachines myhostname resolve [!UNAVAIL=return] dns
+
+files: /etc/hosts, /etc/passwd and /etc/group
+
+https://www.freedesktop.org/software/systemd/man/nss-myhostname.html
+- The local, configured hostname is resolved to all locally configured IP
+  addresses ordered by their scope, or — if none are configured — the IPv4
+  address 127.0.0.2 (which is on the local loopback) and the IPv6 address
+  ::1 (which is the local host).
+- The hostnames "localhost" and "localhost.localdomain" (as well as any
+  hostname ending in ".localhost" or ".localhost.localdomain") are resolved
+  to the IP addresses 127.0.0.1 and ::1.
+- The hostname "_gateway" is resolved to all current default routing gateway
+  addresses, ordered by their metric. This assigns a stable hostname to the
+  current gateway, useful for referencing it independently of the current
+  network configuration state.
+
+https://www.freedesktop.org/software/systemd/man/nss-mymachines.html
+The container names are resolved to the IP addresses of the specific container, ordered by their scope.
+
+
 ## dig / drill
 * dig # goes through resolv.conf [dig is from bind]
 dig google.com
@@ -280,10 +301,27 @@ local-data-ptr: "IPaddr name"
             Configure  local data shorthand for a PTR record with the reversed
             IPv4 or IPv6 address and the host name.
 
+- type: deny, refuse, static, transparent, typetransparent, redirect,
+  inform/inform_deny,inform_redirect,
+  always_transparent/always_deny/always_refuse/always_nxdomain, noview, [nodefault]
+
+  Exemple: to blacklist a domain
+  local-zone: "<domain>" redirect
+  local-data: "<domain> A 0.0.0.0"
+
+- Options:
 The default zones are localhost, reverse 127.0.0.1 and ::1, the  onion,
 test,  invalid  and  the  AS112  zones. The AS112 zones are reverse DNS
 zones for private use and reserved IP addresses for which the servers on
 the internet cannot provide correct answers.
+
+Exemple: the default for localhost is
+                 local-zone: "localhost." redirect
+                 local-data: "localhost. 10800 IN NS localhost."
+                 local-data: "localhost. 10800 IN
+                     SOA localhost. nobody.invalid. 1 3600 1200 604800 10800"
+                 local-data: "localhost. 10800 IN A 127.0.0.1"
+                 local-data: "localhost. 10800 IN AAAA ::1"
 
 unblock-lan-zones: <yes or no>
   If  enabled,  then  for private address space, the reverse lookups are no
@@ -575,6 +613,8 @@ Public dns
 - https://www.internetsociety.org/blog/2018/07/a-deeper-dive-into-public-dns-resolver-quad9/
 
 Cloudflare dns: 1.1.1.1 and 1.0.0.1
+                2606:4700:4700::1111 2606:4700:4700::1001
+                dns4torpnlfs2ifuz2s2yf3fc7rdmsbhm6rw75euj35pac6ap25zgqad.onion.
 
 google dns: 8.8.8.8, 8.8.4.4
             2001:4860:4860::8888 and 2001:4860:4860::8844
@@ -585,6 +625,14 @@ Divers (marchent encore?)
   David Madore: regulus.xn--kwg.net, 212.85.152.99
   neuf.fr (212.30.96.108, 213.203.124.146)
   198.41.0.4 : a.root-servers.net
+
+Adguard:
+Default: 176.103.130.130, 176.103.130.131 2a00:5a60::ad1:0ff 2a00:5a60::ad2:0ff
+         sdns://AQIAAAAAAAAAFDE3Ni4xMDMuMTMwLjEzMDo1NDQzINErR_JS3PLCu_iZEIbq95zkSV2LFsigxDIuUso_OQhzIjIuZG5zY3J5cHQuZGVmYXVsdC5uczEuYWRndWFyZC5jb20
+         dns.adguard.com, https://dns.adguard.com/dns-query
+
+Family (safe search): 176.103.130.132 176.103.130.134 2a00:5a60::bad1:0ff 2a00:5a60::bad2:0ff
+         sdns://AQIAAAAAAAAAFDE3Ni4xMDMuMTMwLjEzMjo1NDQzILgxXdexS27jIKRw3C7Wsao5jMnlhvhdRUXWuMm1AFq6ITIuZG5zY3J5cHQuZmFtaWx5Lm5zMS5hZGd1YXJkLmNvbQ dns-family.adguard.com https://dns-family.adguard.com/dns-query
 
 Some ip address
 ===============

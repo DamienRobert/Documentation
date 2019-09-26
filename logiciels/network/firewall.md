@@ -39,6 +39,18 @@ ufw limit SSH
 
 Check: ufw status; ufw show raw
 
+# Conntrack
+
+- zones: https://lwn.net/Articles/370152/
+Virtual conntrack tables that can be used to separate connections from
+different zones, allowing to handle multiple connections with equal
+identities in conntrack and NAT.
+
+- https://wiki.nftables.org/wiki-nftables/index.php/Quick_reference-nftables_in_10_minutes#Ct
+
+- https://superuser.com/questions/1269859/linux-netfilter-how-does-connection-tracking-track-connections-changed-by-nat
+  conntrack for nat
+
 # Nftables
 
 * Doc
@@ -51,6 +63,9 @@ nftables is a project providing packet filtering and packet classification on Li
 - https://home.regit.org/2014/01/why-you-will-love-nftables/
 - https://wiki.archlinux.org/index.php/nftables
 - https://ungleich.ch/en-us/cms/blog/2018/08/18/iptables-vs-nftables/
+
+Very nice packet flow diagram: 
+https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg
 
 ## cmdline
 
@@ -268,9 +283,10 @@ General syntax is: rt key operator expression, where:
 The fib statement can be used to obtain the output interface from the route table based on either source or destination address of a packet.
 This can be used to e.g. add reverse path filtering, or eg. drop if not coming from the same interface packet arrived on:
 
-Par exemple `fib saddr oif` regarde la routing interface de l'addresse source.
-`fib saddr . iif oif` regarde la routing interface de l'adresse source via
-l'interface entrée (ie c'est non nul ssi elle passe bien par la iif).
+Par exemple `fib saddr oif` regarde la (output) routing interface de
+l'addresse source. `fib saddr . iif oif` regarde la routing interface de
+l'adresse source via l'interface entrée (ie c'est non nul ssi elle passe
+bien par la iif).
 
 Exemple: implémenter rp_filter=1
 $ nft add rule x prerouting fib saddr . iif oif eq 0 drop
@@ -294,6 +310,15 @@ $ nft add rule x prerouting meta mark set 0xdead fib daddr . mark type vmap {
 Autre exemple, cf https://unix.stackexchange.com/questions/524293/why-linux-allows-connection-on-a-different-interface-ip-even-if-forwarding-is-di
 If the address is not local nor broadcast nor multicast to the interface packet came from then drop it.
 $ nft add rule inet filter input fib daddr . iif type != { local, broadcast, multicast } drop
+
+Exemples in man nft,
+=> on peut aussi spécifier `oif exists/missing`
+   # drop packets without a reverse path
+   filter prerouting fib saddr . iif oif missing drop
+   # match if route exists
+   filter input fib daddr . iif oif exists]
+   # drop packets to address not configured on ininterface
+   filter prerouting fib daddr . iif type != { local, broadcast, multicast } drop
 
 ### Actions
 
@@ -693,6 +718,24 @@ Ex: meta priority none ip saddr @priority_set meta priority set ip daddr map @gr
        elements = { 10.20.255.50 : 1:ffd8, 10.20.255.90 : 1:ffd5,
                      10.20.255.130 : 1:ffd2 }
    }   
+
+* https://wiki.nftables.org/wiki-nftables/index.php/Flowtable 
+
+table inet x {
+
+    flowtable f {
+        hook ingress priority 0 devices = { eth0, eth1 };
+    }
+
+    chain y {
+        type filter hook forward priority 0; policy accept;
+        ip protocol tcp flow offload @f
+        counter packets 0 bytes 0
+    }
+}
+
+Plus de doc (cf les liens là bas):
+https://www.kernel.org/doc/Documentation/networking/nf_flowtable.txt
 
 # BPF
 

@@ -9,7 +9,7 @@ See https://github.com/isaacs/github/issues/757
 
 ## hub: https://github.com/defunkt/hub
 
-PR workflow:
+PR workflow: (cf Workflows below for mre details)
 
 hub clone $url
 git my extra fork => hub fork && hub push DamienRobert : && git fetch DamienRobert && git config remote.pushDefault DamienRobert

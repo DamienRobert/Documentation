@@ -172,6 +172,16 @@ When TCP sockets refuse to die (popcount.org)
   - the trick with close() after TCP_REPAIR: (https://lwn.net/Articles/495304/) immediately discard a socket with no network side effects.
   - "ss --kill" command: forcefully close a socket from outside process, done with netlink SOCK_DESTROY command. 
 
+https://news.ycombinator.com/item?id=21057748
+Pi-Hole 4.3.2 (pi-hole.net)
+=> https://deadc0de.re/articles/unbound-blocking-ads.html
+   simple alternative with a dns server (dnsmasq or unbound) + periodically updated hosts file (via systemd timer) passed to the dns server.
+=> https://adguard.com/en/adguard-dns/overview.html
+   a public dns server blocking ads
+=> Lists: https://firebog.net/
+          https://www.github.developerdan.com/hosts/
+          https://github.com/StevenBlack/hosts
+
 # Programming
 
 https://news.ycombinator.com/item?id=11847529
@@ -340,6 +350,13 @@ Modern C, Second Edition (gustedt.wordpress.com)
 
 https://news.ycombinator.com/item?id=21016664
 The Pragmatic Programmer, 20th Anniversary Edition (pragprog.com)
+
+https://news.ycombinator.com/item?id=21053140
+Nim 1.0 (nim-lang.org)
+
+https://news.ycombinator.com/item?id=21064911
+V8 adds support for top-level await (googlesource.com)
+(nice discussions on async programming)
 
 # Software
 http://blog.burntsushi.net/ripgrep/
@@ -660,6 +677,13 @@ WTF: A personal information dashboard for your terminal (github.com)
 https://news.ycombinator.com/item?id=21042390
 Show HN: Ascii_tree – A way to create beautiful ASCII trees (github.com)
 
+https://news.ycombinator.com/item?id=21055468
+Tmux Tutorial (leimao.github.io)
+-> ctrl + b + space to change the layout of panes
+
+https://news.ycombinator.com/item?id=21070321
+WARP is here (cloudflare.com)
+
 # Web
 
 ## Navigateurs:
@@ -711,6 +735,9 @@ You probably don’t need ReCAPTCHA (kevv.net)
 https://news.ycombinator.com/item?id=20294801
 Google’s new reCAPTCHA has a dark side (fastcompany.com)
 => get recaptcha score: https://recaptcha-demo.appspot.com/recaptcha-v3-request-scores.php
+
+https://news.ycombinator.com/item?id=21052969
+Show HN: A website speed test tool to compare uBlock Origin with plain Chrome (webtest.app)
 
 ## Webdev
 
@@ -1036,6 +1063,9 @@ https://nostalgebraist.tumblr.com/post/187579086034/it-seems-pretty-clear-to-me-
 https://news.ycombinator.com/item?id=21042468
 Show HN: I made a neural net that analyzes privacy policies (useguard.com)
 
+https://news.ycombinator.com/item?id=21057684
+Adblock Radio (github.com) #block pub in web radios
+
 # Security
 http://www.tedunangst.com/flak/post/features-are-faults-redux
 http://scarybeastsecurity.blogspot.fr/2016/11/0day-exploit-compromising-linux-desktop.html Compromising a Linux desktop using... 6502 processor opcodes on the NES?!
@@ -1265,6 +1295,10 @@ Sand won't save you this time (2008) (sciencemag.org)
 Possibly the best of the "Things I won't work with" series: https://blogs.sciencemag.org/pipeline/archives/category/things-i-wont-work-with
  The book that quote is originally from, Ignition!, is 100% worth a read. Picked up a copy through Amazon a few months ago, and it’s one of the funniest (in a nerdy way) and most interesting books I’ve read in a loooong time. 
 
+https://news.ycombinator.com/item?id=21078068
+What If Planet 9 Is a Primordial Black Hole? (arxiv.org)
+=> Death's End novel of Remembrance of Earth's Past trilogy from the writer Liu Cixin;  _The Forge of God_ by Greg Bea
+
 # Science
 http://blog.vixra.org/category/crackpots-who-were-right/
 Edge question https://www.edge.org/annual-question/what-scientific-term-or%C2%A0concept-ought-to-be-more-widely-known
@@ -1492,6 +1526,8 @@ Solar and Wind Power So Cheap They’re Outgrowing Subsidies (bloomberg.com)
 
 https://news.ycombinator.com/item?id=21042101
 Charts show how little progress has been made in limiting greenhouse emissions (nature.com)
+
+https://www.reddit.com/r/france/comments/d3m3ni/r%C3%A9sum%C3%A9_du_livre_comment_tout_peut_seffondrer/
 
 # Politique
 http://www.slate.com/articles/news_and_politics/cover_story/2016/08/the_week_democracy_died_how_brexit_nice_turkey_and_trump_are_all_connected.html

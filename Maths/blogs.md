@@ -241,6 +241,10 @@ The 8000th Busy Beaver number eludes ZF set theory
 - https://www.scottaaronson.com/blog/?p=3997
   Teaching quantum in junior high: special Thanksgiving guest post by Terry Rudolph
 
+- https://news.ycombinator.com/item?id=21053405
+  Scott’s Supreme Quantum Supremacy FAQ!
+  https://news.ycombinator.com/item?id=21053405
+
 Kowalski
 ========
 
@@ -410,6 +414,8 @@ Gil Kalai
 
 - https://gilkalai.wordpress.com/2019/08/21/the-argument-against-quantum-computers-a-cern-colloquium-and-a-new-paper/
   https://www.quantamagazine.org/gil-kalais-argument-against-quantum-computers-20180207/#comment-4559220424
+- https://gilkalai.wordpress.com/2019/09/23/quantum-computers-amazing-progress-google-ibm-and-extraordinary-but-probably-false-supremacy-claims-google/
+- https://gilkalai.wordpress.com/2019/09/22/jeff-kahn-and-jinyoung-park-maximal-independent-sets-and-a-new-isoperimetric-inequality-for-the-hamming-cube/
 
 Categories
 ==========

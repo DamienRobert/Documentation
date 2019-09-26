@@ -38,6 +38,12 @@ https://www.reddit.com/r/france/comments/c1zmfq/effort_poteau_faq_taxes_carbones
 https://www.reddit.com/r/dataisbeautiful/comments/aiggdt/oc_global_carbon_taxes_required_to_meet_various/
 https://news.ycombinator.com/item?id=20551615 The human body is already close to thermal limits in many regions (theconversation.com)
 
+* Divers:
+https://johncarlosbaez.wordpress.com/2019/09/22/vaclav-smil-on-growth/
+
+Consommation des Français:
+https://twitter.com/octal_/status/1176580398140276737
+
 Mix electrique
 ==============
 

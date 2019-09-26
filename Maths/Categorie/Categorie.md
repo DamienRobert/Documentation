@@ -4528,6 +4528,15 @@ Of course, there is an analogous result for infinitary superextensive sites. Wit
 
 This result is especially interesting because sheaves and stacks for the extensive topology are easier to come by than those for some other topologies. For instance, if C is an extensive coherent category, then any internal category in C represents a functor C^op→Cat which is a stack for the extensive topology, but not usually for the coherent topology. However, the coherent topology is superextensive and its covers are precisely the regular epimorphisms, i.e. T_cov is the regular topology. Thus, the ** stackification of an internal category in C relative to the regular topology is still a stack for the extensive topology, and hence also for the coherent topology **.
 
+Discussions:
+- Appendix of https://arxiv.org/abs/1206.2764
+  A characterization of categories of coherent sheaves of certain algebraic stacks, Daniel Schäppi
+- https://nforum.ncatlab.org/discussion/3907/stacks-on-superextensive-sites/
+- https://golem.ph.utexas.edu/category/2012/05/superextensive_sites.html
+
+Applications:
+- https://mathoverflow.net/questions/341511/reducing-the-stack-condition-descent-condition-over-an-fpqc-site-to-the-case-o
+
 ### Properties of sites
 * https://ncatlab.org/nlab/show/concrete+sheaf
   https://ncatlab.org/nlab/show/concrete+site

@@ -277,6 +277,12 @@ $ sudo cat /var/lib/zerotier-one/authtoken.secret >>.zeroTierOneAuthToken
 $ sudo chown user:group .zeroTierOneAuthToken
 $ chmod 0600 .zeroTierOneAuthToken
 
+* https://www.zerotier.com/zerotier-2-0-status/
+HN discussion https://news.ycombinator.com/item?id=21066821
+
+AES-GMAC-CTR (SIV) (zerotier.com)
+https://news.ycombinator.com/item?id=20878207
+
 Sshuttle
 --------
 https://github.com/sshuttle/sshuttle [was https://github.com/apenwarr/sshuttle]
