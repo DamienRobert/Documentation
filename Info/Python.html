@@ -1,6 +1,6 @@
-<h1 id="vim-foldmethodmarker-ftmarkdownlight">vim: foldmethod=marker ft=markdownlight</h1>
+<p>vim: foldmethod=expr ft=markdownlight</p>
 
-<h1 id="libraries-1">Libraries #{{{1</h1>
+<h1 id="libraries">Libraries</h1>
 
 <p>python completion: https://docs.python.org/2/tutorial/interactive.html
 Standard gui: idle</p>
@@ -18,10 +18,9 @@ flexible than the original ‘python setup.py install’
 To build package use ‘distutils’ (in the stdlib) or ‘setuptools’ if more
 features are needed.</p>
 
-<p>Virtualenv: https://wiki.archlinux.org/index.php/Python_VirtualEnv
-#}}}1</p>
+<p>Virtualenv: https://wiki.archlinux.org/index.php/Python_VirtualEnv</p>
 
-<h1 id="scope-1">Scope #{{{1</h1>
+<h1 id="scope">Scope</h1>
 
 <p>http://stackoverflow.com/questions/291978/short-description-of-python-scoping-rules
 LEGB Rule.
@@ -43,11 +42,12 @@ x=1; f(3) #=&gt; 4</p>
   return g
 g=f(2) #cloture x-&gt;2+x</p>
 
-<p>Scopes modifier: global, nonlocal (for nested function scopes)
-#}}}1</p>
+<p>Scopes modifier: global, nonlocal (for nested function scopes)</p>
 
-<h1 id="packages-1">Packages #{{{1</h1>
-<p>https://docs.python.org/3/reference/import.html</p>
+<h1 id="packages">Packages</h1>
+<ul>
+  <li>https://docs.python.org/3/reference/import.html</li>
+</ul>
 
 <p>Unlike in ruby, in python
 ‘import foo’
@@ -56,17 +56,22 @@ To flatten the namespace, do
 ‘from foo import ploum, plam’ or ‘from foo import *’
 Use ‘import foo.bar’ to refer to the package foo/bar.py</p>
 
-<h1 id="regular-package">Regular package:</h1>
-<p>« Python defines two types of packages, regular packages and namespace packages. Regular packages are traditional packages as they existed in Python 3.2 and earlier. A regular package is typically implemented as a directory containing an <strong>init</strong>.py file. When a regular package is imported, this <strong>init</strong>.py file is implicitly executed, and the objects it defines are bound to names in the package’s namespace. The <strong>init</strong>.py file can contain the same Python code that any other module can contain, and Python will add some additional attributes to the module when it is imported. »</p>
-
-<h1 id="python-33-implicit-namespace-package">python 3.3 implicit namespace package:</h1>
-<pre><code>    If &lt;directory&gt;/foo/__init__.py is found, a regular package is imported and returned.
-    If not, but &lt;directory&gt;/foo.{py,pyc,so,pyd} is found, a module is imported and returned. The exact list of extension varies by platform and whether the -O flag is specified. The list here is representative.
-    If not, but &lt;directory&gt;/foo is found and is a directory, it is recorded and the scan continues with the next directory in the parent path.
-    Otherwise the scan continues with the next directory in the parent path. If the scan completes without returning a module or package, and at least one directory was recorded, then a namespace package is created. The new namespace package:
-    Has a __path__ attribute set to an iterable of the path strings that were found and recorded during the scan.
-    Does not have a __file__ attribute.
-</code></pre>
+<ul>
+  <li>
+    <p>Regular package:
+« Python defines two types of packages, regular packages and namespace packages. Regular packages are traditional packages as they existed in Python 3.2 and earlier. A regular package is typically implemented as a directory containing an <strong>init</strong>.py file. When a regular package is imported, this <strong>init</strong>.py file is implicitly executed, and the objects it defines are bound to names in the package’s namespace. The <strong>init</strong>.py file can contain the same Python code that any other module can contain, and Python will add some additional attributes to the module when it is imported. »</p>
+  </li>
+  <li>
+    <p>python 3.3 implicit namespace package:
+      If <directory>/foo/__init__.py is found, a regular package is imported and returned.
+      If not, but <directory>/foo.{py,pyc,so,pyd} is found, a module is imported and returned. The exact list of extension varies by platform and whether the -O flag is specified. The list here is representative.
+      If not, but <directory>/foo is found and is a directory, it is recorded and the scan continues with the next directory in the parent path.
+      Otherwise the scan continues with the next directory in the parent path.
+If the scan completes without returning a module or package, and at least one directory was recorded, then a namespace package is created. The new namespace package:
+      Has a __path__ attribute set to an iterable of the path strings that were found and recorded during the scan.
+      Does not have a __file__ attribute.</directory></directory></directory></p>
+  </li>
+</ul>
 
 <p>Then import foo.bar
 will create the namespace foo (with contains as <strong>path</strong> all the directory
@@ -83,32 +88,34 @@ Feanor /tmp/python $ tree                                                   ⚡2
 │       └── bar.py
 └── main.py</p>
 
-<pre><code class="language-python">#foo1/baz/bar.py:
-bar1="foo1"
-#foo2/baz/bar.py:
-bar2="foo2"
-# main.py:
-import sys
-sys.path += ['foo1', 'foo2']
-import baz.bar
-print(baz.__path__) #=&gt;_NamespacePath(['foo1/baz', 'foo2/baz'])
-print(baz.bar.bar1) #=&gt; foo1
-print(baz.bar.bar2)
-#=&gt;
-Traceback (most recent call last):
-  File "main.py", line 6, in &lt;module&gt;
-    print(baz.bar.bar2)
-AttributeError: 'module' object has no attribute 'bar2'
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c1">#foo1/baz/bar.py:
+</span><span class="n">bar1</span><span class="o">=</span><span class="s">"foo1"</span>
+ <span class="c1">#foo2/baz/bar.py:
+</span><span class="n">bar2</span><span class="o">=</span><span class="s">"foo2"</span>
+ <span class="c1"># main.py:
+</span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span> <span class="o">+=</span> <span class="p">[</span><span class="s">'foo1'</span><span class="p">,</span> <span class="s">'foo2'</span><span class="p">]</span>
+<span class="kn">import</span> <span class="nn">baz.bar</span>
+<span class="k">print</span><span class="p">(</span><span class="n">baz</span><span class="o">.</span><span class="n">__path__</span><span class="p">)</span> <span class="c1">#=&gt;_NamespacePath(['foo1/baz', 'foo2/baz'])
+</span><span class="k">print</span><span class="p">(</span><span class="n">baz</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">bar1</span><span class="p">)</span> <span class="c1">#=&gt; foo1
+</span><span class="k">print</span><span class="p">(</span><span class="n">baz</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">bar2</span><span class="p">)</span>
+ <span class="c1">#=&gt;
+</span><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"main.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">6</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">baz</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">bar2</span><span class="p">)</span>
+<span class="nb">AttributeError</span><span class="p">:</span> <span class="s">'module'</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s">'bar2'</span>
+</code></pre></div></div>
 <p>In this case still only the first ‘bar.py’ found is loaded.
 Still if we rename foo2/baz/bar.py into foo2/baz/bar2.py, then
 ‘import baz.bar2’ would work because due to packages namespaces, ‘baz’
 refer to both ‘foo1/baz’ and ‘foo2/baz’ (cf the NamespacePath above)</p>
 
-<h1 id="note-on-names">Note on names:</h1>
-<p>By default names with a leading underscore are not imported by import *.
+<ul>
+  <li>Note on names:
+By default names with a leading underscore are not imported by import *.
 This can be customized by setting the <strong>all</strong> variable, to set up the
-variables imported by import *</p>
+variables imported by import *</li>
+</ul>
 
 <p>http://stackoverflow.com/questions/1301346/the-meaning-of-a-single-and-a-double-underscore-before-an-object-name-in-python
 - _single_leading_underscore: weak “internal use” indicator. E.g. from M
@@ -137,10 +144,9 @@ AttributeError: myClass instance has no attribute '__superprivate'
 , world!
 &gt;&gt;&gt; print mc.__dict__
 {'_MyClass__superprivate': 'Hello', '_semiprivate': ', world!'}
-~~~
-#}}}1</module></stdin></p>
+~~~</module></stdin></p>
 
-<h1 id="syntax-1">Syntax #{{{1</h1>
+<h1 id="syntax">Syntax</h1>
 
 <h2 id="python2-vs-python3">python2 vs python3</h2>
 
@@ -258,15 +264,14 @@ foo(2,3,4,5,c=0, e=1, f=2) #=&gt; 2 3 (4, 5) 0 {‘e’: 1, ‘f’: 2}</p>
 
 <p>f=lambda x: x+1
 lambda x,y: x+y
-(a lambda can only contain an expression, not several statements)
-#}}}1</p>
+(a lambda can only contain an expression, not several statements)</p>
 
-<h1 id="generators-1">Generators {{{1</h1>
-<p>## Generators as iterators {{{2
+<h1 id="generators">Generators</h1>
+<p>## Generators as iterators
 https://www.python.org/dev/peps/pep-0255/
 https://wiki.python.org/moin/Generators
 ~~~ python
-# a generator that yields items instead of returning a list
+ # a generator that yields items instead of returning a list
 def firstn(n):
     num = 0
     while num &lt; n:
@@ -275,8 +280,8 @@ def firstn(n):
 
 <p>sum_of_first_n = sum(firstn(1000000))</p>
 
-<h1 id="using-the-generator-pattern-an-iterable-via-a-class">Using the generator pattern (an iterable) via a class</h1>
-<p>class firstn(object):
+<p># Using the generator pattern (an iterable) via a class
+class firstn(object):
     def <strong>init</strong>(self, n):
         self.n = n
         self.num = 0
@@ -292,15 +297,15 @@ def firstn(n):
         else:
             raise StopIteration()</p>
 
-<h1 id="square-is-a-generator">square is a generator</h1>
-<p>square = (i*i for i in range(1000000))
-#add the squares
+<p>#square is a generator
+square = (i*i for i in range(1000000))
+ #add the squares
 total = 0
 for i in square:
    total += i
 ~~~</p>
 
-<h2 id="generators-as-coroutine-2">Generators as coroutine: {{{2</h2>
+<h2 id="generators-as-coroutine">Generators as coroutine:</h2>
 <p>https://www.python.org/dev/peps/pep-0342/
 https://docs.python.org/2/reference/expressions.html</p>
 
@@ -353,7 +358,7 @@ Don’t forget to clean up when ‘close()’ is called.</p>
   </blockquote>
 </blockquote>
 
-<h2 id="yield-from-2">yield from {{{2</h2>
+<h2 id="yield-from">yield from</h2>
 <p>https://www.python.org/dev/peps/pep-0380/
 New syntax in python3.3 to delegate to a subgenerator: yield from https://docs.python.org/dev/whatsnew/3.3.html#pep-380-syntax-for-delegating-to-a-subgenerator</p>
 
@@ -369,17 +374,17 @@ ie handles generator as coroutines:
 - http://stackoverflow.com/questions/9708902/in-practice-what-are-the-main-uses-for-the-new-yield-from-syntax-in-python-3
 - http://simeonvisser.com/posts/python-3-using-yield-from-in-generators-part-2.html</p>
 
-<pre><code class="language-python">def generator2():
-    for i in range(10):
-        yield i
-def generator3():
-    for j in range(10, 20):
-        yield j
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">generator2</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">i</span>
+<span class="k">def</span> <span class="nf">generator3</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">j</span>
 
-def generator():
-    yield from generator2()
-    yield from generator3()
-</code></pre>
+<span class="k">def</span> <span class="nf">generator</span><span class="p">():</span>
+    <span class="k">yield</span> <span class="k">from</span> <span class="n">generator2</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="k">from</span> <span class="n">generator3</span><span class="p">()</span>
+</code></pre></div></div>
 
 <p>Cf https://dl.dropboxusercontent.com/u/44884329/yield-from.pdf
 How Python 3.3 “yield from” construct works</p>
@@ -388,7 +393,7 @@ How Python 3.3 “yield from” construct works</p>
  The value of the yield from expression is the first argument to the StopIteration exception raised by the iterator when it terminates.
 return expr in a generator causes StopIteration(expr) to be raised upon exit from the generator.</p>
 
-<h2 id="coroutines-with-asyncawait-2">Coroutines with async/await {{{2</h2>
+<h2 id="coroutines-with-asyncawait">Coroutines with async/await</h2>
 <p>https://www.python.org/dev/peps/pep-0492/
 https://snarky.ca/how-the-heck-does-async-await-work-in-python-3-5/
 http://benno.id.au/blog/2015/05/25/await1</p>
@@ -435,31 +440,31 @@ def display_date(loop):
 
 <p>asynchronous iteration protocol (async for): define a class that implements <strong>aiter</strong> and <strong>anext</strong> to be able to use it in an async for statement.  <strong>anext</strong> must returns an awaitable</p>
 
-<pre><code class="language-python">class AsyncIterable:
-    def __aiter__(self):
-        return self
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AsyncIterable</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__aiter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
 
-    async def __anext__(self):
-        data = await self.fetch_data()
-        if data:
-            return data
-        else:
-            raise StopAsyncIteration
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">__anext__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">StopAsyncIteration</span>
 
-    async def fetch_data(self):
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">fetch_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-async for row in Cursor():
-    print(row)
-#would be equivalent to the following code:
-i = Cursor().__aiter__()
-while True:
-    try:
-        row = await i.__anext__()
-    except StopAsyncIteration:
-        break
-    else:
-        print(row)
-</code></pre>
+<span class="k">async</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">Cursor</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<span class="c1">#would be equivalent to the following code:
+</span><span class="n">i</span> <span class="o">=</span> <span class="n">Cursor</span><span class="p">()</span><span class="o">.</span><span class="n">__aiter__</span><span class="p">()</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="k">await</span> <span class="n">i</span><span class="o">.</span><span class="n">__anext__</span><span class="p">()</span>
+    <span class="k">except</span> <span class="nb">StopAsyncIteration</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>Differences between ‘native coroutines’ and ‘generator coroutines’:
  Great effort has been made to make sure that coroutines and generators are treated as distinct concepts:
@@ -484,7 +489,7 @@ values (a ‘native coroutine’ can only return once). In practice
 “coroutines yield asyncio.Future objects up to the event loop, and the event loop sends those same future objects back into the coroutine once the associated operations have been completed (they are typically scheduled via call_soon() and the other event loop methods)”
 -&gt; reference the very interesting thread on pep482: https://mail.python.org/pipermail/python-dev/2015-April/thread.html#139728</p>
 
-<h2 id="asynchronous-generators-2">Asynchronous generators {{{2</h2>
+<h2 id="asynchronous-generators">Asynchronous generators</h2>
 <p>A generator allows to easily implement an iterable (<strong>iter</strong>,<strong>next</strong>),
 while an asynchronous generator allow to easily implement an asynchronous
 iterable (<strong>aiter</strong>, <strong>anext</strong>)</p>
@@ -518,75 +523,75 @@ async def __anext__(self):
         yield i
         await asyncio.sleep(delay)</p>
 
-<h2 id="summary-2">Summary {{{2</h2>
-<pre><code class="language-python">def func():            # a function
-    return
+<h2 id="summary">Summary</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">func</span><span class="p">():</span>            <span class="c1"># a function
+</span>    <span class="k">return</span>
 
-def genfunc():         # a generator function
-    yield
-#=&gt; this produce an iterable, ie with a __iter__ and __next__
-
-async def coro():      # a coroutine function
-    await smth()
-#=&gt; it is awaitable, ie with a __await__
+<span class="k">def</span> <span class="nf">genfunc</span><span class="p">():</span>         <span class="c1"># a generator function
+</span>    <span class="k">yield</span>
+<span class="c1">#=&gt; this produce an iterable, ie with a __iter__ and __next__
+</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">coro</span><span class="p">():</span>      <span class="c1"># a coroutine function
+</span>    <span class="k">await</span> <span class="n">smth</span><span class="p">()</span>
+<span class="c1">#=&gt; it is awaitable, ie with a __await__
 #(both coro and genfunc have a send, throw, close)
+</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">asyncgen</span><span class="p">():</span>  <span class="c1"># an asynchronous generator function
+</span>    <span class="k">await</span> <span class="n">smth</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="mi">42</span>
+<span class="c1">#=&gt; this produce an async iterable, ie with a __aiter__ and __anext__,
+</span>    <span class="ow">and</span> <span class="n">asend</span><span class="p">,</span> <span class="n">athrow</span><span class="p">,</span> <span class="n">aclose</span>
 
-async def asyncgen():  # an asynchronous generator function
-    await smth()
-    yield 42
-#=&gt; this produce an async iterable, ie with a __aiter__ and __anext__,
-    and asend, athrow, aclose
+<span class="c1">## Ex: generator
+</span><span class="k">def</span> <span class="nf">gen</span><span class="p">():</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">yield</span> <span class="n">i</span>
 
-## Ex: generator
-def gen():
-  for i in range(5):
-    yield i
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">():</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 
-for i in gen():
-  print(i)
+<span class="c1">### Manually:
+</span><span class="n">g</span><span class="o">=</span><span class="n">gen</span><span class="p">()</span>
+<span class="n">g</span><span class="o">.</span><span class="n">__next__</span><span class="p">()</span>
+<span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
 
-### Manually:
-g=gen()
-g.__next__()
-next(g)
+<span class="c1">## Coroutine generator
+</span><span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="o">@</span><span class="n">coroutine</span>
+<span class="k">def</span> <span class="nf">coro</span><span class="p">():</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">yield</span> <span class="n">i</span>
+<span class="c1">### Note: coro is still a generator, c=coro() has __next__ but not __anext__
+</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">coro</span><span class="p">():</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 
-## Coroutine generator
-from types import *
-@coroutine
-def coro():
-  for i in range(5):
-    yield i
-### Note: coro is still a generator, c=coro() has __next__ but not __anext__
+<span class="k">async</span> <span class="k">def</span> <span class="nf">bar</span><span class="p">():</span>
+  <span class="k">await</span> <span class="n">coro</span><span class="p">()</span>
 
-for i in coro():
-  print(i)
+<span class="n">b</span><span class="o">=</span><span class="n">bar</span><span class="p">()</span>
+<span class="n">b</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">b</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">b</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
 
-async def bar():
-  await coro()
+<span class="k">async</span> <span class="k">def</span> <span class="nf">agen</span><span class="p">():</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">yield</span> <span class="n">i</span>
 
-b=bar()
-b.send(None)
-b.send(None)
-b.send(None)
+<span class="k">async</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">agen</span><span class="p">():</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 
-async def agen():
-  for i in range(5):
-    yield i
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">coros</span><span class="p">):</span>
+    <span class="n">coros</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">coros</span><span class="p">)</span>
 
-async for i in agen():
-  print(i)
-
-def run(coros):
-    coros = list(coros)
-
-    while coros:
-        # Duplicate list for iteration so we can remove from original list.
-        for coro in list(coros):
-            try:
-                coro.send(None)
-            except StopIteration:
-                coros.remove(coro)
-</code></pre>
+    <span class="k">while</span> <span class="n">coros</span><span class="p">:</span>
+        <span class="c1"># Duplicate list for iteration so we can remove from original list.
+</span>        <span class="k">for</span> <span class="n">coro</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">coros</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">coro</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+            <span class="k">except</span> <span class="nb">StopIteration</span><span class="p">:</span>
+                <span class="n">coros</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">coro</span><span class="p">)</span>
+</code></pre></div></div>
 
 <pre><code>                     ======================== 0) Genrators as iterators for i in foo: =&gt; iter=foo.__iter__() puis next(iter)... A genrator function returns a generator object: o=gen() where o.__iter__() is simply o.
 </code></pre>
@@ -645,9 +650,7 @@ wheras CO_COROUTINE is used to mark native coroutines (defined with new syntax).
 =&gt; yield from checks for <strong>iter</strong> while await checks for <strong>await</strong> OR a
 coroutine based generator</p>
 
-<h1 id="section">}}}1</h1>
-
-<h1 id="classes-1">Classes #{{{1</h1>
+<h1 id="classes">Classes</h1>
 
 <p>x=0
 class Foo:
@@ -734,12 +737,11 @@ class Foo:
 
 <p>foo=Foo(2)
 foo(3) #=&gt; 5
-~~~
-#}}}1</p>
+~~~</p>
 
-<h1 id="decorators-and-descriptors-1">Decorators and descriptors {{{1</h1>
+<h1 id="decorators-and-descriptors">Decorators and descriptors</h1>
 
-<h2 id="decorator-2">Decorator {{{2</h2>
+<h2 id="decorator">Decorator</h2>
 <p>http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/</p>
 
 <p>@foo
@@ -761,40 +763,40 @@ Cf http://stackoverflow.com/questions/735975/static-methods-in-python</p>
 @classmethod
 def f(cls,args) #here cls refer to the class</p>
 
-<pre><code class="language-python">#via a function
-def logger(func):
-    def inner(*args, **kwargs): #1
-        print "Arguments were: %s, %s" % (args, kwargs)
-        return func(*args, **kwargs) #2
-    return inner
-#Notice our inner function takes any arbitrary number and type of parameters at point #1 and passes them along as arguments to the wrapped function at point #2. This allows us to wrap or decorate any function, no matter it's signature.
-@logger
-def foo1(x, y=1):
-    return x * y
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c1">#via a function
+</span><span class="k">def</span> <span class="nf">logger</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="c1">#1
+</span>        <span class="k">print</span> <span class="s">"Arguments were: </span><span class="si">%</span><span class="s">s, </span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="c1">#2
+</span>    <span class="k">return</span> <span class="n">inner</span>
+ <span class="c1">#Notice our inner function takes any arbitrary number and type of parameters at point #1 and passes them along as arguments to the wrapped function at point #2. This allows us to wrap or decorate any function, no matter it's signature.
+</span><span class="o">@</span><span class="n">logger</span>
+<span class="k">def</span> <span class="nf">foo1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
 
-#via an object
-#see: http://www.artima.com/weblogs/viewpost.jsp?thread=240808
-class myDecorator:
-  def __init__(self, f):
-    self.f=f
-  def __call__(self,*args,**kwargs):
-    print("Self is: %s" % self)
-    print("Arguments were: %s, %s" % (args, kwargs))
-    return self.f(*args, **kwargs)
+ <span class="c1">#via an object
+</span> <span class="c1">#see: http://www.artima.com/weblogs/viewpost.jsp?thread=240808
+</span><span class="k">class</span> <span class="nc">myDecorator</span><span class="p">:</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">=</span><span class="n">f</span>
+  <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Self is: </span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="bp">self</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Arguments were: </span><span class="si">%</span><span class="s">s, </span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-@myDecorator
-def foo(x, y=1):
-  return x+y
-print(foo(3)) #self if myDecorator; Arguments were: (3,), {} =&gt; 4
-
-class Foo:
-  @myDecorator
-  def foo(self):
-    print("In foo")
-    return self
-#this does not work because when Foo().foo is wrapped myDecorator it is just a function, not yet a method. So in myDecorator, 'self.f' refer to the foo with self unbound. Now when called, since foo is now a myDecorator and not an instance method, it won't get passed the current instance as parameter. This would work with a function wrapper for decorator because it would still be interpreted as a class method
-print(Foo().foo())
-</code></pre>
+<span class="o">@</span><span class="n">myDecorator</span>
+<span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span>
+<span class="k">print</span><span class="p">(</span><span class="n">foo</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> <span class="c1">#self if myDecorator; Arguments were: (3,), {} =&gt; 4
+</span>
+<span class="k">class</span> <span class="nc">Foo</span><span class="p">:</span>
+  <span class="o">@</span><span class="n">myDecorator</span>
+  <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"In foo"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span>
+ <span class="c1">#this does not work because when Foo().foo is wrapped myDecorator it is just a function, not yet a method. So in myDecorator, 'self.f' refer to the foo with self unbound. Now when called, since foo is now a myDecorator and not an instance method, it won't get passed the current instance as parameter. This would work with a function wrapper for decorator because it would still be interpreted as a class method
+</span><span class="k">print</span><span class="p">(</span><span class="n">Foo</span><span class="p">()</span><span class="o">.</span><span class="n">foo</span><span class="p">())</span>
+</code></pre></div></div>
 
 <p>See: http://stackoverflow.com/questions/306130/python-decorator-makes-function-forget-that-it-belongs-to-a-class
 and http://www.ianbicking.org/blog/2008/10/decorators-and-descriptors.html
@@ -807,7 +809,7 @@ decorator with a descriptor
         new_func = self.func.<strong>get</strong>(obj, type) #curry the function with the instance ‘obj’ [<em>]
         return self.<strong>class</strong>(new_func) #we wrap the curried function rather than the original function
         #this works because we use a descriptor to wrap the function at runtime rather than when the method is defined
-#Full example from the stackoverflow answer
+ #Full example from the stackoverflow answer
 class logger(object):
     def <strong>init</strong>(self, func):
         self.func = func
@@ -821,7 +823,7 @@ class C(object):
     def f(self, x, y):
         return x+y
 C().f(1, 2)
-# =&gt; Entering &lt;bound method C.f of &lt;<strong>main</strong>.C object at 0x…»
+ # =&gt; Entering &lt;bound method C.f of &lt;<strong>main</strong>.C object at 0x…»
 ~~~
 [</em>] Indeed according to https://docs.python.org/2/howto/descriptor.html,
 the way a function is transformed to a method is via <strong>get</strong>:
@@ -832,7 +834,7 @@ class Function(object):
         return types.MethodType(self, obj, objtype)
 ~~~</p>
 
-<h2 id="descriptor-2">Descriptor #{{{2</h2>
+<h2 id="descriptor">Descriptor</h2>
 
 <p>class Descriptor
   def <strong>get</strong>: pass
@@ -932,10 +934,10 @@ The Descriptor Howto includes a pure python sample implementation of the propert
         return type(self)(self.fget, fset, self.fdel, self.__doc__)
 
     def deleter(self, fdel):
-        return type(self)(self.fget, self.fset, fdel, self.__doc__) ~~~ #}}}1
+        return type(self)(self.fget, self.fset, fdel, self.__doc__) ~~~
 </code></pre>
 
-<h1 id="metaclasses-1">Metaclasses {{{1</h1>
+<h1 id="metaclasses">Metaclasses</h1>
 
 <p>class ploum(metaclass=foo)
 end
@@ -967,12 +969,11 @@ override the object attributes if they have a setter but not if they only
 have a getter. See the diagram in the link below]</p>
 
 <p>https://docs.python.org/3/reference/datamodel.html#invoking-descriptors
-http://blog.ionelmc.ro/2015/02/09/understanding-python-metaclasses/
-# }}}1</p>
+http://blog.ionelmc.ro/2015/02/09/understanding-python-metaclasses/</p>
 
-<h1 id="examples-">Examples {{{</h1>
+<h1 id="examples">Examples</h1>
 <p>## read json file encoding information on servers (was used in offlineimap.py)
-#recursive merge from http://stackoverflow.com/questions/7204805/dictionaries-of-dictionaries-merge
+ #recursive merge from http://stackoverflow.com/questions/7204805/dictionaries-of-dictionaries-merge
 def mergedicts(dict1, dict2):
     for k in set(dict1.keys()).union(dict2.keys()):
         if k in dict1 and k in dict2:
@@ -993,10 +994,9 @@ def mergedicts(dict1, dict2):
   serverdict=json.load(file)
   auth = subprocess.check_output([“gpg”, “–no-tty”, “-d”, os.environ[‘HOME’]+”/mine/config/.authinfo.gpg”]).decode(“utf-8”)
   serverdict=dict(mergedicts(serverdict,json.loads(auth)))
-  #print(serverdict)
-# }}}1</p>
+  #print(serverdict)</p>
 
-<h1 id="asyncio-1">Asyncio {{{1</h1>
+<h1 id="asyncio">Asyncio</h1>
 <p>Originally called tulip
 Pep: https://www.python.org/dev/peps/pep-3156/</p>
 
@@ -1030,167 +1030,239 @@ for the link with async/await
 
 <p>Implementation:</p>
 
-<pre><code class="language-python"># cpython/Lib/asyncio:
-# - coroutine.py
-# flag a generator as a 'coroutine'
-# also support awaitables and functions returning a future, not just generators
-# so that when wrapping a future result the return value is the result of
-# the future, not the future itself.
-# Note types.coroutine only flags a generator as a coroutine, cf Lib/types.py
-def coroutine(func):
-  if inspect.iscoroutinefunction(func):
-      # In Python 3.5 that's all we need to do for coroutines
-      # defined with "async def".
-      return func
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c1"># cpython/Lib/asyncio:
+</span> <span class="c1"># - coroutine.py
+</span> <span class="c1"># flag a generator as a 'coroutine'
+</span> <span class="c1"># also support awaitables and functions returning a future, not just generators
+</span> <span class="c1"># so that when wrapping a future result the return value is the result of
+</span> <span class="c1"># the future, not the future itself.
+</span> <span class="c1"># Note types.coroutine only flags a generator as a coroutine, cf Lib/types.py
+</span><span class="k">def</span> <span class="nf">coroutine</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">iscoroutinefunction</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+      <span class="c1"># In Python 3.5 that's all we need to do for coroutines
+</span>      <span class="c1"># defined with "async def".
+</span>      <span class="k">return</span> <span class="n">func</span>
 
-  if inspect.isgeneratorfunction(func):
-      coro = func
-  else:
-    @functools.wraps(func)
-    def coro(*args, **kw):
-        res = func(*args, **kw)
-        if (base_futures.isfuture(res) or inspect.isgenerator(res) or
-              isinstance(res, CoroWrapper)):
-            res = yield from res
-        else:
-            # If 'res' is an awaitable, run it.
-            try:
-                await_meth = res.__await__
-            except AttributeError:
-                pass
-            else:
-                if isinstance(res, collections.abc.Awaitable):
-                    res = yield from await_meth()
-            return res
-        return res
-    wrapper = _types_coroutine(coro)
-    wrapper._is_coroutine = _is_coroutine  # For iscoroutinefunction().
-    return wrapper
+  <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgeneratorfunction</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+      <span class="n">coro</span> <span class="o">=</span> <span class="n">func</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="o">@</span><span class="n">functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">coro</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">base_futures</span><span class="o">.</span><span class="n">isfuture</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="ow">or</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgenerator</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="ow">or</span>
+              <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">CoroWrapper</span><span class="p">)):</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="k">yield</span> <span class="k">from</span> <span class="n">res</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If 'res' is an awaitable, run it.
+</span>            <span class="k">try</span><span class="p">:</span>
+                <span class="n">await_meth</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">__await__</span>
+            <span class="k">except</span> <span class="nb">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Awaitable</span><span class="p">):</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="k">yield</span> <span class="k">from</span> <span class="n">await_meth</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">res</span>
+        <span class="k">return</span> <span class="n">res</span>
+    <span class="n">wrapper</span> <span class="o">=</span> <span class="n">_types_coroutine</span><span class="p">(</span><span class="n">coro</span><span class="p">)</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="n">_is_coroutine</span> <span class="o">=</span> <span class="n">_is_coroutine</span>  <span class="c1"># For iscoroutinefunction().
+</span>    <span class="k">return</span> <span class="n">wrapper</span>
 
-# - future.py
-# yield from future =&gt; this yield the future to the event loop which adds a
-# callback to resume when the future is done (cf __iter__ below)
-# ie this is the way to wait for a future
+<span class="o">-</span> <span class="n">future</span><span class="o">.</span><span class="n">py</span>
+ <span class="c1"># yield from future =&gt; this yield the future to the event loop which adds a
+</span> <span class="c1"># callback to resume when the future is done (cf __iter__ below)
+</span> <span class="c1"># ie this is the way to wait for a future
+</span>
+<span class="k">class</span> <span class="nc">Future</span><span class="p">:</span>
+    <span class="c1"># This field is used for a dual purpose:
+</span>    <span class="c1"># - Its presence is a marker to declare that a class implements
+</span>    <span class="c1">#   the Future protocol (i.e. is intended to be duck-type compatible).
+</span>    <span class="c1">#   The value must also be not-None, to enable a subclass to declare
+</span>    <span class="c1">#   that it is not compatible by setting this to None.
+</span>    <span class="c1"># - It is set by __iter__() below so that Task._step() can tell
+</span>    <span class="c1">#   the difference between `yield from Future()` (correct) vs.
+</span>    <span class="c1">#   `yield Future()` (incorrect).
+</span>    <span class="n">_asyncio_future_blocking</span> <span class="o">=</span> <span class="bp">False</span>
 
-class Future:
-    # This field is used for a dual purpose:
-    # - Its presence is a marker to declare that a class implements
-    #   the Future protocol (i.e. is intended to be duck-type compatible).
-    #   The value must also be not-None, to enable a subclass to declare
-    #   that it is not compatible by setting this to None.
-    # - It is set by __iter__() below so that Task._step() can tell
-    #   the difference between `yield from Future()` (correct) vs.
-    #   `yield Future()` (incorrect).
-    _asyncio_future_blocking = False
+    <span class="k">def</span> <span class="nf">__await__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_asyncio_future_blocking</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">yield</span> <span class="bp">self</span>  <span class="c1"># This tells Task to wait for completion.
+</span>        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">(),</span> <span class="s">"await wasn't used with future"</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># May raise too.
+</span>    <span class="n">__iter__</span> <span class="o">=</span> <span class="n">__await__</span> <span class="c1"># make compatible with 'yield from'.
+</span>
+<span class="o">-</span> <span class="n">tasks</span><span class="o">.</span><span class="n">py</span>
+ <span class="c1"># Essentially the event loop serves as a trampoline for the futures yielded
+</span> <span class="c1"># by the coroutines. A coroutine is wrapped into a future via the Task
+</span> <span class="c1"># class.
+</span>
+<span class="k">class</span> <span class="nc">Task</span><span class="p">(</span><span class="n">futures</span><span class="o">.</span><span class="n">Future</span><span class="p">):</span>
+    <span class="s">"""A coroutine wrapped in a Future."""</span>
 
-    def __await__(self):
-        if not self.done():
-            self._asyncio_future_blocking = True
-            yield self  # This tells Task to wait for completion.
-        assert self.done(), "await wasn't used with future"
-        return self.result()  # May raise too.
-    __iter__ = __await__ # make compatible with 'yield from'.
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coro</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">coroutines</span><span class="o">.</span><span class="n">iscoroutine</span><span class="p">(</span><span class="n">coro</span><span class="p">),</span> <span class="nb">repr</span><span class="p">(</span><span class="n">coro</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coro</span> <span class="o">=</span> <span class="n">coro</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fut_waiter</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="o">.</span><span class="n">call_soon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">_all_tasks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-#- tasks.py
-# Essentially the event loop serves as a trampoline for the futures yielded
-# by the coroutines. A coroutine is wrapped into a future via the Task
-# class.
+    <span class="k">def</span> <span class="nf">_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">coro</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coro</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fut_waiter</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># We use the `send` method directly, because coroutines
+</span>            <span class="c1"># don't have `__iter__` and `__next__` methods.
+</span>            <span class="n">result</span> <span class="o">=</span> <span class="n">coro</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+        <span class="k">except</span> <span class="nb">StopIteration</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">blocking</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s">'_asyncio_future_blocking'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">blocking</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="c1"># Yielded Future must come from Future.__iter__().
+</span>                <span class="k">if</span> <span class="n">blocking</span><span class="p">:</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">_asyncio_future_blocking</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wakeup</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_fut_waiter</span> <span class="o">=</span> <span class="n">result</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="o">.</span><span class="n">call_soon</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span>
+                        <span class="nb">RuntimeError</span><span class="p">(</span>
+                            <span class="s">'yield was used instead of yield from '</span>
+                            <span class="s">'in task {!r} with {!r}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">)))</span>
+            <span class="k">elif</span> <span class="n">result</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="c1"># Bare yield relinquishes control for one event loop iteration.
+</span>                <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="o">.</span><span class="n">call_soon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">)</span>
+            <span class="k">else</span>
+               <span class="c1"># Error a future was not yielded
+</span>
+    <span class="k">def</span> <span class="nf">_wakeup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">future</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+        <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="c1"># This may also be a cancellation.
+</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Don't pass the value of `future.result()` explicitly,
+</span>            <span class="c1"># as `Future.__iter__` and `Future.__await__` don't need it.
+</span>            <span class="c1"># If we call `_step(value, None)` instead of `_step()`,
+</span>            <span class="c1"># Python eval loop would use `.send(value)` method call,
+</span>            <span class="c1"># instead of `__next__()`, which is slower for futures
+</span>            <span class="c1"># that return non-generator iterators from their `__iter__`.
+</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">()</span>
 
-class Task(futures.Future):
-    """A coroutine wrapped in a Future."""
-
-    def __init__(self, coro, *, loop=None):
-        assert coroutines.iscoroutine(coro), repr(coro)
-        super().__init__(loop=loop)
-        self._coro = coro
-        self._fut_waiter = None
-        self._loop.call_soon(self._step)
-        self.__class__._all_tasks.add(self)
-
-    def _step(self, exc=None):
-        coro = self._coro
-        self._fut_waiter = None
-        try:
-            # We use the `send` method directly, because coroutines
-            # don't have `__iter__` and `__next__` methods.
-            result = coro.send(None)
-        except StopIteration as exc:
-            self.set_result(exc.value)
-        else:
-            blocking = getattr(result, '_asyncio_future_blocking', None)
-            if blocking is not None:
-                # Yielded Future must come from Future.__iter__().
-                if blocking:
-                    result._asyncio_future_blocking = False
-                    result.add_done_callback(self._wakeup)
-                    self._fut_waiter = result
-                else:
-                    self._loop.call_soon(
-                        self._step,
-                        RuntimeError(
-                            'yield was used instead of yield from '
-                            'in task {!r} with {!r}'.format(self, result)))
-            elif result is None:
-                # Bare yield relinquishes control for one event loop iteration.
-                self._loop.call_soon(self._step)
-            else
-               # Error a future was not yielded
-
-    def _wakeup(self, future):
-        try:
-            future.result()
-        except Exception as exc:
-            # This may also be a cancellation.
-            self._step(exc)
-        else:
-            # Don't pass the value of `future.result()` explicitly,
-            # as `Future.__iter__` and `Future.__await__` don't need it.
-            # If we call `_step(value, None)` instead of `_step()`,
-            # Python eval loop would use `.send(value)` method call,
-            # instead of `__next__()`, which is slower for futures
-            # that return non-generator iterators from their `__iter__`.
-            self._step()
-
-# cf http://stackoverflow.com/questions/27076577/yield-from-coroutine-vs-yield-from-task
-# ensure_future wraps a coro inside a Task (which is a future), so that we
-# can start a coroutine in the background
-def ensure_future(coro_or_future, *, loop=None):
-    """Wrap a coroutine or an awaitable in a future.
+ <span class="c1"># cf http://stackoverflow.com/questions/27076577/yield-from-coroutine-vs-yield-from-task
+</span> <span class="c1"># ensure_future wraps a coro inside a Task (which is a future), so that we
+</span> <span class="c1"># can start a coroutine in the background
+</span><span class="k">def</span> <span class="nf">ensure_future</span><span class="p">(</span><span class="n">coro_or_future</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="s">"""Wrap a coroutine or an awaitable in a future.
     If the argument is a Future, it is returned directly.
-    """
-    =&gt; return coro_or_future #for a future
-    =&gt; return 'loop.create_task(coro_or_future)' #for a coroutine
-       which essentially does 'tasks.Task(coro_or_future, loop=self)'
-    =&gt; return ensure_future(_wrap_awaitable(coro_or_future), loop=loop) #for an awaitable
-@coroutine
-def _wrap_awaitable(awaitable):
-    """Helper for asyncio.ensure_future().
+    """</span>
+    <span class="o">=&gt;</span> <span class="k">return</span> <span class="n">coro_or_future</span> <span class="c1">#for a future
+</span>    <span class="o">=&gt;</span> <span class="k">return</span> <span class="s">'loop.create_task(coro_or_future)'</span> <span class="c1">#for a coroutine
+</span>       <span class="n">which</span> <span class="n">essentially</span> <span class="n">does</span> <span class="s">'tasks.Task(coro_or_future, loop=self)'</span>
+    <span class="o">=&gt;</span> <span class="k">return</span> <span class="n">ensure_future</span><span class="p">(</span><span class="n">_wrap_awaitable</span><span class="p">(</span><span class="n">coro_or_future</span><span class="p">),</span> <span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">)</span> <span class="c1">#for an awaitable
+</span><span class="o">@</span><span class="n">coroutine</span>
+<span class="k">def</span> <span class="nf">_wrap_awaitable</span><span class="p">(</span><span class="n">awaitable</span><span class="p">):</span>
+    <span class="s">"""Helper for asyncio.ensure_future().
     Wraps awaitable (an object with __await__) into a coroutine
     that will later be wrapped in a Task by ensure_future().
-    """
-    return (yield from awaitable.__await__())
+    """</span>
+    <span class="k">return</span> <span class="p">(</span><span class="k">yield</span> <span class="k">from</span> <span class="n">awaitable</span><span class="o">.</span><span class="n">__await__</span><span class="p">())</span>
 
 
-#Exemple:
-import asyncio
-@asyncio.coroutine
-def test1():
-    print("in test1")
+<span class="o">*</span> <span class="n">Exemple</span><span class="p">:</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">@</span><span class="n">asyncio</span><span class="o">.</span><span class="n">coroutine</span>
+<span class="k">def</span> <span class="nf">test1</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"in test1"</span><span class="p">)</span>
 
-@asyncio.coroutine
-def dummy():
-    yield from asyncio.sleep(1)
-    print("dummy ran")
+<span class="o">@</span><span class="n">asyncio</span><span class="o">.</span><span class="n">coroutine</span>
+<span class="k">def</span> <span class="nf">dummy</span><span class="p">():</span>
+    <span class="k">yield</span> <span class="k">from</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"dummy ran"</span><span class="p">)</span>
 
-@asyncio.coroutine
-def main():
-    asyncio.ensure_future(test1()) #using just 'test1()' would do nothing since it is wrapped into a coroutine object
-    #=&gt; we don't care to wait for the result of test1() in main, we can do other stuff
-    yield from dummy()
+<span class="o">@</span><span class="n">asyncio</span><span class="o">.</span><span class="n">coroutine</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">test1</span><span class="p">())</span> <span class="c1">#using just 'test1()' would do nothing since it is wrapped into a coroutine object
+</span>    <span class="c1">#=&gt; we don't care to wait for the result of test1() in main, we can do other stuff
+</span>    <span class="k">yield</span> <span class="k">from</span> <span class="n">dummy</span><span class="p">()</span>
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
-#=&gt; in test1; dummy ran
-</code></pre>
+<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+ <span class="c1">#=&gt; in test1; dummy ran
+</span></code></pre></div></div>
 
-<p>}}}1</p>
+<h1 id="ruby-vs-python">Ruby vs Python</h1>
+
+<p>Legend: + -&gt; Advantage ruby, - -&gt; Advantage python, = -&gt; equality</p>
+
+<p>= In ruby, everything (apart from keywords and variables) is a method call.
+This is great for unicity, but this mean that to call a lambda one has to
+use l.call(<em>args) or l[</em>args] or l.(<em>args); l(</em>args) will refer to the
+method call self.l(*args).
+By contrast python has methods (more precisely attributes that are functions) and functions</p>
+
+<ul>
+  <li>pry is better than ipython or bpython</li>
+  <li>rubygem is much much better than pip. + it is integrated directly on ruby
+On python the state fo packaging is not clear cut yet, see
+http://stackoverflow.com/questions/6344076/differences-between-distribute-distutils-setuptools-and-distutils2</li>
+  <li>python2 vs python3 is a horrible mess</li>
+  <li>it’s easier to access docstrings in python (where they are automatically
+transformed into attributes) than in ruby where we must use
+Method#source_location (or the gem MethodSource that wraps
+source_location)</li>
+  <li>
+    <p>for scientific programming, there is a lot more available in python
+(sage, scipython…)</p>
+  </li>
+  <li>python has multiple inheritences, and the inheritence can be changed at
+runtime. Ruby support multiple inheritence which is a bit less flexible
+(one can only include module although now on 2.2 refinements can transform
+class into modules) and we can only add to the inheritence at runtime (by
+dynamic include statements), not remove them (there are C extensions to
+manipulate the inheritence chain directly but it is not baked in the
+langage)</li>
+  <li>ruby has singleton_class. And the singleton_class of a class has for
+ancestors the singleton_class of the ancestors of this class. This is
+inspired by smalltalk and is so elegant that it solves all metaclass
+problems, and allows to have metaclasses of metaclasses. The python
+equivalent of metaclass is just subclassing type (in ruby this would be
+subclassing Module) and class decorators; this is a lot less flexible</li>
+  <li>Likewise in ruby function decorator are simply instance methods of
+Module, there is no need for the special @ syntax of python</li>
+  <li>python has list/set/hash/generator comprehensions</li>
+  <li>ruby has blocks. Blocks are awesome!</li>
+  <li>ruby has continuations! And coroutines. Python has generators and
+coroutines, but not continuations. Also coroutines are easier to handle in
+ruby than in python (where we need decorators)</li>
+  <li>ruby has string interpolation directly in the string, there is no need to
+call % or format like in python. Also regexp are there by defaut, no need
+to load a module</li>
+  <li>reduce is there by default, no need to load a module either</li>
+  <li>In python3 most of the builtins handling list like objects return
+generators; while ruby2 has ‘lazy’ it has to be enabled by hand on an
+enumerator, by default it won’t be lazy
+= both ruby and python easily support autovivication
+cf http://en.wikipedia.org/wiki/Autovivification
+http://stackoverflow.com/questions/651794/whats-the-best-way-to-initialize-a-dict-of-dicts-in-python</li>
+  <li>
+    <p>ruby can be used to replace some of perl’s short oneliners; it uses the
+same magic variables convention as perl and the same -F,-p,-e,-n,-a command
+lines arguments</p>
+  </li>
+  <li>python has only lambda that wraps one expression. Also python don’t have
+real closures (python functions are like Proc.new in ruby:
+~~~ python
+x=0
+def foo(y):
+return x+y
+x=1
+foo(2) #=&gt;3
+~~~
+~~~ ruby
+x=0; l=lambda {|y| x+y}; x=1; l.call(3) #=&gt;3
+ #to check, this now gives 4??
+~~~</li>
+</ul>

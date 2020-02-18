@@ -44,12 +44,18 @@ Cf https://rootlesscontaine.rs/ [tools described there are used by buildah and p
 
 <h1 id="x-forwarding">X forwarding</h1>
 
-<p>Xephyr: version moderne de Xnest, supportant les extensions X modernes</p>
-
-<p>Protocols: nx, rdp (windows), vnc, spice
-  ssh -X/ssh -Y</p>
-
-<p>xpra: rootless (ie la fenêtre s’affiche dans le wm hote) + winswitch (gui helper)</p>
+<ul>
+  <li>
+    <p>Xephyr: version moderne de Xnest, supportant les extensions X modernes</p>
+  </li>
+  <li>
+    <p>Protocols: nx, rdp (windows), vnc, spice
+ssh -X/ssh -Y</p>
+  </li>
+  <li>
+    <p>xpra: rootless (ie la fenêtre s’affiche dans le wm hote) + winswitch (gui helper)</p>
+  </li>
+</ul>
 
 <p>VNC/Spice: Remmina, vinagre (gnome); VNC: tigervnc, tightvnc; NX: x2go
   https://en.wikipedia.org/wiki/Comparison_of_remote_desktop_software
@@ -116,16 +122,15 @@ https://github.com/elasticdog/packer-arch: un packer pour archlinux</li>
 <h1 id="binary-packagers">binary packagers</h1>
 
 <ul>
-  <li>snap (ubuntu), flatpak (was xdg-app),  guix/nix, 0install, slackware build tools, gentoo (https://wiki.gentoo.org/wiki/Project:Prefix), Suse open build service, appimage…
-cf https://www.reddit.com/r/linux/comments/4ohvur/nix_vs_snap_vs_flatpak_what_are_the_differences/, https://github.com/probonopd/AppImageKit/wiki/Similar-projects</li>
-  <li>bubblewrap: bubblewrap is a lightweight setuid sandbox application developed from Flatpak (=used by flatpak to run in a sandbox); firejail: another sandbox
+  <li>guix/nix, slackware build tools, gentoo (https://wiki.gentoo.org/wiki/Project:Prefix), Suse open build service,</li>
+  <li>Images: snap (ubuntu), flatpak (was xdg-app), appimage, 0install…
+cf https://www.reddit.com/r/linux/comments/4ohvur/nix_vs_snap_vs_flatpak_what_are_the_differences/, https://github.com/probonopd/AppImageKit/wiki/Similar-projects
+Note: flatpak uses libostree, cf https://ostree.readthedocs.io/en/latest/</li>
+  <li>sandbox: bubblewrap (lightweight setuid sandbox application developed used by flatpak); firejail: another sandbox
 Note: bubblewrap uses namespaces, snap and appimage uses apparmor</li>
-  <li>Containers: lxc, systemd-nspawn, docker</li>
-</ul>
-
-<p>Note: flatpak uses libostree, cf https://ostree.readthedocs.io/en/latest/</p>
-
-<ul>
+  <li>
+    <p>Containers: lxc, systemd-nspawn, docker</p>
+  </li>
   <li>guix https://www.gnu.org/software/guix/
 can build pack and docker images: https://guix-hpc.bordeaux.inria.fr/blog/2017/10/using-guix-without-being-root/
 =&gt; In the absence of user namespaces, we can resort to PRoot</li>

@@ -7,51 +7,51 @@
 <p>(Notes, a “class method” or “module method” is just an instance method of
 the metaclass)</p>
 
-<pre><code class="language-ruby">class Person
-  def self.species
-    "Homo Sapien"
-  end
-end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">species</span>
+    <span class="s2">"Homo Sapien"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-class Person
-  class &lt;&lt; self
-    def species
-      "Homo Sapien"
-    end
-  end
-end
+<span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+    <span class="k">def</span> <span class="nf">species</span>
+      <span class="s2">"Homo Sapien"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-class &lt;&lt; Person #eigenclass
-  def species
-    "Homo Sapien"
-  end
-end
+<span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="no">Person</span> <span class="c1">#eigenclass</span>
+  <span class="k">def</span> <span class="nf">species</span>
+    <span class="s2">"Homo Sapien"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-Person.instance_eval do
-  def species
-    "Homo Sapien"
-  end
-end
+<span class="no">Person</span><span class="p">.</span><span class="nf">instance_eval</span> <span class="k">do</span>
+  <span class="k">def</span> <span class="nf">species</span>
+    <span class="s2">"Homo Sapien"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-def Person.species
-  "Homo Sapien"
-end
-</code></pre>
+<span class="k">def</span> <span class="nc">Person</span><span class="o">.</span><span class="nf">species</span>
+  <span class="s2">"Homo Sapien"</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <h1 id="for-instance-method">For instance method:</h1>
 
-<pre><code class="language-ruby">class Person
-  def name
-    "Matz"
-  end
-end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">def</span> <span class="nf">name</span>
+    <span class="s2">"Matz"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-Person.class_eval do
-  def name
-    "Matz"
-  end
-end
-</code></pre>
+<span class="no">Person</span><span class="p">.</span><span class="nf">class_eval</span> <span class="k">do</span>
+  <span class="k">def</span> <span class="nf">name</span>
+    <span class="s2">"Matz"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <p>Attention: comme les constantes, klass est lexical, pas dynamique.
 Par exemple:
@@ -76,50 +76,50 @@ la class Plam
 http://yehudakatz.com/2009/11/15/metaprogramming-in-ruby-its-all-about-the-self/
 It comes down to the fact that all Ruby code is executed code–there is no separate compile or runtime phase. In Ruby, every line of code is executed against a particular self. Consider the following five snippets:</p>
 
-<pre><code class="language-ruby">class Person
-  def self.species
-    "Homo Sapien"
-  end
-end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">species</span>
+    <span class="s2">"Homo Sapien"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-class Person
-  class &lt;&lt; self
-    def species
-      "Homo Sapien"
-    end
-  end
-end
+<span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+    <span class="k">def</span> <span class="nf">species</span>
+      <span class="s2">"Homo Sapien"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-class &lt;&lt; Person
-  def species
-    "Homo Sapien"
-  end
-end
+<span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="no">Person</span>
+  <span class="k">def</span> <span class="nf">species</span>
+    <span class="s2">"Homo Sapien"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-Person.instance_eval do
-  def species
-    "Homo Sapien"
-  end
-end
+<span class="no">Person</span><span class="p">.</span><span class="nf">instance_eval</span> <span class="k">do</span>
+  <span class="k">def</span> <span class="nf">species</span>
+    <span class="s2">"Homo Sapien"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-def Person.species
-  "Homo Sapien"
-end
+<span class="k">def</span> <span class="nc">Person</span><span class="o">.</span><span class="nf">species</span>
+  <span class="s2">"Homo Sapien"</span>
+<span class="k">end</span>
 
-#All five of these snippets define a Person.species that returns Homo Sapien. Now consider another set of snippets:
+<span class="c1">#All five of these snippets define a Person.species that returns Homo Sapien. Now consider another set of snippets:</span>
 
-class Person
-  def name
-    "Matz"
-  end
-end
+<span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">def</span> <span class="nf">name</span>
+    <span class="s2">"Matz"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-Person.class_eval do
-  def name
-    "Matz"
-  end
-end
-</code></pre>
+<span class="no">Person</span><span class="p">.</span><span class="nf">class_eval</span> <span class="k">do</span>
+  <span class="k">def</span> <span class="nf">name</span>
+    <span class="s2">"Matz"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <p>These snippets all define a method called name on the Person class. So
 Person.new.name will return “Matz”. For those familiar with Ruby, this
@@ -132,43 +132,43 @@ these snippets work the way they do.</p>
 first learn Ruby, you learn about the concept of the class, and that each
 object in Ruby has one:</p>
 
-<pre><code class="language-ruby">class Person
-end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span>
+<span class="k">end</span>
 
-Person.class #=&gt; Class
+<span class="no">Person</span><span class="p">.</span><span class="nf">class</span> <span class="c1">#=&gt; Class</span>
 
-class Class
-  def loud_name
-    "#{name.upcase}!"
-  end
-end
+<span class="k">class</span> <span class="nc">Class</span>
+  <span class="k">def</span> <span class="nf">loud_name</span>
+    <span class="s2">"</span><span class="si">#{</span><span class="nb">name</span><span class="p">.</span><span class="nf">upcase</span><span class="si">}</span><span class="s2">!"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-Person.loud_name #=&gt; "PERSON!"
-</code></pre>
+<span class="no">Person</span><span class="p">.</span><span class="nf">loud_name</span> <span class="c1">#=&gt; "PERSON!"</span>
+</code></pre></div></div>
 
 <p>Person is an instance of Class, so any methods added to Class are available on Person as well. What they don’t tell you, however, is that each object in Ruby also has its own metaclass, a Class that can have methods, but is only attached to the object itself.</p>
 
-<pre><code class="language-ruby">matz = Object.new
-def matz.speak
-  "Place your burden to machine's shoulders"
-end
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">matz</span> <span class="o">=</span> <span class="no">Object</span><span class="p">.</span><span class="nf">new</span>
+<span class="k">def</span> <span class="nc">matz</span><span class="o">.</span><span class="nf">speak</span>
+  <span class="s2">"Place your burden to machine's shoulders"</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <p>What’s going on here is that we’re adding the speak method to matz‘s metaclass, and the matz object inherits from its metaclass and then Object. The reason this is somewhat less clear than ideal is that the metaclass is invisible in Ruby:</p>
 
-<pre><code class="language-ruby">matz = Object.new
-def matz.speak
-  "Place your burden to machine's shoulders"
-end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">matz</span> <span class="o">=</span> <span class="no">Object</span><span class="p">.</span><span class="nf">new</span>
+<span class="k">def</span> <span class="nc">matz</span><span class="o">.</span><span class="nf">speak</span>
+  <span class="s2">"Place your burden to machine's shoulders"</span>
+<span class="k">end</span>
 
-matz.class #=&gt; Object
-</code></pre>
+<span class="n">matz</span><span class="p">.</span><span class="nf">class</span> <span class="c1">#=&gt; Object</span>
+</code></pre></div></div>
 
 <p>In fact, matz‘s “class” is its invisible metaclass. We can even get access to the metaclass:</p>
 
-<pre><code class="language-ruby">metaclass = class &lt;&lt; matz; self; end
-metaclass.instance_methods.grep(/speak/) #=&gt; ["speak"]
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">metaclass</span> <span class="o">=</span> <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="n">matz</span><span class="p">;</span> <span class="nb">self</span><span class="p">;</span> <span class="k">end</span>
+<span class="n">metaclass</span><span class="p">.</span><span class="nf">instance_methods</span><span class="p">.</span><span class="nf">grep</span><span class="p">(</span><span class="sr">/speak/</span><span class="p">)</span> <span class="c1">#=&gt; ["speak"]</span>
+</code></pre></div></div>
 
 <p>At this point in other articles on this topic, you’re probably struggling
 to keep all of the details in your head; it seems as though there are so
@@ -178,47 +178,47 @@ many rules. And what’s this <code>class &lt;&lt; matz</code> thing anyway?</p>
 concept: control over the self in a given part of the code. Let’s go back
 and take a look at some of the snippets we looked at earlier:</p>
 
-<pre><code class="language-ruby">class Person
-  def name
-    "Matz"
-  end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">def</span> <span class="nf">name</span>
+    <span class="s2">"Matz"</span>
+  <span class="k">end</span>
 
-  self.name #=&gt; "Person"
-end
-</code></pre>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">name</span> <span class="c1">#=&gt; "Person"</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <p>Here, we are adding the name method to the Person class. Once we say class Person, the self until the end of the block is the Person class itself.</p>
 
-<pre><code class="language-ruby">Person.class_eval do
-  def name
-    "Matz"
-  end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Person</span><span class="p">.</span><span class="nf">class_eval</span> <span class="k">do</span>
+  <span class="k">def</span> <span class="nf">name</span>
+    <span class="s2">"Matz"</span>
+  <span class="k">end</span>
 
-  self.name #=&gt; "Person"
-end
-</code></pre>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">name</span> <span class="c1">#=&gt; "Person"</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <p>Here, we’re doing exactly the same thing: adding the name method to instances of the Person class. In this case, class_eval is setting the self to Person until the end of the block. This is all perfectly straight forward when dealing with classes, but it’s equally straight forward when dealing with metaclasses:</p>
 
-<pre><code class="language-ruby">def Person.species
-  "Homo Sapien"
-end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nc">Person</span><span class="o">.</span><span class="nf">species</span>
+  <span class="s2">"Homo Sapien"</span>
+<span class="k">end</span>
 
-Person.name #=&gt; "Person"
-</code></pre>
+<span class="no">Person</span><span class="p">.</span><span class="nf">name</span> <span class="c1">#=&gt; "Person"</span>
+</code></pre></div></div>
 
 <p>As in the matz example earlier, we are defining the species method on
 Person‘s metaclass. We have not manipulated self, but you can see using def
 with an object attaches the method to the object’s metaclass.</p>
 
-<pre><code class="language-ruby">class Person
-  def self.species
-    "Homo Sapien"
-  end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">species</span>
+    <span class="s2">"Homo Sapien"</span>
+  <span class="k">end</span>
 
-  self.name #=&gt; "Person"
-end
-</code></pre>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">name</span> <span class="c1">#=&gt; "Person"</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <p>Here, we have opened the Person class, setting the self to Person for the
 duration of the block, as in the example above. However, we are defining a
@@ -226,44 +226,44 @@ method on Person‘s metaclass here, since we’re defining the method on an
 object (self). Also, you can see that self.name while inside the person
 class is identical to Person.name while outside it.</p>
 
-<pre><code class="language-ruby">class &lt;&lt; Person
-  def species
-    "Homo Sapien"
-  end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="no">Person</span>
+  <span class="k">def</span> <span class="nf">species</span>
+    <span class="s2">"Homo Sapien"</span>
+  <span class="k">end</span>
 
-  self.name #=&gt; ""
-end
-</code></pre>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">name</span> <span class="c1">#=&gt; ""</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <p>Ruby provides a syntax for accessing an object’s metaclass directly. By
 doing <code>class &lt;&lt; Person</code>, we are setting self to Person‘s metaclass for the
 duration of the block. As a result, the species method is added to Person‘s
 metaclass, rather than the class itself.</p>
 
-<pre><code class="language-ruby">class Person
-  class &lt;&lt; self
-    def species
-      "Homo Sapien"
-    end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+    <span class="k">def</span> <span class="nf">species</span>
+      <span class="s2">"Homo Sapien"</span>
+    <span class="k">end</span>
 
-    self.name #=&gt; ""
-  end
-end
-</code></pre>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">name</span> <span class="c1">#=&gt; ""</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <p>Here, we combine several of the techniques. First, we open Person, making
 self equal to the Person class. Next, we do <code>class &lt;&lt; self</code>, making self
 equal to Person‘s metaclass. When we then define the species method, it is
 defined on Person‘s metaclass.</p>
 
-<pre><code class="language-ruby">Person.instance_eval do
-  def species
-    "Homo Sapien"
-  end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Person</span><span class="p">.</span><span class="nf">instance_eval</span> <span class="k">do</span>
+  <span class="k">def</span> <span class="nf">species</span>
+    <span class="s2">"Homo Sapien"</span>
+  <span class="k">end</span>
 
-  self.name #=&gt; "Person"
-end
-</code></pre>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">name</span> <span class="c1">#=&gt; "Person"</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <p>The last case, <code>instance_eval</code>, actually does something interesting. It
 breaks apart the self into the self that is used to execute methods and the
@@ -334,28 +334,28 @@ http://ruby-metaprogramming.rubylearning.com/html/seeingMetaclassesClearly.html<
 
 <p>http://github.com/dannytatom/metaid</p>
 
-<pre><code class="language-ruby">class Object
-  # The hidden singleton lurks behind everyone
-  def metaclass; class &lt;&lt; self; self; end; end
-  def meta_eval &amp;blk; metaclass.instance_eval &amp;blk; end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Object</span>
+  <span class="c1"># The hidden singleton lurks behind everyone</span>
+  <span class="k">def</span> <span class="nf">metaclass</span><span class="p">;</span> <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span><span class="p">;</span> <span class="nb">self</span><span class="p">;</span> <span class="k">end</span><span class="p">;</span> <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">meta_eval</span> <span class="o">&amp;</span><span class="n">blk</span><span class="p">;</span> <span class="n">metaclass</span><span class="p">.</span><span class="nf">instance_eval</span> <span class="o">&amp;</span><span class="n">blk</span><span class="p">;</span> <span class="k">end</span>
 
-  # Adds methods to a metaclass
-  def meta_def name, &amp;blk
-    meta_eval { define_method name, &amp;blk }
-  end
-end
+  <span class="c1"># Adds methods to a metaclass</span>
+  <span class="k">def</span> <span class="nf">meta_def</span> <span class="nb">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">blk</span>
+    <span class="n">meta_eval</span> <span class="p">{</span> <span class="n">define_method</span> <span class="nb">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">blk</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-class Module
-  # Defines an instance method within a module
-  def module_def name, &amp;blk
-    module_eval { define_method name, &amp;blk }
-  end
-end
+<span class="k">class</span> <span class="nc">Module</span>
+  <span class="c1"># Defines an instance method within a module</span>
+  <span class="k">def</span> <span class="nf">module_def</span> <span class="nb">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">blk</span>
+    <span class="nb">module_eval</span> <span class="p">{</span> <span class="n">define_method</span> <span class="nb">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">blk</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-class Class
-  alias class_def module_def
-end
-</code></pre>
+<span class="k">class</span> <span class="nc">Class</span>
+  <span class="k">alias</span> <span class="n">class_def</span> <span class="n">module_def</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <p>Note: in ruby1.9, one can use singleton_class for metaclass, and
 define_singleton_method for meta_def
@@ -536,14 +536,14 @@ instance_eval {| | block } =&gt; obj</p>
 
 <p>Evaluates a string containing Ruby source code, or the given block, within the context of the receiver (obj). In order to set the context, the variable self is set to obj while the code is executing, giving the code access to obj’s instance variables. In the version of instance_eval that takes a String, the optional second and third parameters supply a filename and starting line number that are used when reporting compilation errors.</p>
 
-<pre><code class="language-ruby">class Klass
-  def initialize
-    @secret = 99
-  end
-end
-k = Klass.new
-k.instance_eval { @secret }   #=&gt; 99
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Klass</span>
+  <span class="k">def</span> <span class="nf">initialize</span>
+    <span class="vi">@secret</span> <span class="o">=</span> <span class="mi">99</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="n">k</span> <span class="o">=</span> <span class="no">Klass</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">k</span><span class="p">.</span><span class="nf">instance_eval</span> <span class="p">{</span> <span class="vi">@secret</span> <span class="p">}</span>   <span class="c1">#=&gt; 99</span>
+</code></pre></div></div>
 
 <p>method(sym)</p>
 
@@ -609,10 +609,10 @@ Rails code.</p>
     <p>Further details about include, with its default behavior, assuming you’ve
 run the following code</p>
 
-    <pre><code class="language-ruby">class Klazz
-  include Mod
-end
-</code></pre>
+    <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Klazz</span>
+  <span class="kp">include</span> <span class="no">Mod</span>
+<span class="k">end</span>
+</code></pre></div>    </div>
 
     <ul>
       <li>If Mod is already included in Klazz, or one of its ancestors, the include
@@ -631,58 +631,58 @@ Klazz.superclass.superclass.superclass).</li>
 <h1 id="doing-include-and-extend">Doing include <em>and</em> extend:</h1>
 <p>http://railstips.org/blog/archives/2009/05/15/include-vs-extend-in-ruby/</p>
 
-<pre><code class="language-ruby">module Foo
-  def self.included(base)
-    base.extend(ClassMethods)
-  end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Foo</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+    <span class="n">base</span><span class="p">.</span><span class="nf">extend</span><span class="p">(</span><span class="no">ClassMethods</span><span class="p">)</span>
+  <span class="k">end</span>
 
-  module ClassMethods
-    def bar
-      puts 'class method'
-    end
-  end
+  <span class="k">module</span> <span class="nn">ClassMethods</span>
+    <span class="k">def</span> <span class="nf">bar</span>
+      <span class="nb">puts</span> <span class="s1">'class method'</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
 
-  def foo
-    puts 'instance method'
-  end
-end
+  <span class="k">def</span> <span class="nf">foo</span>
+    <span class="nb">puts</span> <span class="s1">'instance method'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-class Baz
-  include Foo
-end
+<span class="k">class</span> <span class="nc">Baz</span>
+  <span class="kp">include</span> <span class="no">Foo</span>
+<span class="k">end</span>
 
-Baz.bar # class method
-Baz.new.foo # instance method
-Baz.foo # NoMethodError: undefined method ‘foo’ for Baz:Class
-Baz.new.bar # NoMethodError: undefined method ‘bar’ for #&lt;Baz:0x1e3d4&gt;
-</code></pre>
+<span class="no">Baz</span><span class="p">.</span><span class="nf">bar</span> <span class="c1"># class method</span>
+<span class="no">Baz</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">foo</span> <span class="c1"># instance method</span>
+<span class="no">Baz</span><span class="p">.</span><span class="nf">foo</span> <span class="c1"># NoMethodError: undefined method ‘foo’ for Baz:Class</span>
+<span class="no">Baz</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">bar</span> <span class="c1"># NoMethodError: undefined method ‘bar’ for #&lt;Baz:0x1e3d4&gt;</span>
+</code></pre></div></div>
 
 <p>We can even abstract this concept</p>
 
-<pre><code class="language-ruby">class Module
-  def extends_host_with(class_methods)
-    @_extension_module = class_methods
-    def self.included(base)
-    #attention: le code que j'ai trouvé faisait def included
-    #mais ça ne va pas car klass est Module, donc ça ajoute le code à
-    #Module et pas le module actuel dans self
-      base.extend(const_get(@_extension_module))
-    end
-  end
-end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Module</span>
+  <span class="k">def</span> <span class="nf">extends_host_with</span><span class="p">(</span><span class="n">class_methods</span><span class="p">)</span>
+    <span class="vi">@_extension_module</span> <span class="o">=</span> <span class="n">class_methods</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+    <span class="c1">#attention: le code que j'ai trouvé faisait def included</span>
+    <span class="c1">#mais ça ne va pas car klass est Module, donc ça ajoute le code à</span>
+    <span class="c1">#Module et pas le module actuel dans self</span>
+      <span class="n">base</span><span class="p">.</span><span class="nf">extend</span><span class="p">(</span><span class="nb">const_get</span><span class="p">(</span><span class="vi">@_extension_module</span><span class="p">))</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-# Example
-module MyMod
-  extends_host_with :ClassMethods
+<span class="c1"># Example</span>
+<span class="k">module</span> <span class="nn">MyMod</span>
+  <span class="n">extends_host_with</span> <span class="ss">:ClassMethods</span>
 
-  def an_instance_method; end
+  <span class="k">def</span> <span class="nf">an_instance_method</span><span class="p">;</span> <span class="k">end</span>
 
-  module ClassMethods
-    def a_class_method; end
-  end
-end
-#including MyMod will add an_instance_method as an instance method and a_class_method as a class method!
-</code></pre>
+  <span class="k">module</span> <span class="nn">ClassMethods</span>
+    <span class="k">def</span> <span class="nf">a_class_method</span><span class="p">;</span> <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="c1">#including MyMod will add an_instance_method as an instance method and a_class_method as a class method!</span>
+</code></pre></div></div>
 
 <p>Ou pour jouer à la fois avec extend et include:
 ~~~ ruby
@@ -724,84 +724,84 @@ class B; extend MyMod; end
 
 <h1 id="constants-1">Constants {{{1</h1>
 
-<pre><code class="language-ruby">puts "#{RUBY_VERSION}-p#{RUBY_PATCHLEVEL}"
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">puts</span> <span class="s2">"</span><span class="si">#{</span><span class="no">RUBY_VERSION</span><span class="si">}</span><span class="s2">-p</span><span class="si">#{</span><span class="no">RUBY_PATCHLEVEL</span><span class="si">}</span><span class="s2">"</span>
 
-X = '::X'
+<span class="no">X</span> <span class="o">=</span> <span class="s1">'::X'</span>
 
-class Foo
-  X = 'Foo::X'
+<span class="k">class</span> <span class="nc">Foo</span>
+  <span class="no">X</span> <span class="o">=</span> <span class="s1">'Foo::X'</span>
 
-  def foo
-    puts "instance method: #{X}"
-  end
-end
+  <span class="k">def</span> <span class="nf">foo</span>
+    <span class="nb">puts</span> <span class="s2">"instance method: </span><span class="si">#{</span><span class="no">X</span><span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-Foo.new.foo
+<span class="no">Foo</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">foo</span>
 
-f = Foo.new
-def f.bar
-  puts "singleton method: #{X}"
-end
-f.bar
+<span class="n">f</span> <span class="o">=</span> <span class="no">Foo</span><span class="p">.</span><span class="nf">new</span>
+<span class="k">def</span> <span class="nc">f</span><span class="o">.</span><span class="nf">bar</span>
+  <span class="nb">puts</span> <span class="s2">"singleton method: </span><span class="si">#{</span><span class="no">X</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
+<span class="n">f</span><span class="p">.</span><span class="nf">bar</span>
 
-Foo.class_eval do
-  puts "class_eval: #{X}"
-end
+<span class="no">Foo</span><span class="p">.</span><span class="nf">class_eval</span> <span class="k">do</span>
+  <span class="nb">puts</span> <span class="s2">"class_eval: </span><span class="si">#{</span><span class="no">X</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
 
-Foo.new.instance_eval do
-  puts "instance_eval: #{X}"
-end
+<span class="no">Foo</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">instance_eval</span> <span class="k">do</span>
+  <span class="nb">puts</span> <span class="s2">"instance_eval: </span><span class="si">#{</span><span class="no">X</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
 
-# load "constant"
-# 1.9.3-p194
-# instance method: Foo::X
-# singleton method: ::X
-# class_eval: ::X
-# instance_eval: ::X
-#
-# D'après
-# http://jfire.io/blog/2011/01/21/making-sense-of-constant-lookup-in-ruby/
-# ça change tout le temps entre 1.8,1.9.1,1.9.2,1.9.3...
-# Dans 1.9.3, la règle pour les cref et la suivante: on regarde d'abord
-# lexicographiquement (dans des scopes de plus en plus grand), *puis* si
-# rien n'est trouvé dans la hiérarchie des parents du module où on est.
+<span class="c1"># load "constant"</span>
+<span class="c1"># 1.9.3-p194</span>
+<span class="c1"># instance method: Foo::X</span>
+<span class="c1"># singleton method: ::X</span>
+<span class="c1"># class_eval: ::X</span>
+<span class="c1"># instance_eval: ::X</span>
+<span class="c1">#</span>
+<span class="c1"># D'après</span>
+<span class="c1"># http://jfire.io/blog/2011/01/21/making-sense-of-constant-lookup-in-ruby/</span>
+<span class="c1"># ça change tout le temps entre 1.8,1.9.1,1.9.2,1.9.3...</span>
+<span class="c1"># Dans 1.9.3, la règle pour les cref et la suivante: on regarde d'abord</span>
+<span class="c1"># lexicographiquement (dans des scopes de plus en plus grand), *puis* si</span>
+<span class="c1"># rien n'est trouvé dans la hiérarchie des parents du module où on est.</span>
 
-Ex:
-class First
-  X="First::X"
-end
-  =&gt; "First::X"
-class Second &lt; First
-  puts X
-  def ploum
-    puts X
-  end
-  def self.plim
-    puts X
-  end
-end
-  First::X =&gt; nil
-Second.plim
-  First::X =&gt; nil
-Second.new.ploum
-  First::X =&gt; nil
+<span class="no">Ex</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">First</span>
+  <span class="no">X</span><span class="o">=</span><span class="s2">"First::X"</span>
+<span class="k">end</span>
+  <span class="o">=&gt;</span> <span class="s2">"First::X"</span>
+<span class="k">class</span> <span class="nc">Second</span> <span class="o">&lt;</span> <span class="no">First</span>
+  <span class="nb">puts</span> <span class="no">X</span>
+  <span class="k">def</span> <span class="nf">ploum</span>
+    <span class="nb">puts</span> <span class="no">X</span>
+  <span class="k">end</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">plim</span>
+    <span class="nb">puts</span> <span class="no">X</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+  <span class="no">First</span><span class="o">::</span><span class="no">X</span> <span class="o">=&gt;</span> <span class="kp">nil</span>
+<span class="no">Second</span><span class="p">.</span><span class="nf">plim</span>
+  <span class="no">First</span><span class="o">::</span><span class="no">X</span> <span class="o">=&gt;</span> <span class="kp">nil</span>
+<span class="no">Second</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">ploum</span>
+  <span class="no">First</span><span class="o">::</span><span class="no">X</span> <span class="o">=&gt;</span> <span class="kp">nil</span>
 
 
-#Example of the difference of scope with Class.new do end
-class Foo
-  class Bar
-  end
-end
+<span class="c1">#Example of the difference of scope with Class.new do end</span>
+<span class="k">class</span> <span class="nc">Foo</span>
+  <span class="k">class</span> <span class="nc">Bar</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-Baz = Class.new do
-  class Quux
-  end
-end
+<span class="no">Baz</span> <span class="o">=</span> <span class="no">Class</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span>
+  <span class="k">class</span> <span class="nc">Quux</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-puts Foo::Bar
-puts Quux
-#ie Bar lives inside Foo but Quux is outside Baz
-</code></pre>
+<span class="nb">puts</span> <span class="no">Foo</span><span class="o">::</span><span class="no">Bar</span>
+<span class="nb">puts</span> <span class="no">Quux</span>
+<span class="c1">#ie Bar lives inside Foo but Quux is outside Baz</span>
+</code></pre></div></div>
 
 <p>Another example:
 ~~~ ruby
@@ -938,24 +938,24 @@ How to parameterize subclasses
 <p>To get the singleton_methods list of object, along with it’s ancestors, use ‘obj.singleton_methods’ or to only get the singleton_methods  defined in object use
 ‘obj.singleton_methods(false)’</p>
 
-<pre><code class="language-ruby">class MyClass
-end
-obj = MyClass.new
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyClass</span>
+<span class="k">end</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="no">MyClass</span><span class="p">.</span><span class="nf">new</span>
 
-class &lt;&lt; obj
-  def first_sing_method
-    'first'
-  end
-end
+<span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="n">obj</span>
+  <span class="k">def</span> <span class="nf">first_sing_method</span>
+    <span class="s1">'first'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-def obj.second_sing_method
-  'second'
-end
+<span class="k">def</span> <span class="nc">obj</span><span class="o">.</span><span class="nf">second_sing_method</span>
+  <span class="s1">'second'</span>
+<span class="k">end</span>
 
-obj.define_singleton_method(:third_sing_method) do
-  'third'
-end
-</code></pre>
+<span class="n">obj</span><span class="p">.</span><span class="nf">define_singleton_method</span><span class="p">(</span><span class="ss">:third_sing_method</span><span class="p">)</span> <span class="k">do</span>
+  <span class="s1">'third'</span>
+<span class="k">end</span>
+</code></pre></div></div>
 <p>with a class we also have as a specialisation of the above methods
 ~~~ ruby
 class MyClass
@@ -1141,47 +1141,47 @@ Symbol#to_proc method which handles the most common case very elegantly,
 and discussion with Sam Stokes about creating lazy enumerators in ruby.</li>
 </ul>
 
-<pre><code class="language-ruby">class Metavariable &lt; BasicObject
-  # When you pass an argument with &amp; in ruby, you're actually calling #to_proc
-  # on the object. So it's Symbol#to_proc that makes the &amp;:to_s trick work,
-  # and Metavariable#to_proc that makes &amp;X work.
-  attr_reader :to_proc
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Metavariable</span> <span class="o">&lt;</span> <span class="no">BasicObject</span>
+  <span class="c1"># When you pass an argument with &amp; in ruby, you're actually calling #to_proc</span>
+  <span class="c1"># on the object. So it's Symbol#to_proc that makes the &amp;:to_s trick work,</span>
+  <span class="c1"># and Metavariable#to_proc that makes &amp;X work.</span>
+  <span class="nb">attr_reader</span> <span class="ss">:to_proc</span>
 
-  def initialize(&amp;block)
-    @to_proc = block || ::Proc.new{|x| x}
-  end
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="vi">@to_proc</span> <span class="o">=</span> <span class="n">block</span> <span class="o">||</span> <span class="o">::</span><span class="no">Proc</span><span class="p">.</span><span class="nf">new</span><span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="p">}</span>
+  <span class="k">end</span>
 
-  # This method is here so that a metavariable can be used as a target for "when" like this:
-  #
-  #   case foo
-  #   when X.respond_to? :bar
-  #     "Responds to :bar"
-  #   when X.respond_to? :foobar
-  #     "Responds to :foobar"
-  #   end
-  #
-  def ===(y)
-    !!to_proc.call(y)
-  end
+  <span class="c1"># This method is here so that a metavariable can be used as a target for "when" like this:</span>
+  <span class="c1">#</span>
+  <span class="c1">#   case foo</span>
+  <span class="c1">#   when X.respond_to? :bar</span>
+  <span class="c1">#     "Responds to :bar"</span>
+  <span class="c1">#   when X.respond_to? :foobar</span>
+  <span class="c1">#     "Responds to :foobar"</span>
+  <span class="c1">#   end</span>
+  <span class="c1">#</span>
+  <span class="k">def</span> <span class="nf">===</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="o">!!</span><span class="n">to_proc</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+  <span class="k">end</span>
 
-  # Each time a method is called on a Metavariable, we want to create a new
-  # Metavariable that is like the last but does something more.
-  #
-  # The end result of calling X.one.two will be like:
-  #
-  # lambda{|x|
-  #   (lambda{|x|
-  #     (lambda{|x| x}).call(x).one
-  #   }).call(x).two
-  # }
-  #
-  def method_missing(name, *args, &amp;block)
-    raise ::NotImplementedError, "(&amp;X = 'foo') is unsupported in ampex &gt; 2.0.0" if name.to_s =~ /[^!=&lt;&gt;]=$/
-    ::Metavariable.new { |x| @to_proc.call(x).__send__(name, *args, &amp;block) }
-  end
-end
+  <span class="c1"># Each time a method is called on a Metavariable, we want to create a new</span>
+  <span class="c1"># Metavariable that is like the last but does something more.</span>
+  <span class="c1">#</span>
+  <span class="c1"># The end result of calling X.one.two will be like:</span>
+  <span class="c1">#</span>
+  <span class="c1"># lambda{|x|</span>
+  <span class="c1">#   (lambda{|x|</span>
+  <span class="c1">#     (lambda{|x| x}).call(x).one</span>
+  <span class="c1">#   }).call(x).two</span>
+  <span class="c1"># }</span>
+  <span class="c1">#</span>
+  <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="o">::</span><span class="no">NotImplementedError</span><span class="p">,</span> <span class="s2">"(&amp;X = 'foo') is unsupported in ampex &gt; 2.0.0"</span> <span class="k">if</span> <span class="nb">name</span><span class="p">.</span><span class="nf">to_s</span> <span class="o">=~</span> <span class="sr">/[^!=&lt;&gt;]=$/</span>
+    <span class="o">::</span><span class="no">Metavariable</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="vi">@to_proc</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="nf">__send__</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-X = Metavariable.new
-</code></pre>
+<span class="no">X</span> <span class="o">=</span> <span class="no">Metavariable</span><span class="p">.</span><span class="nf">new</span>
+</code></pre></div></div>
 
 <h1 id="section-4">}}}1</h1>

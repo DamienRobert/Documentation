@@ -2,7 +2,7 @@ vim: foldmethod=expr ft=markdownlight:
 
 # Git scripts and utilities
 
-(Legend: - already seen, x to see, ! installed, + look promising, look again in some future time)
+(Legend: - already seen, x to see, ! installed, + look promising, look again in some future time, ++ really interesting, -- non maintained anymore)
 
 Installed in archlinux: tig
 
@@ -23,7 +23,7 @@ grb)
 - https://github.com/MarkLodato/git-reparent #changer les parents d'un commit
 
 * some usefull scripts
-! https://github.com/mhagger/git-when-merged #-> to integrate in git-my (g my topic whenmerged)
+! https://github.com/mhagger/git-when-merged #-> (g my topic whenmerged)
 ! https://github.com/aspiers/git-config #set of git utilities
   [-> https://github.com/aspiers/git-deps: git commit dependency analysis tool; not yet incorporated]
 - https://github.com/tj/git-extras: some extra cmds for git
@@ -31,72 +31,112 @@ grb)
 - http://git-wt-commit.rubyforge.org/ #git-mainline
 
 ## git utilities
-! https://github.com/greenrd/topgit  #patch manager, last version (old one was porridge/topgit)
-! https://github.com/mhagger/git-multimail #post receive hook
-+ https://github.com/git-series/git-series #Track changes to a patch series over time 
-- https://github.com/aanand/git-up #fetch and rebase all locally-tracked remote branches (a bit like 'git my up' does, but for all tracked branches) [unmaintenand]
-+ https://github.com/max630/git-rebase2/ #more powerfull rebase in perl
+
+* Gui
+- https://github.com/pomber/git-history
+  Quickly browse the history of a file from any git repository https://githistory.xyz/
+  -> Go to a file in GitHub (or GitLab, or Bitbucket); Replace github.com with github.githistory.xyz
+- https://lib.rs/crates/git-brws [rust]
+  Command line tool to open a repository, file, commit, diff, tag, pull request, issue or project’s website in your web browser from command line (compatible with github and gitlab). Similar to 'hub browse'
+- https://gitgraphjs.com/
+  Create (false) graphs of git commits, for tutorials
+- https://insanesharpness.gitlab.io/GitVine/
+  A simpler visualisation of Git Commits, inspired by Clearcase Version Tree.
+-- https://github.com/demian85/git-watcher #Git Watcher is a multi-platform desktop app written in pure HTML and Javascript using node-webkit. It shows diff information about local staged/unstaged files and allows you to commit changes. UI is updated in real-time by detecting file changes and git index changes. Submodules also inform changes to their parent module.
+
+* Topic helpers
+++ https://github.com/apenwarr/git-subtrac Keep the content for your git submodules all in one place: the parent repo.
+! https://github.com/greenrd/topgit #patch manager, last version (old one was porridge/topgit)
+++ https://github.com/git-series/git-series #Track changes to a patch series over time 
+- https://github.com/SethRobertson/git-what-branch #Discover what branch a particular commit was made on or near
+- https://github.com/petervanderdoes/gitflow #a workflow helper
+-- https://github.com/aanand/git-up #fetch and rebase all locally-tracked remote branches (a bit like 'git my up' does, but for all tracked branches)
+- https://github.com/patchew-project/patchew A patch email tracking and testing system
+- https://opensource.com/article/20/1/bash-scripts-git => scripts to search and format the log
+
+* Rebase
+- https://gitrebasetool.mitmaro.ca/ [rust]
+  Git Interactive Rebase Tool, An improved sequence editor for Git
+-- https://github.com/max630/git-rehi/ #more powerfull rebase in perl
+-- https://github.com/dankeder/git-rebranch #rebase branch according to layout
+   eg feature1 and feature2 based on common based on master
+-- https://github.com/cool-RR/git-cascade
+  -> git cascade - Cascade changes from each branch to its dependents. Use
+  git forward-merge internally. Eg with 'development > staging > master',
+  git cascade foo master merge foo in master, staging and development.
+  -> git forward-merge - Merge branches without checking them out, using a temporary git index file and working directory
+  [cf git my update-worktree -- --tmp worktree opts -- git command]
+-- https://git.csx.cam.ac.uk/x/ucs/git/git-repub.git #The 'git repub' command maintains a "repub branch" that you can use to record the history of another "rebasing branch" that is repeatedly rewound. Updates to the repub branch are fast-forwards, so they are convenient to publish.
+    Very similar to git-merging-rebase, except that it merges after the
+    rebase rather than before, and the rebase is done manually. Essentially
+    each commit of the pub branch is a new state of the rw branch (via a
+    merge so that forwardibility is preserved), ie it keeps the history of
+    the rw branch. More precisely it maintains a ff branch and a rw branch.
+    git repub --rw rw --ff ff wille merge rw into ff (using rw's tree). It
+    also has some facilities to associate a ff/rw branch to another one via
+    git config, and can unpub an branch, by fast forwarding it to ff^2 (and
+    checking that the history makes sense).
+
+* Stats
 + https://github.com/sensorflo/git-draw/wiki #git-draw draws nearly the full content of a tiny git repository as a graph.
-+ https://github.com/hoduche/git-graph #another git graph viewer
-+ https://github.com/dankeder/git-rebranch #rebase branch according to layout
-+ https://github.com/petervanderdoes/gitflow #a workflow helper
-+ https://github.com/jeffWelling/ticgit # bug tracker
-+ https://github.com/SethRobertson/git-what-branch #Discover what branch a particular commit was made on or near
-+ https://github.com/cool-RR/git-cascade
-  # git cascade - Cascade changes from each branch to its dependents.
-  # git forward-merge - Merge branches without checking them out.
-+ https://github.com/acaudwell/Gource # software version control visualization (OpenGL-based 3D visualisation tool for source control repositories.)
-- http://git-repair.branchable.com/ #git-repair is a complement to git fsck, which only finds problems, but does not try to fix them.
-- https://github.com/demian85/git-watcher #Git Watcher is a multi-platform desktop app written in pure HTML and Javascript using node-webkit. It shows diff information about local staged/unstaged files and allows you to commit changes. UI is updated in real-time by detecting file changes and git index changes. Submodules also inform changes to their parent module.
-- https://git.csx.cam.ac.uk/x/ucs/git/git-repub.git #The 'git repub' command maintains a "repub branch" that you can use to record the history of another "rebasing branch" that is repeatedly rewound. Updates to the repub branch are fast-forwards, so they are convenient to publish.
-- https://github.com/tpope/git-bump
-  Create Git release commits and tags with changelogs
++ https://github.com/hoduche/git-graph #another git graph viewer (show only
+  the graph, not the content)
+- https://github.com/acaudwell/Gource # software version control visualization (OpenGL-based 3D visualisation tool for source control repositories.)
 - https://github.com/IonicaBizau/git-stats
   A GitHub-like contributions calendar, but locally, with all your git commits. 
+
+* Deploy
++ https://lib.rs/crates/git-journal [rust]
+  The Git Commit Message and Changelog Generation Framework => generate nice changelogs
 - https://github.com/mislav/git-deploy
-  Ruby gem that set up git push hooks for deployment
-+ git-annex #needs cabal
-  http://git-annex.branchable.com/install/ArchLinux/
-- https://git-lfs.github.com/ #Git Large File Support
+  Ruby gem that set up git push hooks for deployment, heroku like
+-- https://github.com/tpope/git-bump
+  Create Git release commits and tags with changelogs
+
+* Tools
+++ https://github.com/newren/git-filter-repo
+  filter-branch replacement [difference with bfg? => gère les empty
+  commits, fais plus de choses]
+  cf https://git.github.io/rev_news/2019/08/21/edition-54/#an-introduction-to-git-filter-repo--written-by-elijah-newren
+- http://git-repair.branchable.com/ #git-repair is a complement to git fsck, which only finds problems, but does not try to fix them.
 - https://github.com/GitAlias/gitalias
-  Git alias commands for faster easier version control
-  (The readme mention other utilities)
+  Git alias commands for faster easier version control [incorporated the interesting ones already]
+  (The readme mention other utilities.)
 - https://github.com/magicmonty/bash-git-prompt
   An informative and fancy bash prompt for Git users
 - https://github.com/src-d/gitbase
   SQL interface to Git repositories, written in Go. https://docs.sourced.tech/gitbase
-- https://github.com/pomber/git-history
-  Quickly browse the history of a file from any git repository https://githistory.xyz/
-  -> Go to a file in GitHub (or GitLab, or Bitbucket); Replace github.com with github.githistory.xyz
-- https://gitrebasetool.mitmaro.ca/
-  Git Interactive Rebase Tool, An improved sequence editor for Git
-- https://lib.rs/crates/git-brws
-  Command line tool to open a repository, file, commit, diff, tag, pull request, issue or project’s website in your web browser from command line (compatible with github and gitlab)
-- https://lib.rs/crates/git-journal
-  The Git Commit Message and Changelog Generation Framework => generate nice changelogs
-- https://github.com/nosarthur/gita
-  Manage multiple git repos side by side for sanity
-- https://github.com/newren/git-filter-repo
-  filter-branch replacement [difference with bfg? => gère les empty
-  commits, fais plus de choses]
+-- https://github.com/jeffWelling/ticgit # bug tracker
 
-Password manager using git:
+* Files
++ git-annex #needs cabal
+  http://git-annex.branchable.com/install/ArchLinux/
+  => Has a bup backend: https://git-annex.branchable.com/special_remotes/bup/
+- https://git-lfs.github.com/ #Git Large File Support
+  a recent alternative to git-annex
+  
+* Hooks
+! https://github.com/mhagger/git-multimail #post receive hook
+
+* Password manager using git:
 + www.passwordstore.org (on arch: pass)
 - https://github.com/peff/pass
 
 ## Global VCS handlers
 
++ https://github.com/nosarthur/gita
+  Manage multiple git repos side by side for sanity
 - https://myrepos.branchable.com/
   A combination of `vcs` and `gitfolders`
 
 * Rust:
-  + https://lib.rs/crates/git-find A tool (cli & lib) to find local git repositories
-  => Look at the current and subdirectories, and for each git dir, output
-  [CMU] filename fullpath  remote remote_url
+! https://lib.rs/crates/git-find A tool (cli & lib) to find local git repositories
+=> Look at the current and subdirectories, and for each git dir, output
+[CMU] filename fullpath  remote remote_url
 
-  + https://lib.rs/crates/git-global Keep track of all your the git repositories on your machine 
-  => git global info/list/scan/[status]
-  => git global: show the output of 'git status' in each repo [if non empty]
+! https://lib.rs/crates/git-global Keep track of all your the git repositories on your machine 
+=> git global info/list/scan/[status]
+=> git global: show the output of 'git status' in each repo [if non empty]
 
 ## Felipe scripts
 ! https://github.com/felipec/git-related (g my related)
@@ -222,7 +262,7 @@ $ git my topic help
     cherry     - Shows log between current branch and its remote, in left-right format [=direct code]
                  [= git log --left-right --topo-order --oneline local..remote
                   = condensed 'my topic log' = nicer 'git cherry']
-    diff       - topic diff [=dist/tbdiff]
+    diff       - topic diff [=dist/tbdiff !Obsolete, use `range-diff`]
                  [shows the differences between two versions of a patch series]
     log [--diff] - Shows log between current branch and its remote (default) [=direct code]
                  [=> -Incoming:... -Outgoing:...]
@@ -313,7 +353,7 @@ $ git my topic help
   Manipulates published branches
 - gitstats/ -> g my stats-html
   stats
-- tbdiff/ (trast) -> g my topic diff
+- tbdiff/ (trast) -> g my topic diff [obsolete]
   topic branch interdiff
 - topgit/
   patches via branches [notused]

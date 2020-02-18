@@ -1,45 +1,45 @@
 <h1 id="vim-foldmethodmarker-ftmarkdownlight">vim: foldmethod=marker ft=markdownlight</h1>
 
 <h1 id="instance-methods-1">Instance Methods {{{1</h1>
-<pre><code class="language-ruby">class Person
-  def name
-    "Matz"
-  end
-end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">def</span> <span class="nf">name</span>
+    <span class="s2">"Matz"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-Person.class_eval do #or module_eval
-  def name
-    "Matz"
-  end
-end
-</code></pre>
+<span class="no">Person</span><span class="p">.</span><span class="nf">class_eval</span> <span class="k">do</span> <span class="c1">#or module_eval</span>
+  <span class="k">def</span> <span class="nf">name</span>
+    <span class="s2">"Matz"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <h1 id="singleton-methods-1">Singleton Methods {{{1</h1>
 <p>http://stackoverflow.com/questions/6759777/ruby-singleton-methods-for-class-and-objects</p>
 
-<pre><code class="language-ruby">class MyClass
-end
-obj = MyClass.new
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyClass</span>
+<span class="k">end</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="no">MyClass</span><span class="p">.</span><span class="nf">new</span>
 
-class &lt;&lt; obj
-  def first_sing_method
-    'first'
-  end
-end
+<span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="n">obj</span>
+  <span class="k">def</span> <span class="nf">first_sing_method</span>
+    <span class="s1">'first'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-def obj.second_sing_method
-  'second'
-end
+<span class="k">def</span> <span class="nc">obj</span><span class="o">.</span><span class="nf">second_sing_method</span>
+  <span class="s1">'second'</span>
+<span class="k">end</span>
 
-obj.define_singleton_method(:third_sing_method) do
-  'third'
-end
+<span class="n">obj</span><span class="p">.</span><span class="nf">define_singleton_method</span><span class="p">(</span><span class="ss">:third_sing_method</span><span class="p">)</span> <span class="k">do</span>
+  <span class="s1">'third'</span>
+<span class="k">end</span>
 
-obj.instance_eval do
-  def fourth_sing_method
-  end
-end
-</code></pre>
+<span class="n">obj</span><span class="p">.</span><span class="nf">instance_eval</span> <span class="k">do</span>
+  <span class="k">def</span> <span class="nf">fourth_sing_method</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
 <p>with a class we also have as a specialisation of the above methods
 ~~~ ruby
 class MyClass
@@ -132,15 +132,15 @@ For other ways, see: https://practicingruby.com/articles/ruby-and-the-singleton-
 Example of usage: http://dalibornasevic.com/posts/9-ruby-singleton-pattern</p>
 
 <h2 id="struct-2">Struct {{{2</h2>
-<pre><code class="language-ruby">Customer = Struct.new(:name, :address) #Customer is a class!
-cus=Customer.new("Dave", "123 Main")
-cus.name #=&gt; Dave
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Customer</span> <span class="o">=</span> <span class="no">Struct</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:address</span><span class="p">)</span> <span class="c1">#Customer is a class!</span>
+<span class="n">cus</span><span class="o">=</span><span class="no">Customer</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"Dave"</span><span class="p">,</span> <span class="s2">"123 Main"</span><span class="p">)</span>
+<span class="n">cus</span><span class="p">.</span><span class="nf">name</span> <span class="c1">#=&gt; Dave</span>
 
-class Foo &lt; Struct.new(:x,:y) #subclassing works!
-end
-foo=Foo.new(1,2)
-foo.x
-</code></pre>
+<span class="k">class</span> <span class="nc">Foo</span> <span class="o">&lt;</span> <span class="no">Struct</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">:x</span><span class="p">,</span><span class="ss">:y</span><span class="p">)</span> <span class="c1">#subclassing works!</span>
+<span class="k">end</span>
+<span class="n">foo</span><span class="o">=</span><span class="no">Foo</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">foo</span><span class="p">.</span><span class="nf">x</span>
+</code></pre></div></div>
 
 <p>Note: by contrast <code>foo=OpenStruct.new</code> is an object of class OpenStruct
 ~~~ ruby
@@ -151,15 +151,15 @@ a.class #=&gt;OpenStruct
 ~~~</p>
 
 <h2 id="forwardable-2">Forwardable {{{2</h2>
-<pre><code class="language-ruby">require 'forwardable'
-class Foo
-  extend Forwardable
-  def_delegators(accessor, *methods) #=&gt; map method in methods to accessor
-  def_delegator(accessor, method, ali = method) #=&gt;maps ali to accessor.method
-  delegate {:foo =&gt; accessor1, [:bar,:baz] =&gt; accessor2} #=&gt;maps bar to accessor2.bar and so on
-  #or use the aliases def_instance_delegator[s],instance_delegate
-end
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'forwardable'</span>
+<span class="k">class</span> <span class="nc">Foo</span>
+  <span class="kp">extend</span> <span class="no">Forwardable</span>
+  <span class="n">def_delegators</span><span class="p">(</span><span class="n">accessor</span><span class="p">,</span> <span class="o">*</span><span class="nb">methods</span><span class="p">)</span> <span class="c1">#=&gt; map method in methods to accessor</span>
+  <span class="n">def_delegator</span><span class="p">(</span><span class="n">accessor</span><span class="p">,</span> <span class="nb">method</span><span class="p">,</span> <span class="n">ali</span> <span class="o">=</span> <span class="nb">method</span><span class="p">)</span> <span class="c1">#=&gt;maps ali to accessor.method</span>
+  <span class="n">delegate</span> <span class="p">{</span><span class="ss">:foo</span> <span class="o">=&gt;</span> <span class="n">accessor1</span><span class="p">,</span> <span class="p">[</span><span class="ss">:bar</span><span class="p">,</span><span class="ss">:baz</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="n">accessor2</span><span class="p">}</span> <span class="c1">#=&gt;maps bar to accessor2.bar and so on</span>
+  <span class="c1">#or use the aliases def_instance_delegator[s],instance_delegate</span>
+<span class="k">end</span>
+</code></pre></div></div>
 <p>Forwardable when applied to a module gives instance method (the defs are
 evalued via module_eval), to an object it gives singleton methods (the
 defs are evalued via instance_eval).
@@ -196,13 +196,13 @@ Facade.service #=&gt; serviced!
 Delegator is a factory class, the implementation is done by SimpleDelegator
 or DelegateClass</p>
 
-<pre><code class="language-ruby">require 'delegate'
-class Foo &lt; SimpleDelegator
-end
-foo=Foo.new("foo") #delegate unknown methods to "foo"
-foo.length #=&gt;3
-SimpleDelegator.new("foo").length #=&gt;3
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'delegate'</span>
+<span class="k">class</span> <span class="nc">Foo</span> <span class="o">&lt;</span> <span class="no">SimpleDelegator</span>
+<span class="k">end</span>
+<span class="n">foo</span><span class="o">=</span><span class="no">Foo</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"foo"</span><span class="p">)</span> <span class="c1">#delegate unknown methods to "foo"</span>
+<span class="n">foo</span><span class="p">.</span><span class="nf">length</span> <span class="c1">#=&gt;3</span>
+<span class="no">SimpleDelegator</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"foo"</span><span class="p">).</span><span class="nf">length</span> <span class="c1">#=&gt;3</span>
+</code></pre></div></div>
 <p>One can access the delegated object via <code>__getobj__</code> and change it via
 <code>__setobj__</code>. Since SimpleDelegator is a subclass of Delegator, super works
 too:
@@ -275,67 +275,67 @@ method from ‘superclass’ for delegation for efficiency
 #}}}1</p>
 
 <h1 id="module-factory-1">Module Factory {{{1</h1>
-<pre><code class="language-ruby">#via subclassing module
-class ModuleAttr &lt; Module
-  def initialize(*attrs,&amp;b)
-    attr_accessor *attrs
-    super(&amp;b)
-  end
-end
-class Book
-  include ModuleAttr.new(:title)
-  def title
-    "Book: #{super}"
-  end
-end
-b=Book.new; b.title="My Book"; b.title #=&gt; "Book: My Book"
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#via subclassing module</span>
+<span class="k">class</span> <span class="nc">ModuleAttr</span> <span class="o">&lt;</span> <span class="no">Module</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">attrs</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+    <span class="nb">attr_accessor</span> <span class="o">*</span><span class="n">attrs</span>
+    <span class="k">super</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="k">class</span> <span class="nc">Book</span>
+  <span class="kp">include</span> <span class="no">ModuleAttr</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">title</span>
+    <span class="s2">"Book: </span><span class="si">#{</span><span class="k">super</span><span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="n">b</span><span class="o">=</span><span class="no">Book</span><span class="p">.</span><span class="nf">new</span><span class="p">;</span> <span class="n">b</span><span class="p">.</span><span class="nf">title</span><span class="o">=</span><span class="s2">"My Book"</span><span class="p">;</span> <span class="n">b</span><span class="p">.</span><span class="nf">title</span> <span class="c1">#=&gt; "Book: My Book"</span>
 
-#via Module.new
-module ModuleAttr2
-  def self.new(*attrs,&amp;b)
-    m=Module.new(&amp;b)
-    m.module_eval do
-      attr_accessor *attrs
-    end
-    m
-  end
-end
-class Book2
-  include ModuleAttr2.new(:title)
-  def title
-    "Book: #{super}"
-  end
-end
-b=Book2.new; b.title="My Book"; b.title #=&gt; "Book: My Book"
+<span class="c1">#via Module.new</span>
+<span class="k">module</span> <span class="nn">ModuleAttr2</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">new</span><span class="p">(</span><span class="o">*</span><span class="n">attrs</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">=</span><span class="no">Module</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">m</span><span class="p">.</span><span class="nf">module_eval</span> <span class="k">do</span>
+      <span class="nb">attr_accessor</span> <span class="o">*</span><span class="n">attrs</span>
+    <span class="k">end</span>
+    <span class="n">m</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="k">class</span> <span class="nc">Book2</span>
+  <span class="kp">include</span> <span class="no">ModuleAttr2</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">title</span>
+    <span class="s2">"Book: </span><span class="si">#{</span><span class="k">super</span><span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="n">b</span><span class="o">=</span><span class="no">Book2</span><span class="p">.</span><span class="nf">new</span><span class="p">;</span> <span class="n">b</span><span class="p">.</span><span class="nf">title</span><span class="o">=</span><span class="s2">"My Book"</span><span class="p">;</span> <span class="n">b</span><span class="p">.</span><span class="nf">title</span> <span class="c1">#=&gt; "Book: My Book"</span>
 
-#This can be extended at wish:
-class ModuleStruct &lt; Module
-  def initialize(*attributes)
-    @attributes = attributes
-    attr_reader *attributes
-    define_method :initialize do |data| #here initialize is an instance method of the created module
-      attributes.each do |attribute|
-        instance_variable_set("@#{attribute}", data[attribute])
-      end
-    end
-  end
-  def inspect #here inspect is a method of the created module
-    "#{self.class.to_s}(#{@attributes.map(&amp;:inspect).join(', ')})"
-  end
-end
-class Book3
-  include ModuleStruct.new(:title)
-  def title
-    "#{self.class.name}: #{super}"
-  end
-end
-book3 = Book3.new(title: "My Book")
-puts book3.title #=&gt;Book3: My Book
-p ModuleStruct(:title)#=&gt;ModuleStruct(:title)
+<span class="c1">#This can be extended at wish:</span>
+<span class="k">class</span> <span class="nc">ModuleStruct</span> <span class="o">&lt;</span> <span class="no">Module</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">attributes</span><span class="p">)</span>
+    <span class="vi">@attributes</span> <span class="o">=</span> <span class="n">attributes</span>
+    <span class="nb">attr_reader</span> <span class="o">*</span><span class="n">attributes</span>
+    <span class="n">define_method</span> <span class="ss">:initialize</span> <span class="k">do</span> <span class="o">|</span><span class="n">data</span><span class="o">|</span> <span class="c1">#here initialize is an instance method of the created module</span>
+      <span class="n">attributes</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">attribute</span><span class="o">|</span>
+        <span class="nb">instance_variable_set</span><span class="p">(</span><span class="s2">"@</span><span class="si">#{</span><span class="n">attribute</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">attribute</span><span class="p">])</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">inspect</span> <span class="c1">#here inspect is a method of the created module</span>
+    <span class="s2">"</span><span class="si">#{</span><span class="nb">self</span><span class="p">.</span><span class="nf">class</span><span class="p">.</span><span class="nf">to_s</span><span class="si">}</span><span class="s2">(</span><span class="si">#{</span><span class="vi">@attributes</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:inspect</span><span class="p">).</span><span class="nf">join</span><span class="p">(</span><span class="s1">', '</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="k">class</span> <span class="nc">Book3</span>
+  <span class="kp">include</span> <span class="no">ModuleStruct</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">title</span>
+    <span class="s2">"</span><span class="si">#{</span><span class="nb">self</span><span class="p">.</span><span class="nf">class</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2">: </span><span class="si">#{</span><span class="k">super</span><span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="n">book3</span> <span class="o">=</span> <span class="no">Book3</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">title: </span><span class="s2">"My Book"</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="n">book3</span><span class="p">.</span><span class="nf">title</span> <span class="c1">#=&gt;Book3: My Book</span>
+<span class="nb">p</span> <span class="no">ModuleStruct</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span><span class="c1">#=&gt;ModuleStruct(:title)</span>
 
-#Note: Class can't be subclassed, the solution is to use the
-#singleton_class: class Foo; extend Ploum; #class_helpers; end
-</code></pre>
+<span class="c1">#Note: Class can't be subclassed, the solution is to use the</span>
+<span class="c1">#singleton_class: class Foo; extend Ploum; #class_helpers; end</span>
+</code></pre></div></div>
 <p>#}}}1
 # Examples {{{1
 # Module instance variables:

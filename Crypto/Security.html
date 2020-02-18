@@ -114,7 +114,8 @@ Multiple Schnorr Signatures with EdDsa</p>
 
 <h2 id="pake">PAKE</h2>
 
-<p>Password authenticated key exchange (PAKE)</p>
+<p>Password authenticated key exchange (PAKE)
+Cf Opaque</p>
 
 <h2 id="pkcs">PKCS</h2>
 
@@ -199,19 +200,28 @@ obfuscation/white-box crypto, functional encryption, fully homomorphique</p>
 https://en.wikipedia.org/wiki/Functional_encryption
 https://crypto.stackexchange.com/questions/386/what-are-the-differences-between-white-box-cryptography-and-code-obfuscation</p>
 
+<ul>
+  <li>Math mesh: http://mathmesh.com/Documents/draft-hallambaker-mesh-architecture.html
+https://mailarchive.ietf.org/arch/browse/mathmesh/?qdr=y</li>
+</ul>
+
 <h2 id="software">Software</h2>
 
 <ul>
   <li>gpg alternative</li>
   <li>https://latacora.micro.blog/2019/07/16/the-pgp-problem.html</li>
   <li>
-    <p>https://blog.gtank.cc/modern-alternatives-to-pgp/
-File transfert (using pake): https://magic-wormhole.readthedocs.io/en/latest/welcome.html
-Signature: signify / minisign
-Encryption: age https://docs.google.com/document/d/11yHom20CrsuX8KQJXBBw04s80Unjv8zCg_A7sPAX_9Y/view, https://news.ycombinator.com/item?id=19951405</p>
+    <p>https://blog.gtank.cc/modern-alternatives-to-pgp/</p>
+  </li>
+  <li>File transfert (using pake): https://magic-wormhole.readthedocs.io/en/latest/welcome.html
+firefox send cli: https://gitlab.com/timvisee/ffsend</li>
+  <li>Signature: signify / minisign</li>
+  <li>
+    <p>Encryption: age https://docs.google.com/document/d/11yHom20CrsuX8KQJXBBw04s80Unjv8zCg_A7sPAX_9Y/view, https://news.ycombinator.com/item?id=19951405
+https://github.com/FiloSottile/age</p>
   </li>
   <li>gpg</li>
-  <li>gpg: 
+  <li>gpg:
   gpg4win [=gpg + kleopatra]
   chrome/firefox plugin: Flowcrypt, Mailvelope
   Web Key Directory: https://wiki.gnupg.org/WKD [=authoritative version
@@ -237,10 +247,11 @@ sont disponibles ici:
 =&gt; signal (was text secure), whatsapp, facebook messenger, google allo</li>
   <li>telegram, threema, wire (closed source)</li>
   <li>matrix: https://matrix.org/blog/2019/06/11/introducing-matrix-1-0-and-the-matrix-org-foundation
-Client: Riot.im</li>
+Client: Riot.im
+=&gt; https://blog.jabberhead.tk/2019/03/10/a-look-at-matrix-orgs-olm-megolm-encryption-protocol/ [Olm=Matrix, vs Omemo]</li>
   <li>
     <p>xmpp: OTR (off the record), OMEMO (multi client end-to-end encryption
-using double ratchet algorithm)</p>
+using double ratchet algorithm, based on signal’s protocol)</p>
   </li>
   <li>Web:</li>
   <li>https://letsencrypt.org/ #free ssl certificates
@@ -304,8 +315,10 @@ Malleability is a property of some cryptographic algorithms.[1] An encryption al
 
 <h1 id="bugs-et-attaques">Bugs et attaques</h1>
 
-<p>Spectre et Meltdown:
-https://googleprojectzero.blogspot.fr/2018/01/reading-privileged-memory-with-side.html</p>
+<ul>
+  <li>Spectre et Meltdown:
+https://googleprojectzero.blogspot.fr/2018/01/reading-privileged-memory-with-side.html</li>
+</ul>
 
 <p>Explications:
 http://pythonsweetness.tumblr.com/post/169166980422/the-mysterious-case-of-the-linux-page-table
@@ -315,6 +328,14 @@ sor-has-unfixable-security-flaws/</p>
 
 <p>https://www.reddit.com/r/sysadmin/comments/7o39et/meltdown_spectre_megathread/</p>
 
-<p>Efail:
+<ul>
+  <li>
+    <p>Efail:
 https://efail.de/
 The EFAIL attacks break PGP and S/MIME email encryption by coercing clients into sending the full plaintext of the emails to the attacker.</p>
+  </li>
+  <li>
+    <p>HTTP Desync
+https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn</p>
+  </li>
+</ul>

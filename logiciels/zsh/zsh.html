@@ -264,14 +264,14 @@ où avec ‘mapfile’: #note: mapfile est builtin dans bash
 <p>https://unix.stackexchange.com/questions/4650/determining-path-to-sourced-shell-script
 https://stackoverflow.com/questions/9901210/bash-source0-equivalent-in-zsh</p>
 
-<pre><code class="language-zsh">called=$_ #put at the beginning of the script!
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">called</span><span class="o">=</span><span class="nv">$_</span> <span class="c">#put at the beginning of the script!</span>
 
 ...
 
-echo "called: $called"
-echo "%x: ${(%):-%x}"
-echo "\$0: $0"
-</code></pre>
+<span class="nb">echo</span> <span class="s2">"called: </span><span class="nv">$called</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="s2">"%x: </span><span class="k">${</span><span class="p">(%)</span><span class="k">:-</span><span class="p">%x</span><span class="k">}</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="s2">"</span><span class="se">\$</span><span class="s2">0: </span><span class="nv">$0</span><span class="s2">"</span>
+</code></pre></div></div>
 
 <p>Calling directly:
   called: 
@@ -300,22 +300,22 @@ filenames=($paths[@]:t)</p>
 filenames=( /some/path/blah<em>blah</em>blah(:t) )</p>
 
 <h2 id="change-arguments">Change arguments:</h2>
-<pre><code class="language-zsh">  #foo.sh
-  foo() {
-  	echo $@
-  }
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c">#foo.sh</span>
+  foo<span class="o">()</span> <span class="o">{</span>
+  	<span class="nb">echo</span> <span class="nv">$@</span>
+  <span class="o">}</span>
   
-  foo $@
-  #bar.sh
-  echo "Before: $@"
-  set -- $@ foo bar
-  . ./foo.sh
-  echo "After: $@"
-$ ./bar.sh ploum plam
+  foo <span class="nv">$@</span>
+  <span class="c">#bar.sh</span>
+  <span class="nb">echo</span> <span class="s2">"Before: </span><span class="nv">$@</span><span class="s2">"</span>
+  <span class="nb">set</span> <span class="nt">--</span> <span class="nv">$@</span> foo bar
+  <span class="nb">.</span> ./foo.sh
+  <span class="nb">echo</span> <span class="s2">"After: </span><span class="nv">$@</span><span class="s2">"</span>
+<span class="nv">$ </span>./bar.sh ploum plam
 Before: ploum plam
 ploum plam foo bar
 After: ploum plam foo bar
-</code></pre>
+</code></pre></div></div>
 
 <h2 id="rename-a-function">Rename a function</h2>
 <p>http://stackoverflow.com/questions/1203583/how-do-i-rename-a-bash-function

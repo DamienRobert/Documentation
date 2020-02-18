@@ -34,41 +34,41 @@ the blocks are exectued in the reverse order of registration
 ie at_exit est comme END{}, mais c’est un END dynamique; et les at_exit et
 END sont interleavés dans l’ordre inverse de leur définition</p>
 
-<pre><code class="language-ruby">class Ploum
-def &lt;&lt;(n)
-  @a+=n
-  return self
-end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Ploum</span>
+<span class="k">def</span> <span class="nf">&lt;&lt;</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+  <span class="vi">@a</span><span class="o">+=</span><span class="n">n</span>
+  <span class="k">return</span> <span class="nb">self</span>
+<span class="k">end</span>
 
-Ploum.new(0)&lt;&lt;1&lt;&lt;2&lt;&lt;3
+<span class="no">Ploum</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="mi">2</span><span class="o">&lt;&lt;</span><span class="mi">3</span>
 
-File.open("ploum") do |file|
-end
-Or
-File.foreach("ploum") do |line|
-end
+<span class="no">File</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="s2">"ploum"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+<span class="k">end</span>
+<span class="no">Or</span>
+<span class="no">File</span><span class="p">.</span><span class="nf">foreach</span><span class="p">(</span><span class="s2">"ploum"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">line</span><span class="o">|</span>
+<span class="k">end</span>
 
-Block comments:
-=begin
-=end
+<span class="no">Block</span> <span class="ss">comments:
+</span><span class="cm">=begin
+=end</span>
 
-BEGIN {
-begin code
-}
+<span class="k">BEGIN</span> <span class="p">{</span>
+<span class="k">begin</span> <span class="n">code</span>
+<span class="p">}</span>
 
-END {
-end code
-}
+<span class="k">END</span> <span class="p">{</span>
+<span class="k">end</span> <span class="n">code</span>
+<span class="p">}</span>
 
-cat &lt;&lt; EOF
-cat &lt;&lt; 'EOF'
-cat &lt;&lt;- EOF
+<span class="n">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOF</span>
+<span class="n">cat</span> <span class="o">&lt;&lt;</span> <span class="s1">'EOF'</span>
+<span class="n">cat</span> <span class="o">&lt;&lt;-</span> <span class="no">EOF</span>
 
-__END__
+<span class="cp">__END__
 Everything after is stored in DATA
 About DATA… I just discovered that it is just a File associated with the
 current script opened for reading and “seeked” after __END__.
-</code></pre>
+</span></code></pre></div></div>
 
 <p>Exit a program:
 exit #process the at_exit block. Simply raises a SystemExit exception
@@ -115,9 +115,9 @@ m=Module.new
 m.singleton_class.module_eval(File.read(“config.rb”))</p>
 
 <h1 id="loadpath-1">LOAD_PATH: {{{1</h1>
-<pre><code class="language-ruby">load_path_to_add="#{ENV['HOME']}/mine/ruby/lib"
-$LOAD_PATH &lt;&lt; load_path_to_add unless $LOAD_PATH.include?(load_path_to_add)
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">load_path_to_add</span><span class="o">=</span><span class="s2">"</span><span class="si">#{</span><span class="no">ENV</span><span class="p">[</span><span class="s1">'HOME'</span><span class="p">]</span><span class="si">}</span><span class="s2">/mine/ruby/lib"</span>
+<span class="vg">$LOAD_PATH</span> <span class="o">&lt;&lt;</span> <span class="n">load_path_to_add</span> <span class="k">unless</span> <span class="vg">$LOAD_PATH</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="n">load_path_to_add</span><span class="p">)</span>
+</code></pre></div></div>
 <p>#}}}1</p>
 
 <h1 id="basic-syntax">Basic syntax:</h1>
@@ -551,14 +551,14 @@ foo(&amp; Proc.new {return 2})
 # Threads {{{1
 https://ruby-doc.org/core-2.4.0/Thread.html</p>
 
-<pre><code class="language-ruby">thr = Thread.new { puts "Whats the big deal" }
-thr.join #=&gt; "Whats the big deal"
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">thr</span> <span class="o">=</span> <span class="no">Thread</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s2">"Whats the big deal"</span> <span class="p">}</span>
+<span class="n">thr</span><span class="p">.</span><span class="nf">join</span> <span class="c1">#=&gt; "Whats the big deal"</span>
 
-thr = Thread.new { sleep }
-thr.status # =&gt; "sleep"
-thr.exit
-thr.status # =&gt; false
-</code></pre>
+<span class="n">thr</span> <span class="o">=</span> <span class="no">Thread</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="nb">sleep</span> <span class="p">}</span>
+<span class="n">thr</span><span class="p">.</span><span class="nf">status</span> <span class="c1"># =&gt; "sleep"</span>
+<span class="n">thr</span><span class="p">.</span><span class="nf">exit</span>
+<span class="n">thr</span><span class="p">.</span><span class="nf">status</span> <span class="c1"># =&gt; false</span>
+</code></pre></div></div>
 
 <p>https://ruby-doc.org/stdlib-2.1.2/libdoc/monitor/rdoc/Monitor.html
 Use the Monitor class when you want to have a lock object for blocks with mutual exclusion.</p>
@@ -837,13 +837,13 @@ re-executes the group rather than simply trying to re-match the same text.</name
 The New ‘Absent Operator’ in Ruby’s Regular Expressions “(?~foo)”</p>
 
 <h1 id="idiomatisme-pour-construire-une-liste-1">Idiomatisme pour construire une liste: {{{1</h1>
-<pre><code class="language-ruby">ploum.each do |plam|
-  (r||=[]) &lt;&lt; plam
-end #le pb c'est que r reste local au block ici...
-r=nil; s="abc".each_char do |c| (r||=[]) &lt;&lt; c end; p r, s
-#-&gt; ["a", "b", "c"] "abc"
-#on voit que la valeur de retour de each_char est "abc"
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ploum</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">plam</span><span class="o">|</span>
+  <span class="p">(</span><span class="n">r</span><span class="o">||=</span><span class="p">[])</span> <span class="o">&lt;&lt;</span> <span class="n">plam</span>
+<span class="k">end</span> <span class="c1">#le pb c'est que r reste local au block ici...</span>
+<span class="n">r</span><span class="o">=</span><span class="kp">nil</span><span class="p">;</span> <span class="n">s</span><span class="o">=</span><span class="s2">"abc"</span><span class="p">.</span><span class="nf">each_char</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="p">(</span><span class="n">r</span><span class="o">||=</span><span class="p">[])</span> <span class="o">&lt;&lt;</span> <span class="n">c</span> <span class="k">end</span><span class="p">;</span> <span class="nb">p</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span>
+<span class="c1">#-&gt; ["a", "b", "c"] "abc"</span>
+<span class="c1">#on voit que la valeur de retour de each_char est "abc"</span>
+</code></pre></div></div>
 <p># List comprehension {{{1
 =================
 ~~~ ruby</p>
@@ -971,14 +971,14 @@ dans un block les nouvelles variables locales restent internes au scope,
 alors que dans if/for/while/until elles se propagent)</p>
 
 <h1 id="enumerator-1">Enumerator {{{1</h1>
-<pre><code class="language-ruby">fib = Enumerator.new do |y|
-  a = b = 1
-  loop do
-    y &lt;&lt; a #alias for y.yield(a)
-    a, b = b, a + b
-  end
-end
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fib</span> <span class="o">=</span> <span class="no">Enumerator</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">y</span><span class="o">|</span>
+  <span class="n">a</span> <span class="o">=</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span>
+  <span class="kp">loop</span> <span class="k">do</span>
+    <span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="c1">#alias for y.yield(a)</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
 <p>Here y is an Enumerator::Yielder
 y=Enumerator::Yielder.new {|x| x}</p>
 
@@ -997,35 +997,35 @@ Then each time the method yields an object, this object is passed to the Enumera
 for each item in the enumeration, and a non-block form which returns a new
 Enumerator wrapping the iteration.</p>
 
-<pre><code class="language-ruby">enumerator = %w(one two three).each
-puts enumerator.class # =&gt; Enumerator
-enumerator.each_with_object("foo") do |item,obj|
-  puts "#{obj}: #{item}"
-end
-# foo: one
-# foo: two
-# foo: three
-enum_with_obj = enumerator.each_with_object("foo")
-puts enum_with_obj.class # =&gt; Enumerator
-enum_with_obj.each do |item,obj|
-  puts "#{obj: #{item}"
-end
-# foo: one
-# foo: two
-# foo: three
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">enumerator</span> <span class="o">=</span> <span class="sx">%w(one two three)</span><span class="p">.</span><span class="nf">each</span>
+<span class="nb">puts</span> <span class="n">enumerator</span><span class="p">.</span><span class="nf">class</span> <span class="c1"># =&gt; Enumerator</span>
+<span class="n">enumerator</span><span class="p">.</span><span class="nf">each_with_object</span><span class="p">(</span><span class="s2">"foo"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="p">,</span><span class="n">obj</span><span class="o">|</span>
+  <span class="nb">puts</span> <span class="s2">"</span><span class="si">#{</span><span class="n">obj</span><span class="si">}</span><span class="s2">: </span><span class="si">#{</span><span class="n">item</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
+<span class="c1"># foo: one</span>
+<span class="c1"># foo: two</span>
+<span class="c1"># foo: three</span>
+<span class="n">enum_with_obj</span> <span class="o">=</span> <span class="n">enumerator</span><span class="p">.</span><span class="nf">each_with_object</span><span class="p">(</span><span class="s2">"foo"</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="n">enum_with_obj</span><span class="p">.</span><span class="nf">class</span> <span class="c1"># =&gt; Enumerator</span>
+<span class="n">enum_with_obj</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="p">,</span><span class="n">obj</span><span class="o">|</span>
+  <span class="nb">puts</span> <span class="s2">"</span><span class="si">#{</span><span class="ss">obj: </span><span class="c1">#{item}"</span>
+<span class="k">end</span>
+<span class="c1"># foo: one</span>
+<span class="c1"># foo: two</span>
+<span class="c1"># foo: three</span>
 
-module Enumerable
-  # a generic method to repeat the values of any enumerable
-  def repeat(n)
-    raise ArgumentError, "#{n} is negative!" if n &lt; 0
-    unless block_given?
-      return to_enum(__method__, n) do # __method__ is :repeat here
-        sz = size     # Call size and multiply by n...
-        sz * n if sz  # but return nil if size itself is nil
-      end
-    end
-    each do |*val|
-      n.times { yield *val }
+<span class="k">module</span> <span class="nn">Enumerable</span>
+  <span class="c1"># a generic method to repeat the values of any enumerable</span>
+  <span class="k">def</span> <span class="nf">repeat</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="no">ArgumentError</span><span class="p">,</span> <span class="s2">"</span><span class="si">#{</span><span class="n">n</span><span class="si">}</span><span class="s2"> is negative!"</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span>
+    <span class="k">unless</span> <span class="nb">block_given?</span>
+      <span class="k">return</span> <span class="n">to_enum</span><span class="p">(</span><span class="n">__method__</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">do</span> <span class="c1"># __method__ is :repeat here</span>
+        <span class="n">sz</span> <span class="o">=</span> <span class="n">size</span>     <span class="c1"># Call size and multiply by n...</span>
+        <span class="n">sz</span> <span class="o">*</span> <span class="n">n</span> <span class="k">if</span> <span class="n">sz</span>  <span class="c1"># but return nil if size itself is nil</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="n">each</span> <span class="k">do</span> <span class="o">|*</span><span class="n">val</span><span class="o">|</span>
+      <span class="n">n</span><span class="p">.</span><span class="nf">times</span> <span class="p">{</span> <span class="k">yield</span> <span class="o">*</span><span class="n">val</span> <span class="si">}</span><span class="s2">
     end
   end
 end
@@ -1042,7 +1042,7 @@ def obj.each
   yield(2)
 end
 obj.to_enum.next #=&gt; 1
-</code></pre>
+</span></code></pre></div></div>
 
 <p>This allows you to chain Enumerators together. For example, you can map a list’s elements to strings containing the index and the element as a string via:
 ~~~ ruby
@@ -1120,12 +1120,12 @@ and y is a Enumerator::Yielder</p>
 http://patshaughnessy.net/2013/4/3/ruby-2-0-works-hard-so-you-can-be-lazy
 http://www.sitepoint.com/implementing-lazy-enumerables-in-ruby/</p>
 
-<pre><code class="language-ruby">e=Enumerator::Lazy.new([1,2]) do |yielder,values|
-  yielder &lt;&lt; values
-end
-e.next #=&gt;1
-e.next #=&gt;2
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">e</span><span class="o">=</span><span class="no">Enumerator</span><span class="o">::</span><span class="no">Lazy</span><span class="p">.</span><span class="nf">new</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span> <span class="k">do</span> <span class="o">|</span><span class="n">yielder</span><span class="p">,</span><span class="n">values</span><span class="o">|</span>
+  <span class="n">yielder</span> <span class="o">&lt;&lt;</span> <span class="n">values</span>
+<span class="k">end</span>
+<span class="n">e</span><span class="p">.</span><span class="nf">next</span> <span class="c1">#=&gt;1</span>
+<span class="n">e</span><span class="p">.</span><span class="nf">next</span> <span class="c1">#=&gt;2</span>
+</code></pre></div></div>
 
 <p>Essentially while Enumerator#map comes from Enumerable#map and returns an
 array, Enumerator::Lazy#map returns an Enumrator::Lazy</p>
@@ -1517,93 +1517,93 @@ http://www.ruby-doc.org/core-2.2.0/Fiber.html
   The fiber which receives the transfer call is treats it much like a resume call. Arguments passed to transfer are treated like those passed to resume.
   You cannot resume a fiber that transferred control to another one. This will cause a double resume error. You need to transfer control back to this fiber before it can yield and resume.</p>
 
-<pre><code class="language-ruby">fiber = Fiber.new do |first|
-  second = Fiber.yield first + 2
-end
-puts fiber.resume 10 #=&gt; 12
-puts fiber.resume 14 #=&gt; 14
-puts fiber.resume 18 #=&gt; FiberError: dead fiber called
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fiber</span> <span class="o">=</span> <span class="no">Fiber</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">first</span><span class="o">|</span>
+  <span class="n">second</span> <span class="o">=</span> <span class="no">Fiber</span><span class="p">.</span><span class="nf">yield</span> <span class="n">first</span> <span class="o">+</span> <span class="mi">2</span>
+<span class="k">end</span>
+<span class="nb">puts</span> <span class="n">fiber</span><span class="p">.</span><span class="nf">resume</span> <span class="mi">10</span> <span class="c1">#=&gt; 12</span>
+<span class="nb">puts</span> <span class="n">fiber</span><span class="p">.</span><span class="nf">resume</span> <span class="mi">14</span> <span class="c1">#=&gt; 14</span>
+<span class="nb">puts</span> <span class="n">fiber</span><span class="p">.</span><span class="nf">resume</span> <span class="mi">18</span> <span class="c1">#=&gt; FiberError: dead fiber called</span>
 
-#Fibers as Enumerators
-#http://stackoverflow.com/questions/9052621/why-do-we-need-fibers
-fib = Fiber.new do
-  x, y = 0, 1
-  loop do
-    Fiber.yield y
-    x,y = y,x+y
-  end
-end
-10.times { puts fib.resume }
+<span class="c1">#Fibers as Enumerators</span>
+<span class="c1">#http://stackoverflow.com/questions/9052621/why-do-we-need-fibers</span>
+<span class="n">fib</span> <span class="o">=</span> <span class="no">Fiber</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span>
+  <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+  <span class="kp">loop</span> <span class="k">do</span>
+    <span class="no">Fiber</span><span class="p">.</span><span class="nf">yield</span> <span class="n">y</span>
+    <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="o">+</span><span class="n">y</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="mi">10</span><span class="p">.</span><span class="nf">times</span> <span class="p">{</span> <span class="nb">puts</span> <span class="n">fib</span><span class="p">.</span><span class="nf">resume</span> <span class="p">}</span>
 
-fiber1 = Fiber.new do
-  puts "In Fiber 1"
-  Fiber.yield
-end
-fiber2 = Fiber.new do
-  puts "In Fiber 2"
-  fiber1.transfer
-  puts "Never see this message"
-end
-fiber3 = Fiber.new do
-  puts "In Fiber 3"
-end
-fiber2.resume
-fiber3.resume
-#=&gt; In fiber 2; In fiber 1; In fiber 3
+<span class="n">fiber1</span> <span class="o">=</span> <span class="no">Fiber</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span>
+  <span class="nb">puts</span> <span class="s2">"In Fiber 1"</span>
+  <span class="no">Fiber</span><span class="p">.</span><span class="nf">yield</span>
+<span class="k">end</span>
+<span class="n">fiber2</span> <span class="o">=</span> <span class="no">Fiber</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span>
+  <span class="nb">puts</span> <span class="s2">"In Fiber 2"</span>
+  <span class="n">fiber1</span><span class="p">.</span><span class="nf">transfer</span>
+  <span class="nb">puts</span> <span class="s2">"Never see this message"</span>
+<span class="k">end</span>
+<span class="n">fiber3</span> <span class="o">=</span> <span class="no">Fiber</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span>
+  <span class="nb">puts</span> <span class="s2">"In Fiber 3"</span>
+<span class="k">end</span>
+<span class="n">fiber2</span><span class="p">.</span><span class="nf">resume</span>
+<span class="n">fiber3</span><span class="p">.</span><span class="nf">resume</span>
+<span class="c1">#=&gt; In fiber 2; In fiber 1; In fiber 3</span>
 
-#}}}1
+<span class="c1">#}}}1</span>
 
-# Basic Methods
-# new {{{1
-Class#new:
-  Calls allocate to create a new object of class's class, then invokes that
-  object's initialize method, passing it args. This is the method that ends
-  up getting called whenever an object is constructed using .new.
-See http://stackoverflow.com/questions/11074175/how-to-return-new-instance-of-subclass-while-initializing-parent-class
+<span class="c1"># Basic Methods</span>
+<span class="c1"># new {{{1</span>
+<span class="no">Class</span><span class="c1">#new:</span>
+  <span class="no">Calls</span> <span class="n">allocate</span> <span class="n">to</span> <span class="n">create</span> <span class="n">a</span> <span class="n">new</span> <span class="n">object</span> <span class="n">of</span> <span class="k">class</span><span class="s1">'s class, then invokes that
+  object'</span><span class="n">s</span> <span class="n">initialize</span> <span class="nb">method</span><span class="p">,</span> <span class="n">passing</span> <span class="n">it</span> <span class="n">args</span><span class="o">.</span> <span class="no">This</span> <span class="n">is</span> <span class="n">the</span> <span class="nb">method</span> <span class="n">that</span> <span class="n">ends</span>
+  <span class="n">up</span> <span class="n">getting</span> <span class="n">called</span> <span class="n">whenever</span> <span class="n">an</span> <span class="n">object</span> <span class="n">is</span> <span class="n">constructed</span> <span class="n">using</span> <span class="p">.</span><span class="nf">new</span><span class="o">.</span>
+<span class="no">See</span> <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="n">stackoverflow</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="n">questions</span><span class="o">/</span><span class="mi">11074175</span><span class="o">/</span><span class="n">how</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="k">return</span><span class="o">-</span><span class="n">new</span><span class="o">-</span><span class="n">instance</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">subclass</span><span class="o">-</span><span class="k">while</span><span class="o">-</span><span class="n">initializing</span><span class="o">-</span><span class="n">parent</span><span class="o">-</span><span class="k">class</span>
 
-# super {{{1
-~~~ ruby
-class Foo
-  def foo(*args,&amp;b)
-    p args,b
-  end
-  def bar(*args,&amp;b)
-    p args,b
-  end
-end
-class Bar &lt;Foo
-  def foo(*args)
-    super #pass all arguments, and the block
-    super("ploum") #pass ploum as argument, but also the block!
-    #trick not to pass the block: super("ploum",&amp;nil)
-  end
-  define_method :bar do |*args|
-    super(*args) #don't pass the block
-  end
-end
-Bar.new.foo("ploum","plam") {|x| x+1}
-Bar.new.bar("ploum","plam") {|x| x+1}
-#=&gt; ["ploum", "plam"], #&lt;Proc:0x00000003a53d88@(pry):48&gt;, 
-#=&gt; ["ploum"], #&lt;Proc:0x00000003a53d88@(pry):48&gt;
-#=&gt; ["ploum", "plam"], nil
-</code></pre>
+<span class="c1"># super {{{1</span>
+<span class="o">~~~</span> <span class="n">ruby</span>
+<span class="k">class</span> <span class="nc">Foo</span>
+  <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+    <span class="nb">p</span> <span class="n">args</span><span class="p">,</span><span class="n">b</span>
+  <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+    <span class="nb">p</span> <span class="n">args</span><span class="p">,</span><span class="n">b</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="k">class</span> <span class="nc">Bar</span> <span class="o">&lt;</span><span class="no">Foo</span>
+  <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">super</span> <span class="c1">#pass all arguments, and the block</span>
+    <span class="k">super</span><span class="p">(</span><span class="s2">"ploum"</span><span class="p">)</span> <span class="c1">#pass ploum as argument, but also the block!</span>
+    <span class="c1">#trick not to pass the block: super("ploum",&amp;nil)</span>
+  <span class="k">end</span>
+  <span class="n">define_method</span> <span class="ss">:bar</span> <span class="k">do</span> <span class="o">|*</span><span class="n">args</span><span class="o">|</span>
+    <span class="k">super</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="c1">#don't pass the block</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="no">Bar</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">foo</span><span class="p">(</span><span class="s2">"ploum"</span><span class="p">,</span><span class="s2">"plam"</span><span class="p">)</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">}</span>
+<span class="no">Bar</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">bar</span><span class="p">(</span><span class="s2">"ploum"</span><span class="p">,</span><span class="s2">"plam"</span><span class="p">)</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">}</span>
+<span class="c1">#=&gt; ["ploum", "plam"], #&lt;Proc:0x00000003a53d88@(pry):48&gt;, </span>
+<span class="c1">#=&gt; ["ploum"], #&lt;Proc:0x00000003a53d88@(pry):48&gt;</span>
+<span class="c1">#=&gt; ["ploum", "plam"], nil</span>
+</code></pre></div></div>
 <p>Note: with ‘define_method’, we can’t use ‘super’ as a keyword, we need to
 explicitly pass the arguments: super(ploum)</p>
 
-<pre><code class="language-ruby">#super and options behave as expected
-class Foo
-  def foo(first="first",*args,opt: true, foo: :foo, **opts)
-    p first,args,opt,foo,opts
-  end
-end
-class Bar &lt;Foo
-  def foo(*args,opt: false, **opts)
-    super
-  end
-end
-Bar.new.foo #=&gt;  ["first", [], false, :foo, {}]
-Bar.new.foo(plim: :plom, foo: :bar) #=&gt; ["first", [], false, :bar, {:plim=&gt;:plom}]
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#super and options behave as expected</span>
+<span class="k">class</span> <span class="nc">Foo</span>
+  <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">first</span><span class="o">=</span><span class="s2">"first"</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="ss">opt: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">foo: :foo</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">)</span>
+    <span class="nb">p</span> <span class="n">first</span><span class="p">,</span><span class="n">args</span><span class="p">,</span><span class="n">opt</span><span class="p">,</span><span class="n">foo</span><span class="p">,</span><span class="n">opts</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="k">class</span> <span class="nc">Bar</span> <span class="o">&lt;</span><span class="no">Foo</span>
+  <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="ss">opt: </span><span class="kp">false</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">)</span>
+    <span class="k">super</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="no">Bar</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">foo</span> <span class="c1">#=&gt;  ["first", [], false, :foo, {}]</span>
+<span class="no">Bar</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">foo</span><span class="p">(</span><span class="ss">plim: :plom</span><span class="p">,</span> <span class="ss">foo: :bar</span><span class="p">)</span> <span class="c1">#=&gt; ["first", [], false, :bar, {:plim=&gt;:plom}]</span>
+</code></pre></div></div>
 
 <h1 id="instanceevalexec-1">instance_{eval,exec} {{{1</h1>
 <p>Rappel: obj.instance_eval
@@ -1735,15 +1735,15 @@ ploum.plam=plim est équivalent à ploum.plam=(plim) sauf que dans
 a=ploum.plam=plim, la valeur de a c’est plim, pas ce que retourne
 plam=(plim).</p>
 
-<pre><code class="language-ruby">class Ploum
-  def initialize(n) @a=n end
-  def a=(n) @a=n; return 10; end
-end
-p=Ploum.new(5)
-p.a=2 #=&gt; 2
-p.a=(2) #=&gt; 2
-p.send(:'a=', 2) #=&gt; 10
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Ploum</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="vi">@a</span><span class="o">=</span><span class="n">n</span> <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">a</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="vi">@a</span><span class="o">=</span><span class="n">n</span><span class="p">;</span> <span class="k">return</span> <span class="mi">10</span><span class="p">;</span> <span class="k">end</span>
+<span class="k">end</span>
+<span class="nb">p</span><span class="o">=</span><span class="no">Ploum</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">p</span><span class="p">.</span><span class="nf">a</span><span class="o">=</span><span class="mi">2</span> <span class="c1">#=&gt; 2</span>
+<span class="nb">p</span><span class="p">.</span><span class="nf">a</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#=&gt; 2</span>
+<span class="nb">p</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="ss">:'a='</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">#=&gt; 10</span>
+</code></pre></div></div>
 <p>(Note amusante, ça marche aussi pour a.[]=(4,5) dans ce cas on a la valeur
 de retour)
 # Remove variables {{{1
@@ -1759,68 +1759,68 @@ variables. Class variables defined within singleton methods belong to the top
 level (although this usage is deprecated and generates a warning). In Ruby 1.9,
 class variables are private to the defining class:</p>
 
-<pre><code class="language-ruby">class Holder
-  @@var = 99
-  def Holder.var=(val)
-    @@var = val
-  end
-  def var
-    @@var
-  end
-end
-a = Holder.new
-a.var # =&gt; "top level variable"
-Holder.var = 123
-a.var # =&gt; 123
-# This references the top-level object
-@@var = "top level variable"
-a.var #=&gt;"top level variable" (because Holder is a subclass of Object it inherites @@var from main)
-def a.get_var
-  @@var
-end
-a.get_var # =&gt; "top level variable" (unlike a.var, would not have worked before defining @@var in Object)
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Holder</span>
+  <span class="vc">@@var</span> <span class="o">=</span> <span class="mi">99</span>
+  <span class="k">def</span> <span class="nc">Holder</span><span class="o">.</span><span class="nf">var</span><span class="o">=</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+    <span class="vc">@@var</span> <span class="o">=</span> <span class="n">val</span>
+  <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">var</span>
+    <span class="vc">@@var</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="n">a</span> <span class="o">=</span> <span class="no">Holder</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">a</span><span class="p">.</span><span class="nf">var</span> <span class="c1"># =&gt; "top level variable"</span>
+<span class="no">Holder</span><span class="p">.</span><span class="nf">var</span> <span class="o">=</span> <span class="mi">123</span>
+<span class="n">a</span><span class="p">.</span><span class="nf">var</span> <span class="c1"># =&gt; 123</span>
+<span class="c1"># This references the top-level object</span>
+<span class="vc">@@var</span> <span class="o">=</span> <span class="s2">"top level variable"</span>
+<span class="n">a</span><span class="p">.</span><span class="nf">var</span> <span class="c1">#=&gt;"top level variable" (because Holder is a subclass of Object it inherites @@var from main)</span>
+<span class="k">def</span> <span class="nc">a</span><span class="o">.</span><span class="nf">get_var</span>
+  <span class="vc">@@var</span>
+<span class="k">end</span>
+<span class="n">a</span><span class="p">.</span><span class="nf">get_var</span> <span class="c1"># =&gt; "top level variable" (unlike a.var, would not have worked before defining @@var in Object)</span>
+</code></pre></div></div>
 
 <p>Class variables are inherited by children but are unique across children:</p>
 
-<pre><code class="language-ruby">class Top
-  @@A = 1
-  @@B = 1
-  def dump
-    puts values
-  end
-  def values
-    "#{self.class.name}: @@A = #@@A, @@B = #@@B"
-  end
-end
-class MiddleOne &lt; Top
-  @@B = 2
-  @@C = 2
-  def values
-    super + ", @@C = #@@C"
-  end
-end
-class MiddleTwo &lt; Top
-  @@B = 3
-  @@C = 3
-  def values
-    super + ", @@C = #@@C"
-  end
-end
-class BottomOne &lt; MiddleOne; end
-class BottomTwo &lt; MiddleTwo; end
-Top.new.dump
-MiddleOne.new.dump
-MiddleTwo.new.dump
-BottomOne.new.dump
-BottomTwo.new.dump
-produces:
-Top: @@A =1, @@B=3
-MiddleOne: @@A =1, @@B=3, @@C=2
-MiddleTwo: @@A =1, @@B=3, @@C=3
-BottomOne: @@A =1, @@B=3, @@C=2
-BottomTwo: @@A =1, @@B=3, @@C=3
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Top</span>
+  <span class="vc">@@A</span> <span class="o">=</span> <span class="mi">1</span>
+  <span class="vc">@@B</span> <span class="o">=</span> <span class="mi">1</span>
+  <span class="k">def</span> <span class="nf">dump</span>
+    <span class="nb">puts</span> <span class="n">values</span>
+  <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">values</span>
+    <span class="s2">"</span><span class="si">#{</span><span class="nb">self</span><span class="p">.</span><span class="nf">class</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2">: @@A = </span><span class="si">#@@A</span><span class="s2">, @@B = </span><span class="si">#@@B</span><span class="s2">"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="k">class</span> <span class="nc">MiddleOne</span> <span class="o">&lt;</span> <span class="no">Top</span>
+  <span class="vc">@@B</span> <span class="o">=</span> <span class="mi">2</span>
+  <span class="vc">@@C</span> <span class="o">=</span> <span class="mi">2</span>
+  <span class="k">def</span> <span class="nf">values</span>
+    <span class="k">super</span> <span class="o">+</span> <span class="s2">", @@C = </span><span class="si">#@@C</span><span class="s2">"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="k">class</span> <span class="nc">MiddleTwo</span> <span class="o">&lt;</span> <span class="no">Top</span>
+  <span class="vc">@@B</span> <span class="o">=</span> <span class="mi">3</span>
+  <span class="vc">@@C</span> <span class="o">=</span> <span class="mi">3</span>
+  <span class="k">def</span> <span class="nf">values</span>
+    <span class="k">super</span> <span class="o">+</span> <span class="s2">", @@C = </span><span class="si">#@@C</span><span class="s2">"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="k">class</span> <span class="nc">BottomOne</span> <span class="o">&lt;</span> <span class="no">MiddleOne</span><span class="p">;</span> <span class="k">end</span>
+<span class="k">class</span> <span class="nc">BottomTwo</span> <span class="o">&lt;</span> <span class="no">MiddleTwo</span><span class="p">;</span> <span class="k">end</span>
+<span class="no">Top</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">dump</span>
+<span class="no">MiddleOne</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">dump</span>
+<span class="no">MiddleTwo</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">dump</span>
+<span class="no">BottomOne</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">dump</span>
+<span class="no">BottomTwo</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">dump</span>
+<span class="ss">produces:
+</span><span class="no">Top</span><span class="p">:</span> <span class="vc">@@A</span> <span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="vc">@@B</span><span class="o">=</span><span class="mi">3</span>
+<span class="no">MiddleOne</span><span class="p">:</span> <span class="vc">@@A</span> <span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="vc">@@B</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="vc">@@C</span><span class="o">=</span><span class="mi">2</span>
+<span class="no">MiddleTwo</span><span class="p">:</span> <span class="vc">@@A</span> <span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="vc">@@B</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="vc">@@C</span><span class="o">=</span><span class="mi">3</span>
+<span class="no">BottomOne</span><span class="p">:</span> <span class="vc">@@A</span> <span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="vc">@@B</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="vc">@@C</span><span class="o">=</span><span class="mi">2</span>
+<span class="no">BottomTwo</span><span class="p">:</span> <span class="vc">@@A</span> <span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="vc">@@B</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="vc">@@C</span><span class="o">=</span><span class="mi">3</span>
+</code></pre></div></div>
 
 <h1 id="binding-and-eval-1">Binding and eval {{{1</h1>
 <p>http://ruby-doc.org/core-2.2.2/Binding.html
@@ -2209,32 +2209,32 @@ undefine_method =&gt;
   superclasses and mixed-in modules for a possible receiver.
   String arguments are converted to symbols.</p>
 
-<pre><code class="language-ruby">   class Parent
-     def hello
-       puts "In parent"
-     end
-   end
-   class Child &lt; Parent
-     def hello
-       puts "In child"
-     end
-   end
-   c = Child.new
-   c.hello
-   #=&gt; In child
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   <span class="k">class</span> <span class="nc">Parent</span>
+     <span class="k">def</span> <span class="nf">hello</span>
+       <span class="nb">puts</span> <span class="s2">"In parent"</span>
+     <span class="k">end</span>
+   <span class="k">end</span>
+   <span class="k">class</span> <span class="nc">Child</span> <span class="o">&lt;</span> <span class="no">Parent</span>
+     <span class="k">def</span> <span class="nf">hello</span>
+       <span class="nb">puts</span> <span class="s2">"In child"</span>
+     <span class="k">end</span>
+   <span class="k">end</span>
+   <span class="n">c</span> <span class="o">=</span> <span class="no">Child</span><span class="p">.</span><span class="nf">new</span>
+   <span class="n">c</span><span class="p">.</span><span class="nf">hello</span>
+   <span class="c1">#=&gt; In child</span>
 
-   class Child
-     remove_method :hello  # remove from child, still in parent
-   end
-   c.hello
-   #=&gt; In parent
+   <span class="k">class</span> <span class="nc">Child</span>
+     <span class="n">remove_method</span> <span class="ss">:hello</span>  <span class="c1"># remove from child, still in parent</span>
+   <span class="k">end</span>
+   <span class="n">c</span><span class="p">.</span><span class="nf">hello</span>
+   <span class="c1">#=&gt; In parent</span>
 
-   class Child
-     undef_method :hello   # prevent any calls to 'hello'
-   end
-   c.hello
-   #=&gt; prog.rb:23: undefined method `hello' for #&lt;Child:0x401b3bb4&gt; (NoMethodError)
-</code></pre>
+   <span class="k">class</span> <span class="nc">Child</span>
+     <span class="n">undef_method</span> <span class="ss">:hello</span>   <span class="c1"># prevent any calls to 'hello'</span>
+   <span class="k">end</span>
+   <span class="n">c</span><span class="p">.</span><span class="nf">hello</span>
+   <span class="c1">#=&gt; prog.rb:23: undefined method `hello' for #&lt;Child:0x401b3bb4&gt; (NoMethodError)</span>
+</code></pre></div></div>
 
 <h1 id="metaprogramming-methods-1">Metaprogramming methods {{{1</h1>
 <p>Small overview: http://www.shopify.com/technology/17370004-theres-more-to-ruby-debugging-than-puts</p>
@@ -2292,14 +2292,14 @@ that takes a String, the optional second and third parameters supply a
 filename and starting line number that are used when reporting
 compilation errors.</p>
 
-    <pre><code class="language-ruby">class Klass
-  def initialize
-    @secret = 99
-  end
-end
-k = Klass.new
-k.instance_eval { @secret }   #=&gt; 99
-</code></pre>
+    <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Klass</span>
+  <span class="k">def</span> <span class="nf">initialize</span>
+    <span class="vi">@secret</span> <span class="o">=</span> <span class="mi">99</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="n">k</span> <span class="o">=</span> <span class="no">Klass</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">k</span><span class="p">.</span><span class="nf">instance_eval</span> <span class="p">{</span> <span class="vi">@secret</span> <span class="p">}</span>   <span class="c1">#=&gt; 99</span>
+</code></pre></div>    </div>
   </li>
   <li>
     <p>method(sym)</p>
@@ -2308,13 +2308,13 @@ k.instance_eval { @secret }   #=&gt; 99
 (or raising NameError). The Method object acts as a closure in obj’s object
 instance, so instance variables and the value of self remain available.</p>
 
-    <pre><code class="language-ruby">s="foo"
-class &lt;&lt; s
-  def foo; p self; end
-end  
-m=s.method(:foo) # =&gt; #&lt;Method: "foo".foo&gt;
-m.call #=&gt; "foo"
-</code></pre>
+    <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s</span><span class="o">=</span><span class="s2">"foo"</span>
+<span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="n">s</span>
+  <span class="k">def</span> <span class="nf">foo</span><span class="p">;</span> <span class="nb">p</span> <span class="nb">self</span><span class="p">;</span> <span class="k">end</span>
+<span class="k">end</span>  
+<span class="n">m</span><span class="o">=</span><span class="n">s</span><span class="p">.</span><span class="nf">method</span><span class="p">(</span><span class="ss">:foo</span><span class="p">)</span> <span class="c1"># =&gt; #&lt;Method: "foo".foo&gt;</span>
+<span class="n">m</span><span class="p">.</span><span class="nf">call</span> <span class="c1">#=&gt; "foo"</span>
+</code></pre></div>    </div>
   </li>
   <li>
     <p>send(symbol [, args…]) =&gt; obj click to toggle source
@@ -2364,26 +2364,26 @@ http://timelessrepo.com/refinements-in-ruby
 http://ruby-doc.org//core-2.2.0/doc/syntax/refinements_rdoc.html
 https://bugs.ruby-lang.org/projects/ruby-trunk/wiki/RefinementsSpec</p>
 
-<pre><code class="language-ruby">class C
-  def foo
-    puts "C#foo"
-  end
-end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">C</span>
+  <span class="k">def</span> <span class="nf">foo</span>
+    <span class="nb">puts</span> <span class="s2">"C#foo"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-refined=module M
-  refine C do
-    def foo
-      puts "C#foo in M"
-    end
-  end
-end
-refined # &lt;refinement:C@M&gt;
-refined.ancestors #[#&lt;refinement:C@M&gt;, C, Object, Kernel, BasicObject]
+<span class="n">refined</span><span class="o">=</span><span class="k">module</span> <span class="nn">M</span>
+  <span class="n">refine</span> <span class="no">C</span> <span class="k">do</span>
+    <span class="k">def</span> <span class="nf">foo</span>
+      <span class="nb">puts</span> <span class="s2">"C#foo in M"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="n">refined</span> <span class="c1"># &lt;refinement:C@M&gt;</span>
+<span class="n">refined</span><span class="p">.</span><span class="nf">ancestors</span> <span class="c1">#[#&lt;refinement:C@M&gt;, C, Object, Kernel, BasicObject]</span>
 
-using M
-x = C.new
-c.foo #=&gt; C#foo in M
-</code></pre>
+<span class="n">using</span> <span class="no">M</span>
+<span class="n">x</span> <span class="o">=</span> <span class="no">C</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">c</span><span class="p">.</span><span class="nf">foo</span> <span class="c1">#=&gt; C#foo in M</span>
+</code></pre></div></div>
 <p>refine: private method of Module: Module#refine(klass, &amp;block)
 klass has to be a Class
 in the block, the passed parameter is an anonymous module (with a special
@@ -2512,11 +2512,11 @@ RefinedString.ancestors #[RefinedString, Object, Kernel, BasicObject]
 <h1 id="functional">Functional:</h1>
 <p># yield {{{1</p>
 
-<pre><code class="language-ruby">def Class.run
-  yield
-end
-Class.run { def foo; "foo"; end }
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nc">Class</span><span class="o">.</span><span class="nf">run</span>
+  <span class="k">yield</span>
+<span class="k">end</span>
+<span class="no">Class</span><span class="p">.</span><span class="nf">run</span> <span class="p">{</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">;</span> <span class="s2">"foo"</span><span class="p">;</span> <span class="k">end</span> <span class="p">}</span>
+</code></pre></div></div>
 
 <p>Inside the yield, the context (self, klass, binding and cref) are those of
 the block (because it is a closure). So in the yield ‘self=main,
@@ -2704,20 +2704,20 @@ sprintf("%{foo}f", { :foo =&gt; 1 }) #=&gt; "1f
 <h1 id="evaluating-keyword-arguments-into-instance-variables">Evaluating keyword arguments into instance variables:</h1>
 <p>http://stackoverflow.com/questions/18876592/set-ruby-2-0-keyword-arguments-with-attr-accessor-on-initialize</p>
 
-<pre><code class="language-ruby">def initialize(*args)
-  args.each do |k,v|
-    instance_variable_set("@#{k}", v) unless v.nil?
-  end
-end
-#with keywords:
-def initialize(keywords: nil, title: nil, url: nil, adsetting: nil)
-  method(__method__).parameters.each do |type, k|
-    next unless type == :key
-    v = eval(k.to_s)
-    instance_variable_set("@#{k}", v) unless v.nil?
-  end
-end
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+  <span class="n">args</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span>
+    <span class="nb">instance_variable_set</span><span class="p">(</span><span class="s2">"@</span><span class="si">#{</span><span class="n">k</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">unless</span> <span class="n">v</span><span class="p">.</span><span class="nf">nil?</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="c1">#with keywords:</span>
+<span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="ss">keywords: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">title: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">url: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">adsetting: </span><span class="kp">nil</span><span class="p">)</span>
+  <span class="nb">method</span><span class="p">(</span><span class="n">__method__</span><span class="p">).</span><span class="nf">parameters</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">type</span><span class="p">,</span> <span class="n">k</span><span class="o">|</span>
+    <span class="k">next</span> <span class="k">unless</span> <span class="n">type</span> <span class="o">==</span> <span class="ss">:key</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">k</span><span class="p">.</span><span class="nf">to_s</span><span class="p">)</span>
+    <span class="nb">instance_variable_set</span><span class="p">(</span><span class="s2">"@</span><span class="si">#{</span><span class="n">k</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">unless</span> <span class="n">v</span><span class="p">.</span><span class="nf">nil?</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <h1 id="open-modes-1">Open modes {{{1</h1>
 <p>http://stackoverflow.com/questions/3682359/what-are-the-ruby-file-open-modes-and-options
@@ -2773,6 +2773,7 @@ foo.:bar #-&gt; foo.method(:bar)
 - then as alias to yield_self
   “foo”.tap {|s| s+”bar”} #foo
   “foo”.then {|s| s+”bar”} #foobar
+  “foo”.itself #foo
 - endless ranges
 - Enumerable#chain and Enumerator#+
 - function composition operators « and » to Proc and Method.

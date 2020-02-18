@@ -13,15 +13,6 @@ https://github.com/coturn/coturn
 
 Stun clients: https://unix.stackexchange.com/questions/25019/checking-the-type-of-nat?rq=1
 
-# Conntrack
-
-* https://home.regit.org/netfilter-en/netfilter-connmark/
-
-Mark filtering like `ip rule` is done on the packet level. Using conntrack
-connmark, one can set the mark as the connmark's mark.
-Cf https://wiki.nftables.org/wiki-nftables/index.php/Matching_connection_tracking_stateful_metainformation
-https://wiki.nftables.org/wiki-nftables/index.php/Setting_packet_metainformation
-
 # Iptables
 
 -F chain: flush the selected chain
@@ -40,6 +31,13 @@ ufw limit SSH
 Check: ufw status; ufw show raw
 
 # Conntrack
+
+* https://home.regit.org/netfilter-en/netfilter-connmark/
+
+Mark filtering like `ip rule` is done on the packet level. Using conntrack
+connmark, one can set the mark as the connmark's mark.
+Cf https://wiki.nftables.org/wiki-nftables/index.php/Matching_connection_tracking_stateful_metainformation
+https://wiki.nftables.org/wiki-nftables/index.php/Setting_packet_metainformation
 
 - zones: https://lwn.net/Articles/370152/
 Virtual conntrack tables that can be used to separate connections from

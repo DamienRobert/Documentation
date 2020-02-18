@@ -1,0 +1,71 @@
+<p>vim: fdm=expr ft=markdownlight</p>
+
+<h1 id="documentation">Documentation</h1>
+
+<p>https://spyder.wordpress.com/2014/03/16/why-ocaml-why-now/
+http://roscidus.com/blog/blog/2013/06/20/replacing-python-round-2/
+http://roscidus.com/blog/blog/2013/09/28/ocaml-objects/
+http://roscidus.com/blog/blog/2013/12/20/polymorphism-for-beginners/
+https://blog.baturin.org/introduction-to-ocaml.html</p>
+
+<h1 id="syntax">Syntax</h1>
+
+<p>(* constantes *)
+let n=3 and m=3;;</p>
+
+<p>(* temporary assignement *)
+let n=3 in n+1;;
+[let x=a in b is equivalent to (function x-&gt;b)(a)]</p>
+
+<p>(* functions *)
+# let f x y=x+y;;
+val f : int -&gt; int -&gt; int = <fun>
+# let f=function x -&gt; function y -&gt; x+y;;
+val f : int -&gt; int -&gt; int = <fun>
+# let f = fun x y -&gt; x+y;;
+val f : int -&gt; int -&gt; int = <fun></fun></fun></fun></p>
+
+<p>(* references *)
+# let x=ref 0;;
+val x : int ref = {contents = 0}
+# !x;;
+- : int = 0
+# x:=2;;
+- : unit = ()
+# x ;;
+- : int ref = {contents = 2}</p>
+
+<p>(* arrays *)
+# let a = [| 1; 2|];;
+val a : int array = [|1; 2|]
+# a.(0);;
+- : int = 1
+# a.(0) &lt;- 5;;
+- : unit = ()
+# a;;
+- : int array = [|5; 2|]</p>
+
+<p>(* lists *)
+# let a=[1;2];;
+val a : int list = [1; 2]</p>
+
+<p>(* blocks *)
+()
+begin; end;</p>
+
+<p>(* imperatif *)
+if foo then bar else baz
+for k=1 to/downto n do bar… done
+while cond do … done</p>
+
+<p>exception NoMore;;
+raise NoMore;;
+try … with NoMore -&gt; …</p>
+
+<p>(* pattern matching *)
+let rec intersection l1 l2 = match (l1,l2) with
+    [], _ -&gt; []
+  | _,[] -&gt; []
+  |p1::q1, p2::q2 -&gt; if p1<p2 then="" intersection="" q1="" l2="" else="" if="" p1="">p2 then intersection l1 q2
+                     else p1::intersection q1 q2;;
+val intersection : 'a list -&gt; 'a list -&gt; 'a list = <fun></fun></p2></p>

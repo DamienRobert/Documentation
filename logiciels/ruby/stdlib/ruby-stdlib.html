@@ -132,46 +132,46 @@ Time.local(year,month…),Time.gm(year,month…),Time.iso8601,Time.xmlschema,Tim
 Time.now,Time.parse,Time.at(seconds)…
 Conversion: t.iso8601=t.xmlschema,t.rfc2822=t.rfc922,t.httpdate,t.utc,t.localtime</p>
 
-<pre><code class="language-ruby">  require time
-  t=Time.now
-  #=&gt; 2012-11-30 17:31:13 +0100
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nb">require</span> <span class="n">time</span>
+  <span class="n">t</span><span class="o">=</span><span class="no">Time</span><span class="p">.</span><span class="nf">now</span>
+  <span class="c1">#=&gt; 2012-11-30 17:31:13 +0100</span>
   
-  t.iso8601 #=t.xmlschema
-  #=&gt; "2012-11-30T17:31:13+01:00"
-  Time.iso8601(t.iso8601)
-  #=&gt; 2012-11-30 16:31:13 UTC
+  <span class="n">t</span><span class="p">.</span><span class="nf">iso8601</span> <span class="c1">#=t.xmlschema</span>
+  <span class="c1">#=&gt; "2012-11-30T17:31:13+01:00"</span>
+  <span class="no">Time</span><span class="p">.</span><span class="nf">iso8601</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="nf">iso8601</span><span class="p">)</span>
+  <span class="c1">#=&gt; 2012-11-30 16:31:13 UTC</span>
   
-  t.rfc2822 #=t.rfc822
-  #=&gt; "Fri, 30 Nov 2012 17:31:13 +0100"
-  Time.rfc2822(t.rfc2822)
-  #=&gt; 2012-11-30 16:31:13 UTC
+  <span class="n">t</span><span class="p">.</span><span class="nf">rfc2822</span> <span class="c1">#=t.rfc822</span>
+  <span class="c1">#=&gt; "Fri, 30 Nov 2012 17:31:13 +0100"</span>
+  <span class="no">Time</span><span class="p">.</span><span class="nf">rfc2822</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="nf">rfc2822</span><span class="p">)</span>
+  <span class="c1">#=&gt; 2012-11-30 16:31:13 UTC</span>
   
-  t.utc
-  #=&gt; 2012-11-30 16:31:13 UTC
-  t.httpdate
-  #=&gt; "Fri, 30 Nov 2012 16:31:13 GMT"
-  Time.httpdate(t.httpdate) #parse a httpdate date
-  #=&gt; 2012-11-30 17:31:13 +0100
+  <span class="n">t</span><span class="p">.</span><span class="nf">utc</span>
+  <span class="c1">#=&gt; 2012-11-30 16:31:13 UTC</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">httpdate</span>
+  <span class="c1">#=&gt; "Fri, 30 Nov 2012 16:31:13 GMT"</span>
+  <span class="no">Time</span><span class="p">.</span><span class="nf">httpdate</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="nf">httpdate</span><span class="p">)</span> <span class="c1">#parse a httpdate date</span>
+  <span class="c1">#=&gt; 2012-11-30 17:31:13 +0100</span>
   
-  Time.parse("11/2012")
-  #=&gt; 2012-11-01 00:00:00 +0100
-  Time.parse("11/11")
-  #=&gt; 2012-11-11 00:00:00 +0100
+  <span class="no">Time</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="s2">"11/2012"</span><span class="p">)</span>
+  <span class="c1">#=&gt; 2012-11-01 00:00:00 +0100</span>
+  <span class="no">Time</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="s2">"11/11"</span><span class="p">)</span>
+  <span class="c1">#=&gt; 2012-11-11 00:00:00 +0100</span>
   
-  #Time.parse marche sur xmlschema, rfc2822 et httpdate
-  #Chronic.parse ne marche que sur xmlschema
+  <span class="c1">#Time.parse marche sur xmlschema, rfc2822 et httpdate</span>
+  <span class="c1">#Chronic.parse ne marche que sur xmlschema</span>
   
-  #Ex: optparse/time est donné par
-  require 'optparse'
-  require 'time'
-  OptionParser.accept(Time) do |s,|
-    begin
-      (Time.httpdate(s) rescue Time.parse(s)) if s
-    rescue
-      raise OptionParser::InvalidArgument, s
-    end
-  end
-</code></pre>
+  <span class="c1">#Ex: optparse/time est donné par</span>
+  <span class="nb">require</span> <span class="s1">'optparse'</span>
+  <span class="nb">require</span> <span class="s1">'time'</span>
+  <span class="no">OptionParser</span><span class="p">.</span><span class="nf">accept</span><span class="p">(</span><span class="no">Time</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="p">,</span><span class="o">|</span>
+    <span class="k">begin</span>
+      <span class="p">(</span><span class="no">Time</span><span class="p">.</span><span class="nf">httpdate</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">rescue</span> <span class="no">Time</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="k">if</span> <span class="n">s</span>
+    <span class="k">rescue</span>
+      <span class="k">raise</span> <span class="no">OptionParser</span><span class="o">::</span><span class="no">InvalidArgument</span><span class="p">,</span> <span class="n">s</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div></div>
 
 <h2 id="time-with-active-support">Time with active support</h2>
 <p>http://danilenko.org/2012/7/6/rails_timezones/
@@ -187,30 +187,30 @@ if Time.zone_default is set. (set by Time.zone=…)
 Method for creating new ActiveSupport::TimeWithZone instance in time zone
 of self from number of seconds since the Unix epoch.</p>
 
-<pre><code class="language-ruby">require 'active_support/all'
-tz=ActiveSupport::TimeZone['Europe/Paris'] #alias for ActiveSupport::TimeZone.new("Europe/Paris") #=&gt; (GMT+01:00) Europe/Paris
-Time.zone="Alaska" #default time zone
-tz=ActiveSupport::TimeZone['America/Los_Angeles']
-t=Time.local(2012) #=&gt; 2012-01-01 00:00:00 +0100
-t.zone #=&gt; "CET"
-t.in_time_zone #=&gt; Sat, 31 Dec 2011 14:00:00 AKST -09:00
-t.in_time_zone(tz) #=&gt; Sat, 31 Dec 2011 15:00:00 PST -08:00
-t.in_time_zone("Europe/Paris") #=&gt; Sun, 01 Jan 2012 00:00:00 CET +01:00
-Time.zone.at(t) # =&gt; Sat, 31 Dec 2011 14:00:00 AKST -09:00
-tz.at(t) #=&gt; Sat, 31 Dec 2011 15:00:00 PST -08:00
-Time.current #=&gt; Thu, 26 Feb 2015 02:13:43 AKST -09:00
-Time.zone.now #=&gt; Thu, 26 Feb 2015 02:16:32 AKST -09:00
-  # Where Time.zone.now is
-  # class ActiveSupport::TimeZone
-  #   def now
-  #     Time.now.utc.in_time_zone(self)
-  #   end
-  # end
-  # And Time#current is
-  # def current
-  #   ::Time.zone ? ::Time.zone.now : ::Time.now
-  # end
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'active_support/all'</span>
+<span class="n">tz</span><span class="o">=</span><span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TimeZone</span><span class="p">[</span><span class="s1">'Europe/Paris'</span><span class="p">]</span> <span class="c1">#alias for ActiveSupport::TimeZone.new("Europe/Paris") #=&gt; (GMT+01:00) Europe/Paris</span>
+<span class="no">Time</span><span class="p">.</span><span class="nf">zone</span><span class="o">=</span><span class="s2">"Alaska"</span> <span class="c1">#default time zone</span>
+<span class="n">tz</span><span class="o">=</span><span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TimeZone</span><span class="p">[</span><span class="s1">'America/Los_Angeles'</span><span class="p">]</span>
+<span class="n">t</span><span class="o">=</span><span class="no">Time</span><span class="p">.</span><span class="nf">local</span><span class="p">(</span><span class="mi">2012</span><span class="p">)</span> <span class="c1">#=&gt; 2012-01-01 00:00:00 +0100</span>
+<span class="n">t</span><span class="p">.</span><span class="nf">zone</span> <span class="c1">#=&gt; "CET"</span>
+<span class="n">t</span><span class="p">.</span><span class="nf">in_time_zone</span> <span class="c1">#=&gt; Sat, 31 Dec 2011 14:00:00 AKST -09:00</span>
+<span class="n">t</span><span class="p">.</span><span class="nf">in_time_zone</span><span class="p">(</span><span class="n">tz</span><span class="p">)</span> <span class="c1">#=&gt; Sat, 31 Dec 2011 15:00:00 PST -08:00</span>
+<span class="n">t</span><span class="p">.</span><span class="nf">in_time_zone</span><span class="p">(</span><span class="s2">"Europe/Paris"</span><span class="p">)</span> <span class="c1">#=&gt; Sun, 01 Jan 2012 00:00:00 CET +01:00</span>
+<span class="no">Time</span><span class="p">.</span><span class="nf">zone</span><span class="p">.</span><span class="nf">at</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="c1"># =&gt; Sat, 31 Dec 2011 14:00:00 AKST -09:00</span>
+<span class="n">tz</span><span class="p">.</span><span class="nf">at</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="c1">#=&gt; Sat, 31 Dec 2011 15:00:00 PST -08:00</span>
+<span class="no">Time</span><span class="p">.</span><span class="nf">current</span> <span class="c1">#=&gt; Thu, 26 Feb 2015 02:13:43 AKST -09:00</span>
+<span class="no">Time</span><span class="p">.</span><span class="nf">zone</span><span class="p">.</span><span class="nf">now</span> <span class="c1">#=&gt; Thu, 26 Feb 2015 02:16:32 AKST -09:00</span>
+  <span class="c1"># Where Time.zone.now is</span>
+  <span class="c1"># class ActiveSupport::TimeZone</span>
+  <span class="c1">#   def now</span>
+  <span class="c1">#     Time.now.utc.in_time_zone(self)</span>
+  <span class="c1">#   end</span>
+  <span class="c1"># end</span>
+  <span class="c1"># And Time#current is</span>
+  <span class="c1"># def current</span>
+  <span class="c1">#   ::Time.zone ? ::Time.zone.now : ::Time.now</span>
+  <span class="c1"># end</span>
+</code></pre></div></div>
 
 <p>(Active support add Time.current() (like Time.now() but with time zone
 in Time.zone_default.)
@@ -222,83 +222,83 @@ Also add things like now=Time.current, now+1.year</p>
 
 <h1 id="logger">Logger</h1>
 
-<pre><code class="language-ruby">require 'logger'
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'logger'</span>
 
-logger = Logger.new(STDOUT)
-logger.level = Logger::WARN
+<span class="n">logger</span> <span class="o">=</span> <span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">STDOUT</span><span class="p">)</span>
+<span class="n">logger</span><span class="p">.</span><span class="nf">level</span> <span class="o">=</span> <span class="no">Logger</span><span class="o">::</span><span class="no">WARN</span>
 
-logger.debug("Created logger")
-logger.info("Program started")
-logger.warn("Nothing to do!")
+<span class="n">logger</span><span class="p">.</span><span class="nf">debug</span><span class="p">(</span><span class="s2">"Created logger"</span><span class="p">)</span>
+<span class="n">logger</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">"Program started"</span><span class="p">)</span>
+<span class="n">logger</span><span class="p">.</span><span class="nf">warn</span><span class="p">(</span><span class="s2">"Nothing to do!"</span><span class="p">)</span>
 
-original_formatter = Logger::Formatter.new
-logger.formatter = proc { |severity, datetime, progname, msg|
-  original_formatter.call(severity, datetime, progname, msg.dump)
-}
+<span class="n">original_formatter</span> <span class="o">=</span> <span class="no">Logger</span><span class="o">::</span><span class="no">Formatter</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">logger</span><span class="p">.</span><span class="nf">formatter</span> <span class="o">=</span> <span class="nb">proc</span> <span class="p">{</span> <span class="o">|</span><span class="n">severity</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">progname</span><span class="p">,</span> <span class="n">msg</span><span class="o">|</span>
+  <span class="n">original_formatter</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">severity</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">progname</span><span class="p">,</span> <span class="n">msg</span><span class="p">.</span><span class="nf">dump</span><span class="p">)</span>
+<span class="p">}</span>
 
- # 4. Create a logger which ages the logfile once it reaches a certain size.
- #    Leave 10 "old" log files where each file is about 1,024,000 bytes.
-logger = Logger.new('foo.log', 10, 1024000)
+ <span class="c1"># 4. Create a logger which ages the logfile once it reaches a certain size.</span>
+ <span class="c1">#    Leave 10 "old" log files where each file is about 1,024,000 bytes.</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s1">'foo.log'</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1024000</span><span class="p">)</span>
 
- # 5. Create a logger which ages the logfile daily/weekly/monthly.
-logger = Logger.new('foo.log', 'daily')
-logger = Logger.new('foo.log', 'weekly')
-logger = Logger.new('foo.log', 'monthly')
+ <span class="c1"># 5. Create a logger which ages the logfile daily/weekly/monthly.</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s1">'foo.log'</span><span class="p">,</span> <span class="s1">'daily'</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s1">'foo.log'</span><span class="p">,</span> <span class="s1">'weekly'</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s1">'foo.log'</span><span class="p">,</span> <span class="s1">'monthly'</span><span class="p">)</span>
 
- # Level:
-Logger.new(logdev, level: :info) # 'INFO' / Logger::INFO
+ <span class="c1"># Level:</span>
+<span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">logdev</span><span class="p">,</span> <span class="ss">level: :info</span><span class="p">)</span> <span class="c1"># 'INFO' / Logger::INFO</span>
 
- # Default log format:
- #    SeverityID, [DateTime #pid] SeverityLabel -- ProgName: message
- # =&gt; I, [1999-03-03T02:34:24.895701 #19074]  INFO -- Main: info.
+ <span class="c1"># Default log format:</span>
+ <span class="c1">#    SeverityID, [DateTime #pid] SeverityLabel -- ProgName: message</span>
+ <span class="c1"># =&gt; I, [1999-03-03T02:34:24.895701 #19074]  INFO -- Main: info.</span>
 
-def initialize(logdev, shift_age = 0, shift_size = 1048576, level: DEBUG,
-               progname: nil, formatter: nil, datetime_format: nil,
-               shift_period_suffix: '%Y%m%d')
-end
-attr_accessor :progname, :formatter
-datetime_format=
+<span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">logdev</span><span class="p">,</span> <span class="n">shift_age</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">shift_size</span> <span class="o">=</span> <span class="mi">1048576</span><span class="p">,</span> <span class="ss">level: </span><span class="no">DEBUG</span><span class="p">,</span>
+               <span class="ss">progname: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">formatter: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">datetime_format: </span><span class="kp">nil</span><span class="p">,</span>
+               <span class="ss">shift_period_suffix: </span><span class="s1">'%Y%m%d'</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="nb">attr_accessor</span> <span class="ss">:progname</span><span class="p">,</span> <span class="ss">:formatter</span>
+<span class="n">datetime_format</span><span class="o">=</span>
 
-def level=(severity)
-  if severity.is_a?(Integer)
-    @level = severity
-  else
-    case severity.to_s.downcase
-    when 'debug'
-      @level = DEBUG
-    ...
-    end
-  end
-end
+<span class="k">def</span> <span class="nf">level</span><span class="o">=</span><span class="p">(</span><span class="n">severity</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">severity</span><span class="p">.</span><span class="nf">is_a?</span><span class="p">(</span><span class="no">Integer</span><span class="p">)</span>
+    <span class="vi">@level</span> <span class="o">=</span> <span class="n">severity</span>
+  <span class="k">else</span>
+    <span class="k">case</span> <span class="n">severity</span><span class="p">.</span><span class="nf">to_s</span><span class="p">.</span><span class="nf">downcase</span>
+    <span class="k">when</span> <span class="s1">'debug'</span>
+      <span class="vi">@level</span> <span class="o">=</span> <span class="no">DEBUG</span>
+    <span class="o">...</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-  Logger#add(severity, message = nil, progname = nil) { ... }
-  def add(severity, message = nil, progname = nil)
-    severity ||= UNKNOWN
-    if @logdev.nil? or severity &lt; @level
-      return true
-    end
-    if progname.nil?
-      progname = @progname
-    end
-    if message.nil?
-      if block_given?
-        message = yield
-      else
-        message = progname
-        progname = @progname
-      end
-    end
-    @logdev.write(
-      format_message(format_severity(severity), Time.now, progname, message))
-    true
-  end
+  <span class="no">Logger</span><span class="c1">#add(severity, message = nil, progname = nil) { ... }</span>
+  <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">severity</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span> <span class="n">progname</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
+    <span class="n">severity</span> <span class="o">||=</span> <span class="no">UNKNOWN</span>
+    <span class="k">if</span> <span class="vi">@logdev</span><span class="p">.</span><span class="nf">nil?</span> <span class="n">or</span> <span class="n">severity</span> <span class="o">&lt;</span> <span class="vi">@level</span>
+      <span class="k">return</span> <span class="kp">true</span>
+    <span class="k">end</span>
+    <span class="k">if</span> <span class="n">progname</span><span class="p">.</span><span class="nf">nil?</span>
+      <span class="n">progname</span> <span class="o">=</span> <span class="vi">@progname</span>
+    <span class="k">end</span>
+    <span class="k">if</span> <span class="n">message</span><span class="p">.</span><span class="nf">nil?</span>
+      <span class="k">if</span> <span class="nb">block_given?</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="k">yield</span>
+      <span class="k">else</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">progname</span>
+        <span class="n">progname</span> <span class="o">=</span> <span class="vi">@progname</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="vi">@logdev</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span>
+      <span class="n">format_message</span><span class="p">(</span><span class="n">format_severity</span><span class="p">(</span><span class="n">severity</span><span class="p">),</span> <span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="p">,</span> <span class="n">progname</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span>
+    <span class="kp">true</span>
+  <span class="k">end</span>
 
-  #   Logger#info(message)
-  #   Logger#info(progname, &amp;block)
-  def info(progname = nil, &amp;block)
-    add(INFO, nil, progname, &amp;block)
-  end
-  def format_message(severity, datetime, progname, msg)
-    (@formatter || @default_formatter).call(severity, datetime, progname, msg)
-  end
-</code></pre>
+  <span class="c1">#   Logger#info(message)</span>
+  <span class="c1">#   Logger#info(progname, &amp;block)</span>
+  <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="n">progname</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="n">add</span><span class="p">(</span><span class="no">INFO</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="n">progname</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+  <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">format_message</span><span class="p">(</span><span class="n">severity</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">progname</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+    <span class="p">(</span><span class="vi">@formatter</span> <span class="o">||</span> <span class="vi">@default_formatter</span><span class="p">).</span><span class="nf">call</span><span class="p">(</span><span class="n">severity</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">progname</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+  <span class="k">end</span>
+</code></pre></div></div>

@@ -612,27 +612,42 @@ Public dns
 - https://www.techradar.com/news/best-dns-server
 - https://www.internetsociety.org/blog/2018/07/a-deeper-dive-into-public-dns-resolver-quad9/
 
-Cloudflare dns: 1.1.1.1 and 1.0.0.1
-                2606:4700:4700::1111 2606:4700:4700::1001
-                dns4torpnlfs2ifuz2s2yf3fc7rdmsbhm6rw75euj35pac6ap25zgqad.onion.
+* Cloudflare dns: 1.1.1.1 and 1.0.0.1
+                  2606:4700:4700::1111 2606:4700:4700::1001
+                  dns4torpnlfs2ifuz2s2yf3fc7rdmsbhm6rw75euj35pac6ap25zgqad.onion.
 
-google dns: 8.8.8.8, 8.8.4.4
-            2001:4860:4860::8888 and 2001:4860:4860::8844
+* google dns: 8.8.8.8, 8.8.4.4
+              2001:4860:4860::8888 and 2001:4860:4860::8844
 
-Quad 9: Secure 9.9.9.9, 2620:fe::fe; Unsecured 9.9.9.10, 2620:fe::10
+* Quad 9: Secure 9.9.9.9, 2620:fe::fe; Unsecured 9.9.9.10, 2620:fe::10
 
-Divers (marchent encore?)
+* Divers (marchent encore?)
   David Madore: regulus.xn--kwg.net, 212.85.152.99
   neuf.fr (212.30.96.108, 213.203.124.146)
   198.41.0.4 : a.root-servers.net
 
-Adguard:
+* Adguard:
 Default: 176.103.130.130, 176.103.130.131 2a00:5a60::ad1:0ff 2a00:5a60::ad2:0ff
          sdns://AQIAAAAAAAAAFDE3Ni4xMDMuMTMwLjEzMDo1NDQzINErR_JS3PLCu_iZEIbq95zkSV2LFsigxDIuUso_OQhzIjIuZG5zY3J5cHQuZGVmYXVsdC5uczEuYWRndWFyZC5jb20
          dns.adguard.com, https://dns.adguard.com/dns-query
 
 Family (safe search): 176.103.130.132 176.103.130.134 2a00:5a60::bad1:0ff 2a00:5a60::bad2:0ff
          sdns://AQIAAAAAAAAAFDE3Ni4xMDMuMTMwLjEzMjo1NDQzILgxXdexS27jIKRw3C7Wsao5jMnlhvhdRUXWuMm1AFq6ITIuZG5zY3J5cHQuZmFtaWx5Lm5zMS5hZGd1YXJkLmNvbQ dns-family.adguard.com https://dns-family.adguard.com/dns-query
+
+* https://dns.watch/index
+84.200.69.80
+resolver1.dns.watch
+
+84.200.70.40
+resolver2.dns.watch
+
+2001:1608:10:25::1c04:b12f
+resolver1.dns.watch
+Explicit v6 FQDN: resolver1v6.dns.watch
+
+2001:1608:10:25::9249:d69b
+resolver2.dns.watch
+Explicit v6 FQDN: resolver2v6.dns.watch
 
 Some ip address
 ===============
@@ -698,3 +713,14 @@ $ curl zx2c4.com/ip
 163.172.161.0
 demo.wireguard.com
 curl/7.49.1
+
+Crypto
+======
+
+DNSSEC: legacy encryption
+DNSCurve and DNSCrypt: curve25519
+
+https://dnscurve.io/faq/differences-between-dnscurve-and-dnssec.html
+https://security.stackexchange.com/questions/91725/dnscrypt-vs-dnscurve
+=> dnscrypt is for stub resolvers, dnscurve for recursive resolvers
+https://umbrella.cisco.com/blog/2010/02/23/opendns-dnscurve/zz

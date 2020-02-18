@@ -1,53 +1,57 @@
 <p>vim: foldmethod=expr ft=markdownlight</p>
 
-<h1 id="clojure-delayfuturespromises">Clojure delay/futures/promises</h1>
+<h1 id="clojures-delayfuturespromises">Clojure’s delay/futures/promises</h1>
 <p>Delay: something that is evaluated when needed (and kept in memory)</p>
 
-<pre><code class="language-clojure">user=&gt; (def my-delay (delay (println "did some work") 100))
- #'user/my-delay
-user=&gt; @my-delay
- did some work
- 100
-user=&gt; @my-delay
- 100
-</code></pre>
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">user=&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">my-delay</span><span class="w"> </span><span class="p">(</span><span class="nf">delay</span><span class="w"> </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"did some work"</span><span class="p">)</span><span class="w"> </span><span class="mi">100</span><span class="p">))</span><span class="w">
+ </span><span class="o">#</span><span class="ss">'user/my-delay</span><span class="w">
+</span><span class="n">user=&gt;</span><span class="w"> </span><span class="o">@</span><span class="n">my-delay</span><span class="w">
+ </span><span class="n">did</span><span class="w"> </span><span class="nb">some</span><span class="w"> </span><span class="n">work</span><span class="w">
+ </span><span class="mi">100</span><span class="w">
+</span><span class="n">user=&gt;</span><span class="w"> </span><span class="o">@</span><span class="n">my-delay</span><span class="w">
+ </span><span class="mi">100</span><span class="w">
+</span></code></pre></div></div>
 
 <p>Future: something run in a thread (or a pool of thread)</p>
 
-<pre><code class="language-clojure">;; A future's calculation is started here and it runs in another thread
-user=&gt; (def f (future (Thread/sleep 10000) (println "done") 100))
- #'user/f
-;;if you wait 10 seconds before dereferencing it you'll see "done"
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">;; A future's calculation is started here and it runs in another thread</span><span class="w">
+</span><span class="n">user=&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="p">(</span><span class="nf">future</span><span class="w"> </span><span class="p">(</span><span class="nf">Thread/sleep</span><span class="w"> </span><span class="mi">10000</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"done"</span><span class="p">)</span><span class="w"> </span><span class="mi">100</span><span class="p">))</span><span class="w">
+ </span><span class="o">#</span><span class="ss">'user/f</span><span class="w">
+</span><span class="c1">;;if you wait 10 seconds before dereferencing it you'll see "done"</span><span class="w">
 
-;; When you dereference it you will block until the result is available.
-user=&gt; @f
- done
- 100
+</span><span class="c1">;; When you dereference it you will block until the result is available.</span><span class="w">
+</span><span class="n">user=&gt;</span><span class="w"> </span><span class="o">@</span><span class="n">f</span><span class="w">
+ </span><span class="n">done</span><span class="w">
+ </span><span class="mi">100</span><span class="w">
 
-;; Dereferencing again will return the already calculated value.
-=&gt; @f
- 100
-</code></pre>
+</span><span class="c1">;; Dereferencing again will return the already calculated value.</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="o">@</span><span class="n">f</span><span class="w">
+ </span><span class="mi">100</span><span class="w">
+</span></code></pre></div></div>
 
 <p>Promises: like a pipe, something that will get a value, and then can get chained to another promise</p>
 
-<pre><code class="language-clojure">user=&gt; (def x (promise))
- #'user/x
-;; Trying to deref at this point will make your repl wait forever
+<div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">user=&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="p">(</span><span class="nf">promise</span><span class="p">))</span><span class="w">
+ </span><span class="o">#</span><span class="ss">'user/x</span><span class="w">
+</span><span class="c1">;; Trying to deref at this point will make your repl wait forever</span><span class="w">
 
-user=&gt; (deliver x 100)
- #&lt;core$promise$reify__5534@4369a50b: 100&gt;
+</span><span class="n">user=&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">deliver</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w">
+ </span><span class="o">#</span><span class="n">&lt;core$promise$reify__5534</span><span class="o">@</span><span class="mi">4369</span><span class="n">a50b</span><span class="err">:</span><span class="w"> </span><span class="mi">100</span><span class="nb">&gt;</span><span class="w">
 
-;; the promise has been delivered, deref x will return immediately
-user=&gt; @x
- 100
-</code></pre>
+</span><span class="c1">;; the promise has been delivered, deref x will return immediately</span><span class="w">
+</span><span class="n">user=&gt;</span><span class="w"> </span><span class="o">@</span><span class="n">x</span><span class="w">
+ </span><span class="mi">100</span><span class="w">
+</span></code></pre></div></div>
 
 <h1 id="js-promises">JS promises:</h1>
-<p>https://promisesaplus.com/
-https://blog.domenic.me/youre-missing-the-point-of-promises/
-Rappel: 
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve
+
+<ul>
+  <li>https://promisesaplus.com/</li>
+  <li>https://blog.domenic.me/youre-missing-the-point-of-promises/</li>
+</ul>
+
+<p>Rappel: 
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve
 Promise.resolve(value)
   The Promise.resolve(value) method returns a Promise object that is
   resolved with the given value. If the value is a thenable (i.e. has a
@@ -63,12 +67,19 @@ qu’on considère qu’il va se comporter comme une Promise)</p>
 
 <h1 id="async-modelsconcurrency">Async models/concurrency</h1>
 
-<p>Trampoline: https://en.wikipedia.org/wiki/Tail_call#Through_trampolining
-Generators and Coroutines: 
-- https://eli.thegreenplace.net/2009/08/29/co-routines-as-an-alternative-to-state-machines/
-+ http://www.dabeaz.com/generators/index.html
-  http://www.dabeaz.com/coroutines/
-  http://www.dabeaz.com/finalgenerator/</p>
+<ul>
+  <li>
+    <p>Trampoline: https://en.wikipedia.org/wiki/Tail_call#Through_trampolining</p>
+  </li>
+  <li>Generators and Coroutines:</li>
+  <li>https://eli.thegreenplace.net/2009/08/29/co-routines-as-an-alternative-to-state-machines/</li>
+  <li>
+    <p>http://www.dabeaz.com/generators/index.html
+http://www.dabeaz.com/coroutines/
+http://www.dabeaz.com/finalgenerator/</p>
+  </li>
+  <li>Algebraic effects: see [Functional/Monades]</li>
+</ul>
 
 <h2 id="callback-to-promises-to-async-see-also-javascript">Callback to promises to async (see also [Javascript]):</h2>
 <p>https://medium.com/@bluepnume/learn-about-promises-before-you-start-using-async-await-eb148164a9c8#.wxf2gxxxv
@@ -206,3 +217,12 @@ de laisser le choix d’implém à la boucle d’évènements (en bout de chaîn
 est-ce qu’on veut des futures… ou autre chose); par contre avec js comme
 les async func sont wrappées dans des promises c’est plus simple à
 manipuler (on ne les distingue pas des vraies promises).</p>
+
+<h2 id="structured-concurrency">Structured Concurrency</h2>
+
+<ul>
+  <li>https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/</li>
+  <li>https://github.com/tokio-rs/tokio/issues/1879
+Structured Concurrency Support (rust)
+https://www.reddit.com/r/rust/comments/ec2ery/exploring_async_structured_concurrency_scoping/</li>
+</ul>

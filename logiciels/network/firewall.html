@@ -16,17 +16,6 @@ https://github.com/coturn/coturn</li>
 
 <p>Stun clients: https://unix.stackexchange.com/questions/25019/checking-the-type-of-nat?rq=1</p>
 
-<h1 id="conntrack">Conntrack</h1>
-
-<ul>
-  <li>https://home.regit.org/netfilter-en/netfilter-connmark/</li>
-</ul>
-
-<p>Mark filtering like <code>ip rule</code> is done on the packet level. Using conntrack
-connmark, one can set the mark as the connmark’s mark.
-Cf https://wiki.nftables.org/wiki-nftables/index.php/Matching_connection_tracking_stateful_metainformation
-https://wiki.nftables.org/wiki-nftables/index.php/Setting_packet_metainformation</p>
-
 <h1 id="iptables">Iptables</h1>
 
 <p>-F chain: flush the selected chain
@@ -44,7 +33,16 @@ ufw limit SSH</p>
 
 <p>Check: ufw status; ufw show raw</p>
 
-<h1 id="conntrack-1">Conntrack</h1>
+<h1 id="conntrack">Conntrack</h1>
+
+<ul>
+  <li>https://home.regit.org/netfilter-en/netfilter-connmark/</li>
+</ul>
+
+<p>Mark filtering like <code>ip rule</code> is done on the packet level. Using conntrack
+connmark, one can set the mark as the connmark’s mark.
+Cf https://wiki.nftables.org/wiki-nftables/index.php/Matching_connection_tracking_stateful_metainformation
+https://wiki.nftables.org/wiki-nftables/index.php/Setting_packet_metainformation</p>
 
 <ul>
   <li>

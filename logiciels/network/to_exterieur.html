@@ -1,21 +1,39 @@
 <p>vim: ft=markdownlight fdm=expr</p>
 
+<h1 id="interface-web-pour-le-mail">Interface web pour le mail</h1>
+
+<p>squirrelmail (old)
+roundcube =&gt; https://www.normalesup.org/phare/roundcube/, https://quatramaran.salle-s.org/roundcube</p>
+
 <h1 id="ssh-via-httphttps">SSH via http/https</h1>
 <p>http: port 80, https: port 443</p>
 
 <ul>
+  <li>Foo over http:</li>
   <li>
     <p>phare2.normalesup.org:443 est un serveur ssh</p>
   </li>
   <li>
     <p>Shellinabox, un émulateur de terminal accessible via navigateur web, a
 été installé sur phare (il remplace Ajaxterm qui a divers problèmes):
-https://www.normalesup.org/phare/shellinabox/</p>
+https://www.normalesup.org/phare/shellinabox/
+=&gt; https://github.com/shellinabox/shellinabox</p>
+  </li>
+  <li>
+    <p>https://github.com/tsl0922/ttyd
+use xtermjs, better terminal emulation than shellinabox</p>
+  </li>
+  <li>
+    <p>https://github.com/novnc/noVNC
+VNC client using HTML5 (WebSockets, Canvas) https://novnc.com</p>
   </li>
   <li>
     <p>https://www.unixmen.com/sslh-a-sslssh-multiplexer-for-linux/
 sslh accepts connections in HTTP, HTTPS, SSH, OpenVPN, tinc, XMPP, or any other protocol that can be tested using a regular expression, on the same port. This makes it possible to connect to any of these servers on port 443 while still serving HTTPS on that port</p>
   </li>
+  <li>Foo over dns</li>
+  <li>iodine (dns tunnel): https://github.com/yarrick/iodine
+https://davidhamann.de/2019/05/12/tunnel-traffic-over-dns-ssh/</li>
 </ul>
 
 <h1 id="port-forwarding">Port forwarding</h1>
@@ -120,7 +138,15 @@ desencapsule l’http reçu sur le port 8080 et l’envoie sur out:port_out</p>
   <li>
     <p>corkscrew [last release 2007], proxytunnel [last release 2008]
 Tunnel through http/https proxies.
-httptunnel can also be used to tunnel through proxies</p>
+Eg ProxyCommand /usr/local/bin/corkscrew proxy.example.com 8080 %h %p
+[Note: httptunnel can also be used to tunnel through proxies]</p>
+
+    <p>Update: corkscrew is still active, cf https://news.ycombinator.com/item?id=21383765</p>
+  </li>
+  <li>
+    <p>https://github.com/erebe/wstunnel
+Tunneling over websocket protocol - Static binary available
+eg: https://kirill888.github.io/notes/wireguard-via-websocket/</p>
   </li>
 </ul>
 

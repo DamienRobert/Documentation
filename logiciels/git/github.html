@@ -1,6 +1,8 @@
-<p>vim: ft=markdownlight foldmethod=expr
-github integration:
-===================</p>
+<p>vim: ft=markdownlight foldmethod=expr</p>
+
+<p>Public key: https://github.com/DamienRobert.keys (ssh-rsa)</p>
+
+<h1 id="github-integration">github integration:</h1>
 
 <p>Git hub pull request branches are in refs/pull/551/head
 If the branch is not yet merged, there is also refs/pull/551/merge:
@@ -187,6 +189,7 @@ hub sync
   Python github wrapper
 
 ## Pull requests
+
 https://help.github.com/articles/checking-out-pull-requests-locally/
 - git fetch origin pull/ID/head:BRANCHNAME
 - git config --add remote.origin.fetch '+refs/pull/*/head:refs/remotes/origin/pr/*' =&gt; check all pull requests, cf https://gist.github.com/piscisaureus/3342247
@@ -198,10 +201,20 @@ than afterwards.
 - to not pollute the origin remote, one could use instead
   fetch = +refs/pull/*/head:refs/gh-pull-requests/remotes/origin/*
 
-Voir aussi les alias de https://gist.github.com/gnarf/5406589
+* Exemples
+ * [new ref]         refs/pull/3/head  -&gt; origin/pr/3/head
+ * [new ref]         refs/pull/4/head  -&gt; origin/pr/4/head
+ * [new ref]         refs/pull/4/merge -&gt; origin/pr/4/merge #=&gt; merged 4/head with master
+
+* Voir aussi les alias de https://gist.github.com/gnarf/5406589
 [alias]
 pr = "!f() { git fetch -fu ${2:-origin} refs/pull/$1/head:pr/$1 &amp;&amp; git checkout pr/$1; }; f"
 pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done" 
+
+=&gt; incorporated into `git my extra set_pr`
+git config alias.pr '!f() { git fetch -fu ${2:-origin} refs/pull/$1/head:refs/remotes/${2:-origin}/pr/$1/head &amp;&amp; git checkout remotes/${2:-origin}/pr/$1/head; }; f'
+git config alias.pr-all '!f() { git fetch -fu ${1:-origin} +refs/pull/*:refs/remotes/${1:-origin}/pr/*; }; f'
+And since the prs are fetched as remote branches, we can clean them via `git remote prune origin`
 
 Tokens
 ======

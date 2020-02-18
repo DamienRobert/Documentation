@@ -57,29 +57,29 @@ someElement.onclick = -&gt;
 
 <h1 id="class">Class</h1>
 
-<pre><code class="language-coffee">class Animal
-  constructor: (@name) -&gt;
-  //shortcut for constructor: (name) -&gt; @name = name
+<div class="language-coffee highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nx">Animal</span>
+  <span class="na">constructor</span><span class="o">:</span> <span class="p">(</span><span class="vi">@</span><span class="na">name</span><span class="p">)</span> <span class="o">-&gt;</span>
+  <span class="o">//</span><span class="nx">shortcut</span> <span class="k">for</span> <span class="na">constructor</span><span class="o">:</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="vi">@</span><span class="na">name</span> <span class="o">=</span> <span class="nx">name</span>
 
-  move: (meters) -&gt;
-    alert @name + " moved #{meters}m."
+  <span class="na">move</span><span class="o">:</span> <span class="p">(</span><span class="nx">meters</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nx">alert</span> <span class="vi">@</span><span class="na">name</span> <span class="o">+</span> <span class="s">" moved </span><span class="si">#{</span><span class="nx">meters</span><span class="si">}</span><span class="s">m."</span>
 
-class Snake extends Animal
-  move: -&gt;
-    alert "Slithering..."
-    super 5
+<span class="k">class</span> <span class="nx">Snake</span> <span class="k">extends</span> <span class="nx">Animal</span>
+  <span class="na">move</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="nx">alert</span> <span class="s">"Slithering..."</span>
+    <span class="k">super</span> <span class="mi">5</span>
 
-class Horse extends Animal
-  move: -&gt;
-    alert "Galloping..."
-    super 45
+<span class="k">class</span> <span class="nx">Horse</span> <span class="k">extends</span> <span class="nx">Animal</span>
+  <span class="na">move</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="nx">alert</span> <span class="s">"Galloping..."</span>
+    <span class="k">super</span> <span class="mi">45</span>
 
-sam = new Snake "Sammy the Python"
-tom = new Horse "Tommy the Palomino"
+<span class="nx">sam</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Snake</span> <span class="s">"Sammy the Python"</span>
+<span class="nx">tom</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Horse</span> <span class="s">"Tommy the Palomino"</span>
 
-sam.move()
-tom.move()
-</code></pre>
+<span class="nx">sam</span><span class="p">.</span><span class="na">move</span><span class="p">()</span>
+<span class="nx">tom</span><span class="p">.</span><span class="na">move</span><span class="p">()</span>
+</code></pre></div></div>
 <p>Compiles to
 ~~~ js
 var Animal, Horse, Snake, sam, tom,

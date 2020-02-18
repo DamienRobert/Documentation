@@ -86,3 +86,66 @@ négative. Si on demande de plus |r|&lt;k/2 alors on n’a plus qu’une solutio
 
 <p>Résumé: a/b est bien approximé par -v_i/u_i (|a/b-p/q|&lt;1/2q^2).
         et r_i/u_i approxime bien a modulo b</p>
+
+<h1 id="irrationalit">Irrationalité</h1>
+
+<ul>
+  <li>Liouville-Roth irrationality measure:
+http://mathworld.wolfram.com/IrrationalityMeasure.html</li>
+</ul>
+
+<table>
+  <tbody>
+    <tr>
+      <td>the largest possible value for μ such that 0 &lt;</td>
+      <td>x − p/q</td>
+      <td>&lt; 1/q^μ is satisfied by an infinite number of integer pairs (p, q) with q &gt; 0.</td>
+    </tr>
+    <tr>
+      <td>Ou encore l’inf des μ pour lesquels il n’y a qu’un nombre fini de solutions, ou encore l’inf des μ pour lesquels</td>
+      <td>x − p/q</td>
+      <td>&gt; 1/q^{μ+ε} pour p,q assez grands.</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>si x rational, μ=1</li>
+  <li>Dirichlet’s approximation theorem: for an irrational α, the inequality
+  | α − p/q | &lt; 1/q^2
+is satisfied by infinitely many integers p and q, ie irrationality measure &gt;= 2.
+Meilleure amélioration possible:
+https://en.wikipedia.org/wiki/Hurwitz%27s_theorem_(number_theory)
+for every irrational number ξ there are infinitely many relatively prime integers m, n such that | ξ − p/q | &lt; 1/sqrt{5}q^2.</li>
+  <li>Transcendental numbers have irrationality measure 2 or greater</li>
+  <li>The Liouville numbers are precisely those numbers having infinite irrationality measure</li>
+  <li>Almost all numbers have an irrationality measure equal to 2.</li>
+  <li>Roth: an algebraic number as irrationality measure = 2
+Liouville: irrationality measure of a degree d alg number is &lt;= d.</li>
+</ul>
+
+<p>μ(x)=1+lim sup(ln q_(n+1))/(ln q_n)
+    =2+lim sup(ln a_(n+1))/(ln q_n)
+où [a_0, a_1, …] est le développement en fraction continues de x et
+p_n/q_n le nième convergent.</p>
+
+<p>=&gt; prouver l’irrationalité: si on exhibe |α-r_n/s_n|=o(1/s_n)
+   ie |s_n α-r_n|-&gt;0, alors α est irrationel;
+   et si |α-r_n/s_n|=O(1/s_n^{2+ε}) alors α est trascendant.
+   Utilisé par Apery pour la preuve de l’irrationalité de ς(3):
+   https://math.stackexchange.com/questions/62878/proving-irrationality</p>
+
+<ul>
+  <li>Résultats de transcendance:</li>
+  <li>
+    <p>https://en.wikipedia.org/wiki/Gelfond%E2%80%93Schneider_theorem (1934)
+  If a and b are algebraic numbers with a ≠ 0, 1, and b irrational, then any value of ab is a transcendental number.</p>
+  </li>
+  <li>https://en.wikipedia.org/wiki/Lindemann%E2%80%93Weierstrass_theorem (1885)</li>
+</ul>
+
+<p>Lindemann–Weierstrass theorem — if α1, …, αn are algebraic numbers that are linearly independent over the rational numbers ℚ, then e^α1, …, e^αn are algebraically independent over ℚ.</p>
+
+<p>An equivalent formulation — If α1, …, αn are distinct algebraic numbers, then the exponentials e^α1, …, e^αn are linearly independent over the algebraic numbers.</p>
+
+<p>Application:  e^α is transcendental for every non-zero algebraic number α, thereby establishing that e and π are transcendental.</p>

@@ -128,13 +128,13 @@ the object without going through the <strong>proto</strong> chain.</p>
 
 <h1 id="functions">Functions</h1>
 
-<pre><code class="language-js">var foo=function(x) {
-  this.foo=x
-}
-var obj={setfoo: foo}
-obj.setfoo("foo")
-obj.foo
-</code></pre>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">foo</span><span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">foo</span><span class="o">=</span><span class="nx">x</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">obj</span><span class="o">=</span><span class="p">{</span><span class="na">setfoo</span><span class="p">:</span> <span class="nx">foo</span><span class="p">}</span>
+<span class="nx">obj</span><span class="p">.</span><span class="nx">setfoo</span><span class="p">(</span><span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">)</span>
+<span class="nx">obj</span><span class="p">.</span><span class="nx">foo</span>
+</code></pre></div></div>
 
 <p>A function return undefined if there is no explicit return.
 In a ‘method’ call like above, this is set to the calling object.
@@ -146,9 +146,9 @@ ignored, but available in ‘arguments’)</p>
 <p>If a function is directly called, this is like calling a method on the
 ‘main’ global object</p>
 
-<pre><code class="language-js">foo(2)
-this.foo //2
-</code></pre>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">foo</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">foo</span> <span class="c1">//2</span>
+</code></pre></div></div>
 
 <p>To call a submethod inside a method, a trick is to use ‘that’ in a closure.</p>
 
@@ -188,16 +188,16 @@ https://javascriptweblog.wordpress.com/2010/07/06/function-declarations-vs-funct
 <p>The scope goes across blocks; it only respect function scopes which are
 closures.</p>
 
-<pre><code class="language-js">Function.method('curry', function ( ) {
-  var slice = Array.prototype.slice,
-      args = slice.apply(arguments),
-      that = this;
-  return function ( ) {
-    return that.apply(null, args.concat(slice.apply(arguments)));
-  };
-});
-add.curry(1)
-</code></pre>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Function</span><span class="p">.</span><span class="nx">method</span><span class="p">(</span><span class="dl">'</span><span class="s1">curry</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">slice</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">,</span>
+      <span class="nx">args</span> <span class="o">=</span> <span class="nx">slice</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">arguments</span><span class="p">),</span>
+      <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">that</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">slice</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">arguments</span><span class="p">)));</span>
+  <span class="p">};</span>
+<span class="p">});</span>
+<span class="nx">add</span><span class="p">.</span><span class="nx">curry</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>Hoisting: http://www.w3schools.com/js/js_hoisting.asp
 Une variable peut-être déclarée ‘var’ après sa définition
@@ -263,30 +263,30 @@ bar.<strong>proto</strong> //=String.prototype
 bar.constructor //=String.prototype.constructor=[Function: String]
 ~~~</p>
 
-<pre><code class="language-js">//Add an instance method to a 'class' function
-Function.prototype.method = function (name, func) {
-  if (!this.prototype[name]) {
-    this.prototype[name] = func;
-  }
-  return this;
-};
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Add an instance method to a 'class' function</span>
+<span class="nb">Function</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">method</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">func</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">prototype</span><span class="p">[</span><span class="nx">name</span><span class="p">])</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">prototype</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">func</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+<span class="p">};</span>
 
-//Set up Parent (technically Parent.prototype) as the superclass
-Function.method('inherits', function (Parent) {
-  this.prototype = new Parent();
-  return this;
-});
+<span class="c1">//Set up Parent (technically Parent.prototype) as the superclass</span>
+<span class="nb">Function</span><span class="p">.</span><span class="nx">method</span><span class="p">(</span><span class="dl">'</span><span class="s1">inherits</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">Parent</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Parent</span><span class="p">();</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+<span class="p">});</span>
 
-// reimplementation of 'new'
-Function.method('new', function ( ) {
-  // Create a new object that inherits from the  constructor's prototype.
-  var that = Object.create(this.prototype);
-  // Invoke the constructor, binding –this- to the new object.
-  var other = this.apply(that, arguments);
-  // If its return value isn't an object, substitute the new object.
-  return (typeof other === 'object' &amp;&amp; other) || that;
-});
-</code></pre>
+<span class="c1">// reimplementation of 'new'</span>
+<span class="nb">Function</span><span class="p">.</span><span class="nx">method</span><span class="p">(</span><span class="dl">'</span><span class="s1">new</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Create a new object that inherits from the  constructor's prototype.</span>
+  <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+  <span class="c1">// Invoke the constructor, binding –this- to the new object.</span>
+  <span class="kd">var</span> <span class="nx">other</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">that</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+  <span class="c1">// If its return value isn't an object, substitute the new object.</span>
+  <span class="k">return</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">other</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">object</span><span class="dl">'</span> <span class="o">&amp;&amp;</span> <span class="nx">other</span><span class="p">)</span> <span class="o">||</span> <span class="nx">that</span><span class="p">;</span>
+<span class="p">});</span>
+</code></pre></div></div>
 
 <h1 id="flow">Flow</h1>
 <p>switch (style) { //fallthrough
@@ -340,9 +340,10 @@ typeof(null)
 <p>JSON.stringify; JSON.parse</p>
 
 <h1 id="ecma-script-6-ecma-script-2015">ECMA Script 6/ ECMA Script 2015</h1>
-<p>http://exploringjs.com/es6/index.html</p>
-
 <ul>
+  <li>
+    <p>http://exploringjs.com/es6/index.html</p>
+  </li>
   <li>
     <p>let (block scoped variable), const (like let but not modifiable)</p>
   </li>

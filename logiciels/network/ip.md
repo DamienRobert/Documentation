@@ -28,6 +28,20 @@ Documentation
   (Note this is different from 'ip route realm' which simply are a way to
   group certain routes)
 
+* TCP
+- https://stackoverflow.com/questions/3757289/tcp-option-so-linger-zero-when-its-required
+  cf aussi ens.forum.informatique.internet:858 et 855
+  et https://www.nybek.com/blog/2015/03/05/cross-platform-testing-of-so_linger/
+- https://stackoverflow.com/questions/740817/behavior-of-shutdownsock-shut-rd-with-tcp
+- https://news.ycombinator.com/item?id=21044529
+  - close(): socket will be lingering in background as usual
+  - shutdown(SHUT_RD): no network side effect, discards read buffer
+  - shutdown(SHUT_WR): equivalent to FIN SO_LINGER socket - if timeout non-zero blocks until write buffer flushed; if timeout is zero then immediately sends RST
+  - the trick with close() after TCP_REPAIR: (https://lwn.net/Articles/495304/) immediately discard a socket with no network side effects.
+  - "ss --kill" command: forcefully close a socket from outside process, done with netlink SOCK_DESTROY command. 
+  - shutdown(SHUT_RD): seem not to have _any_ side effects. you can totally still recv() on that socket. Kerrisk writes 61.6.6: "However if the peer application subsequently writes data on its socket, then it is still possible to read that data on the local socket". Basically, SHUT_RD makes recv() return 0. That's all it does.
+  - SO_LINGER on O_NONBLOCK: shutdown() doesn't block. close() still blocks. 
+
 * Tools:
 - tc show / manipulate traffic control settings (qos)
 - ss: replacement of netstat
@@ -35,6 +49,8 @@ Documentation
 * Linux:
 - http://vger.kernel.org/~davem/skb.html socket buffer, or "SKB"
   http://vger.kernel.org/~davem/skb_data.html
+- http://amsekharkernel.blogspot.com/2014/08/what-is-skb-in-linux-kernel-what-are.html
+
 
 * TOS
 - https://en.wikipedia.org/wiki/Type_of_service
@@ -220,6 +236,7 @@ Note that arp_filter by default is 0: The kernel can respond to arp requests wit
 - http://cpham.perso.univ-pau.fr/ENSEIGNEMENT/UERHD/DescriptifCmdIP.pdf
 - Plus de détails dans le livre: http://linux-ip.net/html/tools-ip-route.html
 - realm: http://linux-ip.net/gl/ip-cref/ip-cref-node172.html#RT-REALMS
+  (classify routes together => rtacct)
 - route lookups are stored in fib table: https://vincent.bernat.ch/en/blog/2017-ipv4-route-lookup-linux
 
 * Usage
@@ -294,8 +311,8 @@ $ ip route get 20.10.3.3
     - mode encap: this specifies the encapsulation mode. Two values are possible: encap creates an outer IPv6 header with the SRH attached, followed by the original, unmodified inner packet. The other value, inline, directly attach the SRH to the original IPv6 packet. The encap mode should be used, unless you know what you are doing.
     - segs fc00:12,fc00:89: a list of comma-separated segments 
 
-- Details:
-  https://translate.google.com/translate?sl=auto&tl=en&u=https%3A%2F%2Fblog.csdn.net%2Fsinat_20184565%2Farticle%2Fdetails%2F84952713
+* Details:
+  - https://translate.google.com/translate?sl=auto&tl=en&u=https%3A%2F%2Fblog.csdn.net%2Fsinat_20184565%2Farticle%2Fdetails%2F84952713
 
   Rather than configuring the local routes via 'ip link', one use 'ip link
   ... external' and then uses encapsulation routes
@@ -317,7 +334,7 @@ $ ip route get 20.10.3.3
    $ ip link set dev gnv0 up
    $ ip route add 172.16.20.1/32 encap ip id 1234 dst 192.168.100.3 dev gnv0
 
-  https://linux.cn/article-10672-1.html
+  - https://linux.cn/article-10672-1.html
   Décrit comment ils combinent des gretap + vrf (pour l'isolation) + nft
   (pour l'offloading) et les patchs soumis au noyau linux pour tout faire
   marcher
@@ -339,6 +356,11 @@ $ ip route get 20.10.3.3
    pour empecher des interactions bizarres entre le nat, les rules et le
    vrf (le même paquet étant vu deux fois, une fois via l'interface
    esclave, l'autre via le vrf, on peut avoir des règles contradictoires)
+  
+  - https://github.com/torvalds/linux/commit/af308b94a2a4a5a27bec9028354c4df444a7c8ba
+     netfilter: nf_tables: add tunnel support 
+
+  - https://serverfault.com/questions/985656/linux-lightweight-tunnels
 
 ## ip rule
 
@@ -524,9 +546,8 @@ Remark: doing that I get `Warning: route NAT is deprecated`
 
 ## Divers:
 
-- realm: http://linux-ip.net/gl/ip-cref/ip-cref-node172.html
-  (classify routes together => rtacct)
-- tos/dsfield
+* Files
+/etc/protocols: ip protocols
 
 Route Configuration:
 - scope: SCOPE_VAL may be a number or a string from the file /etc/iproute2/rt_scopes.
@@ -558,6 +579,10 @@ iw dev wlan0 set type ibss #Setting the operation mode to ad-hoc.
 iw dev wlan0 connect your_essid #Connecting to open network.
 iw dev wlan0 connect your_essid 2432 #Connecting to open network specifying channel.
 iw dev wlan0 connect your_essid key 0:your_key #Connecting to WEP encrypted network
+
+Create an interface from a phy (cf https://iwd.wiki.kernel.org/interface_lifecycle):
+iw dev / iw phy: list interfaces and phy
+sudo iw phy phy0 interface add wlp2s0 type station
 
 bridge
 ======
@@ -607,6 +632,7 @@ Bandwidth tests: iperf3
 * Articles:
 - https://web.archive.org/web/20190427083833/https://www.coverfire.com/articles/queueing-in-the-linux-network-stack/
 - Nice tutorial: https://medium.com/criteo-labs/demystification-of-tc-de3dfe4067c2
+- Hardware offload: https://github.com/Mellanox/mlxsw/wiki/ACLs
 
 * Some modern qdiscs:
 - codel: https://queue.acm.org/detail.cfm?id=2209336
@@ -616,6 +642,7 @@ Bandwidth tests: iperf3
 * Doc
 - https://wiki.archlinux.org/index.php/Advanced_traffic_control
 - https://wiki.debian.org/TrafficControl
+- http://wiki.linuxwall.info/doku.php/en:ressources:dossiers:networking:traffic_control
 
 * Basic usage
 - Change a qdisc:
@@ -640,27 +667,22 @@ Note: for tc filter, it seems that 'classid' is a synonym for 'flowid'
 ## Stateless qdisc
 - noqueue
 - pfifo_fast [original default]
-- mq https://serverfault.com/questions/474230/linux-traffic-control-qdisc-mq
-   classful multiqueue ("mq") dummy scheduler; used by default for multiqueue devices instead of the regular pfifo_fast qdisc (ie with several processors, one can get a mq with a queue by processor, and then each queue is a pfifo_fast)
 - fq_codel (cf https://lists.fedoraproject.org/pipermail/devel/2015-March/209508.html)
+- tc-sfq: Stochastic Fairness Queueing
+  Hash a packet to a random bucket, which is dequeued in a round robin
+  fashion. The quantum is the number of bytes that is dequeued (by default
+  the mtu) by round robin.
+  The hash value can be selected more finely with 'tc filter ... flow'
+  [flow set the classid so I guess sfq uses that. I don't know if it looks
+  at the skb priority too]
+- tc-red: Random  Early  Detection
+  Randomly drop packets if the size is too large
+  (note sfq can be configured with a red mode for each flow)
+  tc-choke is a variation of red (using packets instead of bytes).
+  tc-sfb - Stochastic Fair Blue (Unlike  RED,  where  the  marking  probability has to be configured, BLUE tries to determine the ideal marking probability automatically.)
 
 * https://linux.die.net/man/8/tc-pfifo_fast
 3 queues
-
-* https://linux.die.net/man/8/tc-prio
-[this one actually has a class by queue]
-
-Use the old TOS meaning to map priority to channel
-0   1   2   3   4   5   6   7
-+---+---+---+---+---+---+---+---+
-|           |               |   |
-|PRECEDENCE |      TOS      |MBZ|
-|           |               |   |
-+---+---+---+---+---+---+---+---+
-
-More infos on tc-prio:
-- https://lartc.org/howto/lartc.qdisc.classless.html
-[- https://serverfault.com/questions/894054/tc-prio-how-the-packets-are-prioritized]
 
 * http://man7.org/linux/man-pages/man8/tc-codel.8.html
 
@@ -745,6 +767,39 @@ $ tc qdisc add dev eth1 parent 1:1 cake unlimited besteffort internet nat memlim
 
 ## Classful qdisc
 
+* Multiqueue (classful):
+- multiq: https://www.kernel.org/doc/Documentation/networking/multiqueue.txt
+  => when the device has multiple tx hardware queue, when dequeuing it will
+  skip through the queues and use the first available one.
+  The queue for a packet can be changed via:
+  $ tc filter ... action skbedit queue_mapping 3
+  By default the queue is determined from skb_tx_hash.
+- mq: https://serverfault.com/questions/474230/linux-traffic-control-qdisc-mq
+   => https://lwn.net/Articles/351021/
+   The mq scheduler does two things:
+   - present device TX queues as classes, allowing to attach different qdiscs to them, which are grafted to the TX queues
+   - present accumulated statistics of all device queue root qdiscs
+   => classful multiqueue ("mq") dummy scheduler; used by default for multiqueue devices instead of the regular pfifo_fast qdisc (ie with several processors, one can get a mq with a queue by processor, and then each queue is a pfifo_fast). It present device TX queues as classes, allowing to attach different qdiscs to them, which are grafted to the TX queues
+- mqprio: map traffic flows to hardware queue ranges using priorities
+
+* qfq: a class version of fq
+  https://github.com/Mellanox/mlxsw/wiki/ACLs
+
+* https://linux.die.net/man/8/tc-prio
+[this one actually has a class by queue]
+
+Use the old TOS meaning to map priority to channel
+0   1   2   3   4   5   6   7
++---+---+---+---+---+---+---+---+
+|           |               |   |
+|PRECEDENCE |      TOS      |MBZ|
+|           |               |   |
++---+---+---+---+---+---+---+---+
+
+More infos on tc-prio:
+- https://lartc.org/howto/lartc.qdisc.classless.html
+[- https://serverfault.com/questions/894054/tc-prio-how-the-packets-are-prioritized]
+
 * Hierarchical Token Bucket (HTB) qdisc
 
 Within  the  one  HTB  instance  many  classes may exist. Each of these
@@ -795,7 +850,9 @@ class htb 1:1 root rate 2Mbit ceil 2Mbit burst 1600b cburst 1600b
 class htb 1:5 parent 1:1 prio 0 rate 1Mbit ceil 1500Kbit burst 1600b cburst 1599b 
 class htb 1:6 parent 1:1 prio 0 rate 500Kbit ceil 1500Kbit burst 1600b cburst 1599b 
 class htb 1:7 parent 1:1 prio 0 rate 200Kbit ceil 1Mbit burst 1600b cburst 1600b
-$ tc filter show dev eth1
+
+Cf http://linux-ip.net/articles/Traffic-Control-HOWTO/classful-qdiscs.html
+for borrowing.
 
 * Hierarchical fair-service curve (HFSC)
 
@@ -822,10 +879,16 @@ $ tc add class dev $dev parent parentID classid $ID hfsc [ [ rt  SC ] [ ls  SC ]
 - Tutorials: http://linux-tc-notes.sourceforge.net/tc/doc/sch_hfsc.txt
              http://manpages.ubuntu.com/manpages/precise/man7/tc-hfsc.7.html
 
+* tc-qfq
+https://netdev.vger.kernel.narkive.com/6FYLI2fu/quick-fair-queue-scheduler-maturity-and-examples
+
 ## Netem qdisc
 
 * https://netbeez.net/blog/how-to-use-the-linux-traffic-control/
 => netem: network emulator; to add a wan property
+
+This is a classful qdisc. Lot of details in the master thesis:
+http://home.ifi.uio.no/paalh/students/AndersMoe.pdf
 
 - simulate delay
 $ tc qdisc add dev eth0 root netem delay 200ms
@@ -836,6 +899,8 @@ $ tc qdisc change dev eth0 root netem delay 300ms
 $  tc qdisc add dev eth0 root netem loss 10%
 $ tc qdisc change dev eth0 root netem corrupt 5%
 $ tc qdisc change dev eth0 root netem duplicate 1% 
+
+Manual: http://tcn.hypert.net/tcmanual.pdf
 
 ## Documentations
 ### https://www.tldp.org/HOWTO/html_single/Traffic-Control-HOWTO/
@@ -988,7 +1053,7 @@ Now, enable all ifb interfaces:
 $ ip link set dev ifb0 up # repeat for ifb1, ifb2, ...
 
 And redirect ingress traffic from the physical interfaces to corresponding ifb interface. For eth0 -> ifb0:
-$ tc qdisc add dev eth0 handle ffff: ingress
+$ tc qdisc add dev eth0 handle ffff: ingress #Note: handle ffff: seems to be the default for ingress
 $ tc filter add dev eth0 parent ffff: protocol ip u32 match u32 0 0 action mirred egress redirect dev ifb0
 Again, repeat for eth1 -> ifb1, eth2 -> ifb2 and so on, until all the interfaces you want to shape are covered.
 
@@ -1009,15 +1074,237 @@ Note: ingress shaping is not really useful https://stackoverflow.com/questions/1
 incoming stream to respond to your shaping actions, due to all the buffers
 in routers between the stream source and your interface.
 
-## Filter actions
-* man tc-actions
-Add action to a filter
+Cf also:
+https://serverfault.com/questions/557573/incoming-ingress-traffic-shaping-on-linux-bw-is-lower-than-expected
+
+* clsact
+
+https://lwn.net/Articles/671458/
+Special qdisc which has both ingress and egress support.
+
+   # tc qdisc add dev foo clsact
+   # tc qdisc show dev foo
+   qdisc mq 0: root
+   qdisc pfifo_fast 0: parent :1 bands 3 priomap  1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1
+   qdisc pfifo_fast 0: parent :2 bands 3 priomap  1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1
+   qdisc pfifo_fast 0: parent :3 bands 3 priomap  1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1
+   qdisc pfifo_fast 0: parent :4 bands 3 priomap  1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1
+   qdisc clsact ffff: parent ffff:fff1
+
+Adding filters (deleting, etc works analogous by specifying ingress/egress):
+
+   # tc filter add dev foo ingress bpf da obj bar.o sec ingress
+   # tc filter add dev foo egress  bpf da obj bar.o sec egress
+   # tc filter show dev foo ingress
+   filter protocol all pref 49152 bpf
+   filter protocol all pref 49152 bpf handle 0x1 bar.o:[ingress] direct-action
+   # tc filter show dev foo egress
+   filter protocol all pref 49152 bpf
+   filter protocol all pref 49152 bpf handle 0x1 bar.o:[egress] direct-action
+
+A 'tc filter show dev foo' or 'tc filter show dev foo parent ffff:' will
+show an empty list for clsact. Either using the parent names (ingress/egress)
+or specifying the full major/minor will then show the related filter lists.
+
+* Note: for 'ingress' and 'clsact' the handle by default is ffff:
+qdisc ingress ffff: dev foo1 parent ffff:fff1
+qdisc clsact ffff: dev foo2 parent ffff:fff1 
+
+For 'ingress' we can add a filter to ffff: or any subclass ffff:0001
+Listing the filters show all filters (including on subclasses, ie the
+parent is forgotten, or in other words ffff:xxxx = ffff:).
+The keyword 'ingress' is a shortcut for 'parent ffff:'. 
+So these do the same things
+$ sudo tc filter add dev foo1 ingress matchall action ok
+$ sudo tc filter add dev foo1 parent ffff:02 matchall action ok
+
+For 'clsacct' we need to specify ingress vs egress. In fact ffff:fff2 is
+the ingress subclass, and ffff:fff3 is the egress subclass.
+We can't add filter to ffff:, all other classes are invalid (ffff:fff1
+too), we can only use ingress and egress, and to list filters we need
+$ tc filter show dev foo2 egress = tc filter show dev foo2 parent ffff:fff3
+
+## Filter
+
+* https://medium.com/criteo-labs/demystification-of-tc-de3dfe4067c2
+Note: filters can also be attached to some stateless qdisc, like sfq, cake...
+(but not pfifo_fast)
+
+$ tc filter add dev DEV [parent qdiscid] [handle filter-id] protocol proto prio prio filter... flowid flow-id.
+
+Note: flowid is a synonym for classid and is a classifier.
+Ie if an action is pass/ok, then it get sent to the corresponding class.
+
+### Matching
+
+Nice documentation in https://www.linux.com/tutorials/qos-linux-tc-and-filters/
+
+* Other filters:
+- tc-cgroup match on cgroup
+- tc-bpf: match via (e)bpf (can also specify actions)
+- tc-route: match according to the route: from REALM, fromif TAG, to REALM.
+- tc-fw: match the fwmark, eg $ tc filter add ... handle 6 fw classid 1:1
+  will match fwmark 6.
+- tc-tcindex: match according to the dscp/ecn fields
+- tc-matchall: match all packets
+
+* Basic filtering: tc-basic
+
+tc  filter  ...  basic  [  match EMATCH_TREE ] [ action ACTION_SPEC ] [ classid CLASSID ]
+$ tc filter add dev eth0 parent 1: basic match 'meta(priority eq 6)' classid 1:10
+
+The EMATCH_TREE is described in tc-ematch, in particular it can match metadata.
+
+* tc-flower: match specific key
+  + assigns  an arbitrarily chosen class ID to packets belonging to them (if classid is not specified)
+
+  $ tc filter add dev eth0 parent ffff: protocol ip pref 33 flower dst_mac 52:54:00:3d:c7:6d action ...
+
+* Flow classifying: tc-flow
+       The  flow  classifier  is  meant to extend the SFQ hashing capabilities
+       without hard-coding new hash functions. It  also  allows  deterministic
+       mappings of keys to classes.
+
+Exemples:
+       Classic SFQ hash:
+              tc filter add ... flow hash \
+                   keys src,dst,proto,proto-src,proto-dst divisor 1024
+
+       Classic SFQ hash, but using information from conntrack to work properly
+       in combination with NAT:
+              tc filter add ... flow hash \
+                   keys nfct-src,nfct-dst,proto,nfct-proto-src,nfct-proto-dst \
+                   divisor 1024
+
+       Map destination IPs of 192.168.0.0/24 to classids 1-256:
+              tc filter add ... flow map \
+                   key dst addend -192.168.0.0 divisor 256
+
+Exemple from https://www.linux.com/tutorials/qos-linux-tc-and-filters/:
+  $ tc filter add dev eth0 parent 1: handle 0x1337 flow map key priority baseclass 1:10
+  The flow filter now uses the priority value to construct a destination
+  class ID by adding it to the value of `baseclass`. While this works for
+  priority values of 0, 2 and 6, it will result in non-existent class ID
+  1:14 for Interactive Bulk traffic. In that case, the HTB default applies
+  so that traffic goes into class ID 1:10 just as intended. Please note
+  that specifying a handle is a mandatory requirement by the flow filter,
+  although I didn't see where one would use that later.
+
+Exemple from http://wiki.linuxwall.info/doku.php/en:ressources:dossiers:networking:traffic_control
+$ tc qdisc add dev eth0 root handle 1: sfq perturb 10 quantum 3000 limit 64
+$ tc filter add dev eth0 parent 1:0 protocol ip handle 1 flow hash keys src,dst divisor 1024
+
+* tc-u32: u32 - universal 32bit traffic control filter
+
+$ tc filter ... u32 match ... ht HANDLE
+where HANDLE is hash_table_id (12 bits), hash_table_bucket (8 bits),
+node_id (12 bits). Node_id can also be set by 'order', and correspond to
+the priority. eg 'ht 1: order 3' gives handle 1::3
+
+Exemple:
+            $ tc filter add dev eth0 parent 999:0 prio 99 protocol ip u32 \
+                      match ip src 192.168.8.0/24 classid 1:1
+    => This create a hashtable of size 1 and handle 800, and a filter in 800:0:800. Adding a new u32 filter without specifying the handle would create 800:0:801.
+              filter parent 1: protocol ip pref 99 u32 \
+                      fh 800: ht divisor 1
+              filter parent 1: protocol ip pref 99 u32 \
+                      fh 800::800 order 2048 key ht 800 bkt 0 flowid 1:1 \
+                      match c0a80800/ffffff00 at 12
+
+            $ tc filter add dev eth0 prio 99 handle 1: u32 divisor 256
+            $ tc filter add dev eth0 parent 1: prio 1 u32 \
+                      link 1: hashkey mask 0x0000ff00 at 12 \
+                      match ip src 192.168.0.0/16
+    => When packets matches, they are sent to ht 1:<hash of the bit>
+       We could then classify the packets as follow:
+       tc filter add dev eth0 parent 1: prio 99 u32 ht 1:3: classid 1:16 match u8 0 0'
+
+    More precisely, this adds a filter to the root hash table 800:0:...,
+    which redirect to hash table 1:...
+    Result (here I used the handle 42:) =>
+    filter parent 1: protocol all pref 1 u32 chain 0 
+    filter parent 1: protocol all pref 1 u32 chain 0 fh 801: ht divisor 1 
+    filter parent 1: protocol all pref 1 u32 chain 0 fh 801::800 order 2048 key ht 801 bkt 0 link 42: not_in_hw 
+      match c0a80000/ffff0000 at 12
+        hash mask 0000ff00 at 12 
+    filter parent 1: protocol all pref 99 u32 chain 0 
+    filter parent 1: protocol all pref 99 u32 chain 0 fh 42: ht divisor 256 
+    filter parent 1: protocol all pref 99 u32 chain 0 fh 800: ht divisor 1 
+
+    Note: be vary of the nexthdr+ option used implicitely by tcp/udp:
+    https://lartc.vger.kernel.narkive.com/KTD6vNXU/tc-u32-match-in-nexthdr-not-working
+    we need to get an explicit offset, and so chain rules. See the exemple
+    at the end of tc-u32.
+
+- More details: http://linux-tc-notes.sourceforge.net/tc/doc/cls_u32.txt
+
+    # tc filter add dev eth0 parent 999:0 protocol ip prio 99 u32 \
+        link 1:0: \
+	match ip src 192.168.8.0/24
+
+  If this filter item matches it will "link" to filter list 1:0:, meaning
+  the kernel will now execute filter list 1:0:.  If a filter item in that
+  list matches and classifies a packet then the u32 stops and returns
+  classified packet.  If that does not happen, ie if no filter item in the
+  list classifies the packet then the kernel resumes executing the original
+  list.  Execution continues at the next filter item in the original list,
+  ie the one after the filter item that did the "link".  A linked list can
+  in turn link to other lists.  You can nest up to 7 link commands.
+
+  Hash table 800 is special.  It is called the root.  When you create
+  a u32 filter the root hash table gets created for you automatically.
+  It always has exactly one bucket, numbered 0.  This means the root
+  hash table also exactly one filter list associated with it.  When
+  the u32 filter starts execution it always executes this filter
+  list.  In other words a u32 filter does its thing by executing
+  filter list 800:0.  If filter list 800:0 does not classify the
+  packet (implying that none of the lists it linked to classified it
+  either) then the u32 filter returns the packet unclassified.
+
+  [Note: this is not clear because when adding a rule at a different
+  priority, I get a default ht of 801, 802, ... + The tc-u32 man page say
+  'The filter is given a lower priority than the hash table itself so  u32
+       consults it before manually traversing the hash table.']
+
+  u32 caveats: https://lartc.vger.kernel.narkive.com/KTD6vNXU/tc-u32-match-in-nexthdr-not-working
+               https://lartc.vger.kernel.narkive.com/XomCjWrA/policing-based-on-port-numbers
+
+### Filter actions
+=> Reference: https://people.netfilter.org/pablo/netdev0.1/papers/Linux-Traffic-Control-Classifier-Action-Subsystem-Architecture.pdf
+https://netdevconf.info/0.1/sessions/21.html
+
+add action to a filter: tc filter add dev ... parent ... prio ...
+[matching] [action] 'action1' [CONTROL] [action 'action2' [CONTROL]
+
+-> CONTROL: { reclassify | pipe | drop | continue | ok/pass }
+              reclassify
+                     Restart the classifiction by jumping back to the first
+                     filter attached to the action's parent.
+              pipe   Continue with the next action. This is the default
+                     control.
+              drop   Drop the packed without running any further actions.
+              continue
+                     Continue the classification with the next filter.
+              pass   Return to the calling qdisc for packet processing, and
+                     end classification of this packet.
+(a control action is also called a gact)
+
+Note: an action can be created with a specific 32 bits index eg 'action
+police rate 10kbit burst 10k pipe index 1' which allow to reuse it in
+another filter.
+
+An action can be created with 'tc action' (cf tc-actions) and then attached
+in a filter:
+ $ tc actions add  action connmark zone 3 index 10
+ $ tc filter add dev $ETH parent ffff: pref 11 protocol ip u32 match ip protocol 17 0xff  flowid 1:3 action connmark index 10
+
+* Actions
 -> tc-simple: for debugging actions
 -> tc-mirred: copy / redirect packets
 -> Packet manipulation:
    tc-pedit+tc-csum: edit packet data and recalculate checksum
    tc-skbmod: user friendly pedit
-   tc-skbedit: edit meta data
+   tc-skbedit: edit meta data (supports changing queue mapping, priority field and firewall mark value)
    tc-ife: encaspulate/decapsulate metadata into packet data
 -> High level manipulation:
    tc-nat: stateless nat
@@ -1039,18 +1326,85 @@ The  police  action allows to limit bandwidth of traffic matched by the filter i
                    action police rate 1mbit burst 100k conform-exceed pipe \
                    action mirred egress redirect dev lo
 
+  One can set the policy of exceeding packet / conforming packets via
+  conform-exceed EXCEEDACT[/NOTEXCEEDACT]: continue, drop=shot, ok=pass, reclassify, pipe
+  The default is drop/ok (Warning: the man page is completely wrong here)
+  Note that 'action police rate 1mbit burst 100k pipe' is a shortcut for
+  'conform-exceed pipe'.
+
+### Block and chains
+
 * chains: https://lwn.net/Articles/723067/
 By default we have one filter chain (orderer by priority).
 But we can build different chains and add goto action to them:
 
-$ tc qdisc add dev eth0 ingress
+$ tc qdisc add dev eth0 ingress (default handle of ingress is ffff:)
 $ tc filter add dev eth0 parent ffff: protocol ip pref 33 flower dst_mac 52:54:00:3d:c7:6d action goto chain 11
 $ tc filter add dev eth0 parent ffff: protocol ip pref 22 chain 11 flower dst_ip 192.168.40.1 action drop
 
+$ tc filter show dev eth0 root
+filter parent ffff: protocol ip pref 33 flower chain 0
+filter parent ffff: protocol ip pref 33 flower chain 0 handle 0x1
+  dst_mac 52:54:00:3d:c7:6d
+  eth_type ipv4
+        action order 1: gact action goto chain 11
+         random type none pass val 0
+         index 2 ref 1 bind 1
+filter parent ffff: protocol ip pref 22 flower chain 11
+filter parent ffff: protocol ip pref 22 flower chain 11 handle 0x1
+  eth_type ipv4
+  dst_ip 192.168.40.1
+        action order 1: gact action drop
+         random type none pass val 0
+         index 3 ref 1 bind 1
+
+La chaîne 11 a été crée à la volée par tc filter, mais on aurait aussi pu
+utiliser tc-chain: https://github.com/Mellanox/mlxsw/wiki/ACLs
+$ tc chain add dev enp3s0np1 ingress chain 11
+
+
 * block: share filter chains
-$ tc qdisc add dev ens7 ingress block 22
-$ tc qdisc add dev ens8 ingress block 22
+cf https://patchwork.ozlabs.org/cover/863941/
+
+tc qdisc add dev ... ingress_block blockindex ...
+=> this qdisc will use the filter chain of block 'blockindex'.
+
+$ tc qdisc add dev ens7 ingress_block 22 ingress
+$ tc qdisc add dev ens8 ingress_block 22 ingress
 $ tc filter add block 22 protocol ip pref 25 flower dst_ip 192.168.0.0/16 action drop
+
+Block sharing is also supported for clsact qdisc:
+$ tc qdisc add dev ens10 ingress_block 23 egress_block 24 clsact
+$ tc qdisc show dev ens10
+qdisc clsact ffff: dev ens10 parent ffff:fff1 ingress_block 23 egress_block 24
+
+## Exemples
+$ sudo ip l add dev foo1 type dummy
+$ sudo ip l set dev foo1 up
+$ sudo tc qdisc add dev foo1 root sfq
+
+$ sudo tc qdisc del dev foo1 root
+$ sudo tc qdisc add dev foo1 root handle 1: htb default 6
+$ sudo tc class add dev foo1 parent 1: classid 1:1 htb rate 2mbit ceil 2mbit
+$ sudo tc class add dev foo1 parent 1:1 classid 1:5 htb rate 1mbit ceil 1.5mbit
+$ sudo tc filter add dev foo1 protocol ip parent 1:0 prio 0 u32 match ip src 1.2.3.4/32 flowid 1:5
+$ sudo tc filter add dev foo1 protocol ip parent 1:0 prio 0 u32 match ip sport 22 0xffff flowid 1:5
+$ sudo tc class add dev foo1 parent 1:1 classid 1:6 htb rate 0.5mbit ceil 1.5mbit
+$ sudo tc class add dev foo1 parent 1:1 classid 1:7 htb rate 0.2mbit ceil 1mbit
+$ sudo tc filter add dev foo1 protocol ip parent 1:0 prio 5 u32 match ip src 4.5.6.7/32 flowid 1:7
+$ sudo tc qdisc add dev foo1 parent 1:5 handle 20: sfq perturb 10
+
+Mithrim ~ $ tc qdisc  show dev foo1
+qdisc htb 1: root refcnt 2 r2q 10 default 0x6 direct_packets_stat 0 direct_qlen 1000
+qdisc sfq 20: parent 1:5 limit 127p quantum 1514b depth 127 divisor 1024 perturb 10sec 
+Mithrim ~ $ tc -g class  show dev foo1
++---(1:1) htb rate 2Mbit ceil 2Mbit burst 1600b cburst 1600b 
+     +---(1:5) htb prio 0 rate 1Mbit ceil 1500Kbit burst 1600b cburst 1599b 
+     +---(1:6) htb prio 0 rate 500Kbit ceil 1500Kbit burst 1600b cburst 1599b 
+     +---(1:7) htb prio 0 rate 200Kbit ceil 1Mbit burst 1600b cburst 1600b 
+Mithrim ~ $ tc filter show dev foo1
+filter parent 1: protocol ip pref 5 u32 chain 0
+...
 
 Virtual networking
 ==================

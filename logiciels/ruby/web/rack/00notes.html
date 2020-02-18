@@ -127,65 +127,65 @@ Options:
 - :include add given paths to $LOAD_PATH
 - :require require the given libraries</p>
 
-<pre><code class="language-ruby">def default_options
-  environment  = ENV['RACK_ENV'] || 'development'
-  default_host = environment == 'development' ? 'localhost' : '0.0.0.0'
-  {
-    :environment =&gt; environment,
-    :pid         =&gt; nil,
-    :Port        =&gt; 9292,
-    :Host        =&gt; default_host,
-    :AccessLog   =&gt; [],
-    :config      =&gt; "config.ru"
-  }
-end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">default_options</span>
+  <span class="n">environment</span>  <span class="o">=</span> <span class="no">ENV</span><span class="p">[</span><span class="s1">'RACK_ENV'</span><span class="p">]</span> <span class="o">||</span> <span class="s1">'development'</span>
+  <span class="n">default_host</span> <span class="o">=</span> <span class="n">environment</span> <span class="o">==</span> <span class="s1">'development'</span> <span class="p">?</span> <span class="s1">'localhost'</span> <span class="p">:</span> <span class="s1">'0.0.0.0'</span>
+  <span class="p">{</span>
+    <span class="ss">:environment</span> <span class="o">=&gt;</span> <span class="n">environment</span><span class="p">,</span>
+    <span class="ss">:pid</span>         <span class="o">=&gt;</span> <span class="kp">nil</span><span class="p">,</span>
+    <span class="ss">:Port</span>        <span class="o">=&gt;</span> <span class="mi">9292</span><span class="p">,</span>
+    <span class="ss">:Host</span>        <span class="o">=&gt;</span> <span class="n">default_host</span><span class="p">,</span>
+    <span class="ss">:AccessLog</span>   <span class="o">=&gt;</span> <span class="p">[],</span>
+    <span class="ss">:config</span>      <span class="o">=&gt;</span> <span class="s2">"config.ru"</span>
+  <span class="p">}</span>
+<span class="k">end</span>
 
-def start
-  ...
-  server.run wrapped_app, options, &amp;blk
-end
+<span class="k">def</span> <span class="nf">start</span>
+  <span class="o">...</span>
+  <span class="n">server</span><span class="p">.</span><span class="nf">run</span> <span class="n">wrapped_app</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">blk</span>
+<span class="k">end</span>
 
-def server
-  @_server ||= Rack::Handler.get(options[:server]) || Rack::Handler.default(options)
-end
-  #and in handler.rb, Rack::Handler.default is
-  def self.default(options = {})
-    # Guess.
-    if ENV.include?("PHP_FCGI_CHILDREN")
-      # We already speak FastCGI
-      options.delete :File
-      options.delete :Port
-      Rack::Handler::FastCGI
-    elsif ENV.include?(REQUEST_METHOD)
-      Rack::Handler::CGI
-    elsif ENV.include?("RACK_HANDLER")
-      self.get(ENV["RACK_HANDLER"])
-    else
-      pick ['thin', 'puma', 'webrick']
-    end
-  end
+<span class="k">def</span> <span class="nf">server</span>
+  <span class="vi">@_server</span> <span class="o">||=</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Handler</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="ss">:server</span><span class="p">])</span> <span class="o">||</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Handler</span><span class="p">.</span><span class="nf">default</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+<span class="k">end</span>
+  <span class="c1">#and in handler.rb, Rack::Handler.default is</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">default</span><span class="p">(</span><span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+    <span class="c1"># Guess.</span>
+    <span class="k">if</span> <span class="no">ENV</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="s2">"PHP_FCGI_CHILDREN"</span><span class="p">)</span>
+      <span class="c1"># We already speak FastCGI</span>
+      <span class="n">options</span><span class="p">.</span><span class="nf">delete</span> <span class="ss">:File</span>
+      <span class="n">options</span><span class="p">.</span><span class="nf">delete</span> <span class="ss">:Port</span>
+      <span class="no">Rack</span><span class="o">::</span><span class="no">Handler</span><span class="o">::</span><span class="no">FastCGI</span>
+    <span class="k">elsif</span> <span class="no">ENV</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="no">REQUEST_METHOD</span><span class="p">)</span>
+      <span class="no">Rack</span><span class="o">::</span><span class="no">Handler</span><span class="o">::</span><span class="no">CGI</span>
+    <span class="k">elsif</span> <span class="no">ENV</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="s2">"RACK_HANDLER"</span><span class="p">)</span>
+      <span class="nb">self</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="no">ENV</span><span class="p">[</span><span class="s2">"RACK_HANDLER"</span><span class="p">])</span>
+    <span class="k">else</span>
+      <span class="n">pick</span> <span class="p">[</span><span class="s1">'thin'</span><span class="p">,</span> <span class="s1">'puma'</span><span class="p">,</span> <span class="s1">'webrick'</span><span class="p">]</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
 
-def wrapped_app
-  @wrapped_app ||= build_app app
-end
+<span class="k">def</span> <span class="nf">wrapped_app</span>
+  <span class="vi">@wrapped_app</span> <span class="o">||=</span> <span class="n">build_app</span> <span class="n">app</span>
+<span class="k">end</span>
 
-def build_app(app)
-  middleware[options[:environment]].reverse_each do |middleware|
-    middleware = middleware.call(self) if middleware.respond_to?(:call)
-    next unless middleware
-    klass, *args = middleware
-    app = klass.new(app, *args)
-  end
-  app
-end
+<span class="k">def</span> <span class="nf">build_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+  <span class="n">middleware</span><span class="p">[</span><span class="n">options</span><span class="p">[</span><span class="ss">:environment</span><span class="p">]].</span><span class="nf">reverse_each</span> <span class="k">do</span> <span class="o">|</span><span class="n">middleware</span><span class="o">|</span>
+    <span class="n">middleware</span> <span class="o">=</span> <span class="n">middleware</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="k">if</span> <span class="n">middleware</span><span class="p">.</span><span class="nf">respond_to?</span><span class="p">(</span><span class="ss">:call</span><span class="p">)</span>
+    <span class="k">next</span> <span class="k">unless</span> <span class="n">middleware</span>
+    <span class="n">klass</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span> <span class="o">=</span> <span class="n">middleware</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">klass</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+  <span class="k">end</span>
+  <span class="n">app</span>
+<span class="k">end</span>
 
-def middleware
-  self.class.middleware
-end
-def self.middleware
-  default_middleware_by_environment
-end
-</code></pre>
+<span class="k">def</span> <span class="nf">middleware</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">class</span><span class="p">.</span><span class="nf">middleware</span>
+<span class="k">end</span>
+<span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">middleware</span>
+  <span class="n">default_middleware_by_environment</span>
+<span class="k">end</span>
+</code></pre></div></div>
 <p>def self.default_middleware_by_environment
 -&gt; depending on the environment (by default ‘development’), rake adds
 default middleware:
@@ -219,107 +219,107 @@ default middleware:
     eval “Rack::Builder.new {\n” + builder_script + “\n}.to_app”,
 and the commands in the builder block are instance_evaluated</p>
 
-<pre><code class="language-ruby">  def initialize(default_app = nil,&amp;block)
-    @use, @map, @run, @warmup = [], nil, default_app, nil
-    instance_eval(&amp;block) if block_given?
-  end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">default_app</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="vi">@use</span><span class="p">,</span> <span class="vi">@map</span><span class="p">,</span> <span class="vi">@run</span><span class="p">,</span> <span class="vi">@warmup</span> <span class="o">=</span> <span class="p">[],</span> <span class="kp">nil</span><span class="p">,</span> <span class="n">default_app</span><span class="p">,</span> <span class="kp">nil</span>
+    <span class="nb">instance_eval</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span> <span class="k">if</span> <span class="nb">block_given?</span>
+  <span class="k">end</span>
   
-  def self.app(default_app = nil, &amp;block)
-    self.new(default_app, &amp;block).to_app
-  end
-  def call(env)
-    to_app.call(env)
-  end
-   #as you can see Builder.app converts directly to an app, so we can't add
-   #middleware after the block. In app=Rack::Builder.new {...}, one can still
-   #do app.use foo and so on.
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">app</span><span class="p">(</span><span class="n">default_app</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">default_app</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">).</span><span class="nf">to_app</span>
+  <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+    <span class="n">to_app</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+  <span class="k">end</span>
+   <span class="c1">#as you can see Builder.app converts directly to an app, so we can't add</span>
+   <span class="c1">#middleware after the block. In app=Rack::Builder.new {...}, one can still</span>
+   <span class="c1">#do app.use foo and so on.</span>
   
-  def to_app
-    app = @map ? generate_map(@run, @map) : @run
-    fail "missing run or map statement" unless app
-    app = @use.reverse.inject(app) { |a,e| e[a] }
-    @warmup.call(app) if @warmup
-    app
-  end
+  <span class="k">def</span> <span class="nf">to_app</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="vi">@map</span> <span class="p">?</span> <span class="n">generate_map</span><span class="p">(</span><span class="vi">@run</span><span class="p">,</span> <span class="vi">@map</span><span class="p">)</span> <span class="p">:</span> <span class="vi">@run</span>
+    <span class="nb">fail</span> <span class="s2">"missing run or map statement"</span> <span class="k">unless</span> <span class="n">app</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="vi">@use</span><span class="p">.</span><span class="nf">reverse</span><span class="p">.</span><span class="nf">inject</span><span class="p">(</span><span class="n">app</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span><span class="n">e</span><span class="o">|</span> <span class="n">e</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="p">}</span>
+    <span class="vi">@warmup</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">app</span><span class="p">)</span> <span class="k">if</span> <span class="vi">@warmup</span>
+    <span class="n">app</span>
+  <span class="k">end</span>
   
-  # Specifies middleware to use in a stack.
-  #   class Middleware
-  #     def initialize(app)
-  #       @app = app
-  #     end
-  #     def call(env)
-  #       env["rack.some_header"] = "setting an example"
-  #       @app.call(env)
-  #     end
-  #   end
-  #   use Middleware
-  #   run lambda { |env| [200, { "Content-Type" =&gt; "text/plain" }, ["OK"]] }
-  #
-  # All requests through to this application will first be processed by the middleware class.
-  # The +call+ method in this example sets an additional environment key which then can be
-  # referenced in the application if required.
-  def use(middleware, *args, &amp;block)
-    if @map
-      mapping, @map = @map, nil
-      #if there are mapping, we need to build the currently constructed map
-      #first before wrapping it, so add a 'middleware' that just generates
-      #the current app with mappings
-      @use &lt;&lt; proc { |app| generate_map app, mapping }
-    end
-    @use &lt;&lt; proc { |app| middleware.new(app, *args, &amp;block) }
-  end
+  <span class="c1"># Specifies middleware to use in a stack.</span>
+  <span class="c1">#   class Middleware</span>
+  <span class="c1">#     def initialize(app)</span>
+  <span class="c1">#       @app = app</span>
+  <span class="c1">#     end</span>
+  <span class="c1">#     def call(env)</span>
+  <span class="c1">#       env["rack.some_header"] = "setting an example"</span>
+  <span class="c1">#       @app.call(env)</span>
+  <span class="c1">#     end</span>
+  <span class="c1">#   end</span>
+  <span class="c1">#   use Middleware</span>
+  <span class="c1">#   run lambda { |env| [200, { "Content-Type" =&gt; "text/plain" }, ["OK"]] }</span>
+  <span class="c1">#</span>
+  <span class="c1"># All requests through to this application will first be processed by the middleware class.</span>
+  <span class="c1"># The +call+ method in this example sets an additional environment key which then can be</span>
+  <span class="c1"># referenced in the application if required.</span>
+  <span class="k">def</span> <span class="nf">use</span><span class="p">(</span><span class="n">middleware</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="k">if</span> <span class="vi">@map</span>
+      <span class="n">mapping</span><span class="p">,</span> <span class="vi">@map</span> <span class="o">=</span> <span class="vi">@map</span><span class="p">,</span> <span class="kp">nil</span>
+      <span class="c1">#if there are mapping, we need to build the currently constructed map</span>
+      <span class="c1">#first before wrapping it, so add a 'middleware' that just generates</span>
+      <span class="c1">#the current app with mappings</span>
+      <span class="vi">@use</span> <span class="o">&lt;&lt;</span> <span class="nb">proc</span> <span class="p">{</span> <span class="o">|</span><span class="n">app</span><span class="o">|</span> <span class="n">generate_map</span> <span class="n">app</span><span class="p">,</span> <span class="n">mapping</span> <span class="p">}</span>
+    <span class="k">end</span>
+    <span class="vi">@use</span> <span class="o">&lt;&lt;</span> <span class="nb">proc</span> <span class="p">{</span> <span class="o">|</span><span class="n">app</span><span class="o">|</span> <span class="n">middleware</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">end</span>
   
-  # Takes an argument that is an object that responds to #call and returns a Rack response.
-  # The simplest form of this is a lambda object:
-  #   run lambda { |env| [200, { "Content-Type" =&gt; "text/plain" }, ["OK"]] }
-  # However this could also be a class:
-  #   class Heartbeat
-  #     def self.call(env)
-  #      [200, { "Content-Type" =&gt; "text/plain" }, ["OK"]]
-  #    end
-  #   end
-  #   run Heartbeat
-  def run(app)
-    @run = app
-  end
+  <span class="c1"># Takes an argument that is an object that responds to #call and returns a Rack response.</span>
+  <span class="c1"># The simplest form of this is a lambda object:</span>
+  <span class="c1">#   run lambda { |env| [200, { "Content-Type" =&gt; "text/plain" }, ["OK"]] }</span>
+  <span class="c1"># However this could also be a class:</span>
+  <span class="c1">#   class Heartbeat</span>
+  <span class="c1">#     def self.call(env)</span>
+  <span class="c1">#      [200, { "Content-Type" =&gt; "text/plain" }, ["OK"]]</span>
+  <span class="c1">#    end</span>
+  <span class="c1">#   end</span>
+  <span class="c1">#   run Heartbeat</span>
+  <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="vi">@run</span> <span class="o">=</span> <span class="n">app</span>
+  <span class="k">end</span>
   
-  # Takes a lambda or block that is used to warm-up the application.
-  #   warmup do |app|
-  #     client = Rack::MockRequest.new(app)
-  #     client.get('/')
-  #   end
-  #   use SomeMiddleware
-  #   run MyApp
-  def warmup(prc=nil, &amp;block)
-    @warmup = prc || block
-  end
+  <span class="c1"># Takes a lambda or block that is used to warm-up the application.</span>
+  <span class="c1">#   warmup do |app|</span>
+  <span class="c1">#     client = Rack::MockRequest.new(app)</span>
+  <span class="c1">#     client.get('/')</span>
+  <span class="c1">#   end</span>
+  <span class="c1">#   use SomeMiddleware</span>
+  <span class="c1">#   run MyApp</span>
+  <span class="k">def</span> <span class="nf">warmup</span><span class="p">(</span><span class="n">prc</span><span class="o">=</span><span class="kp">nil</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="vi">@warmup</span> <span class="o">=</span> <span class="n">prc</span> <span class="o">||</span> <span class="n">block</span>
+  <span class="k">end</span>
   
-  # Creates a route within the application.
-  #   Rack::Builder.app do
-  #     map '/' do
-  #       run Heartbeat
-  #     end
-  #   end
-  # The +use+ method can also be used here to specify middleware to run under a specific path:
-  #   Rack::Builder.app do
-  #     map '/' do
-  #       use Middleware
-  #       run Heartbeat
-  #     end
-  #   end
-  # This example includes a piece of middleware which will run before requests hit +Heartbeat+.
-  #
-  def map(path, &amp;block)
-    @map ||= {}
-    @map[path] = block
-  end
+  <span class="c1"># Creates a route within the application.</span>
+  <span class="c1">#   Rack::Builder.app do</span>
+  <span class="c1">#     map '/' do</span>
+  <span class="c1">#       run Heartbeat</span>
+  <span class="c1">#     end</span>
+  <span class="c1">#   end</span>
+  <span class="c1"># The +use+ method can also be used here to specify middleware to run under a specific path:</span>
+  <span class="c1">#   Rack::Builder.app do</span>
+  <span class="c1">#     map '/' do</span>
+  <span class="c1">#       use Middleware</span>
+  <span class="c1">#       run Heartbeat</span>
+  <span class="c1">#     end</span>
+  <span class="c1">#   end</span>
+  <span class="c1"># This example includes a piece of middleware which will run before requests hit +Heartbeat+.</span>
+  <span class="c1">#</span>
+  <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="vi">@map</span> <span class="o">||=</span> <span class="p">{}</span>
+    <span class="vi">@map</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">block</span>
+  <span class="k">end</span>
   
-  private def generate_map(default_app, mapping)
-    mapped = default_app ? {'/' =&gt; default_app} : {}
-    mapping.each { |r,b| mapped[r] = self.class.new(default_app, &amp;b).to_app }
-    URLMap.new(mapped)
-  end
-</code></pre>
+  <span class="kp">private</span> <span class="k">def</span> <span class="nf">generate_map</span><span class="p">(</span><span class="n">default_app</span><span class="p">,</span> <span class="n">mapping</span><span class="p">)</span>
+    <span class="n">mapped</span> <span class="o">=</span> <span class="n">default_app</span> <span class="p">?</span> <span class="p">{</span><span class="s1">'/'</span> <span class="o">=&gt;</span> <span class="n">default_app</span><span class="p">}</span> <span class="p">:</span> <span class="p">{}</span>
+    <span class="n">mapping</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">r</span><span class="p">,</span><span class="n">b</span><span class="o">|</span> <span class="n">mapped</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="nf">class</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">default_app</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="p">).</span><span class="nf">to_app</span> <span class="p">}</span>
+    <span class="no">URLMap</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">mapped</span><span class="p">)</span>
+  <span class="k">end</span>
+</code></pre></div></div>
 
 <p>En pratique donc, un middleware rack prend en initialisation une appli
 rack; donc on peut composer les middleware comme ceci:

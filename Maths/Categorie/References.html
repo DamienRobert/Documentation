@@ -2629,12 +2629,11 @@ David Carchedi (2013-2016)
 
 <h2 id="zl-low-algebraic-theories">Z.L. Low: Algebraic Theories</h2>
 
-<h3 id="monads">Monads</h3>
+<h3 id="chapter-1-monads">Chapter 1 Monads</h3>
+
+<p>$ 2 Monadicity</p>
 
 <ul>
-  <li>
-    <p>2 Monadicity</p>
-  </li>
   <li>Eilenberg-Moore: for each adjunction F ⊣ U : D → C inducing the monad T, there is a unique functor K : D → C^T such that K F = F^T, U =U^T K
 KA := (UA, U \epsilon_A)</li>
   <li>Kleisli: for each adjunction F ⊣ U : D → C inducing the monad T, there is a unique functor K : D → C^T such that F = K F^T, U^T= U K
@@ -2687,9 +2686,7 @@ monadic, then the composite VU : D → E is also monadic.</p>
 
 <p>Proposition ... A monadic functor is an amnestic [ie Uf=Id =&gt; f=Id] isofibration [ie isomorphisms lifts] if and only if it is strictly monadic.</p>
 
-<ul>
-  <li> Colimits in the Eilenberg–Moore category</li>
-</ul>
+<p>$  Colimits in the Eilenberg–Moore category</p>
 
 <p>Theorem .. (Linton). Let T be a monad on a finitely cocomplete (resp.
 cocomplete) category S. The following are equivalent:
@@ -2742,9 +2739,7 @@ congruence is the coeqs of g,h. Note that K is a small intersection because
 if (k: K-&gt;BxB is a mono, there is at most one sub-T-module structure on K
 compatible with BxB).</p>
 
-<ul>
-  <li> Morphisms of monads</li>
-</ul>
+<p>$  Morphisms of monads</p>
 
 <p>Definition ... Let S be a monad on C and let T be a monad on D. A morphism of monads S → T consists of
 • a functor F : C → D and
@@ -2822,9 +2817,7 @@ Proposition ... In the case above, if R is fully faithfull and
 hold), then: a T-module (X,ξ) is in the essential/strict image of R^φ iff X
 is in the essential/strict image of R.</p>
 
-<ul>
-  <li> Descent and base change</li>
-</ul>
+<p>$  Descent and base change</p>
 
 <p>Let A and B be rings, not necessarily commutative, and suppose we have
 a ring homomorphism f : B → A. This induces an adjunction between the
@@ -2850,7 +2843,7 @@ Notice that we have a coreflexive fork in C for each object X:
 X-&gt;UFX =&gt; UFUFX
 Moreover, its image under F is a reflexive split equaliser in D:
 FX -&gt; FUFX -&gt; FUFUFX
-which induce a split equaliser diagram in the category D_G of comodules for G.</p>
+which induce a split equaliser [todo: reflexif non?] diagram in the category D_G of comodules for G.</p>
 
 <p>Thus, if D_G is to be a ‘good’ model of C, the adjunction unit η_X : X → UFX should be the equaliser of UFη_X,η_{UFX} :UFX →UFUFX. This motivates the following
 definition:
@@ -2867,7 +2860,7 @@ one of the form (FX,FηX), then we say comonadic descent is effective for F.</p>
 <p>Proposition ... Let F ⊣ (U : D → C) be an adjunction of categories with unit
 η : id_C ⇒ UF and counit ϵ : FU ⇒ id_D. Let G be the induced comonad on D,
 and let K : C → D_G be the comparison functor induced by the formal dual of
-the Eilenberg–Moore theorem (..). e following are equivalent:
+the Eilenberg–Moore theorem (..). The following are equivalent:
 (i) For each object X in C, the adjunction unit η_X : X → UFX is a regular
 monomorphism.
 (ii) F : C → D is a functor of comonadic descent type.
@@ -2911,7 +2904,7 @@ subcategory of C^T. If C′ has coequalisers for all reflexive pairs and the res
 <p>Example ... Ab, the category of abelian groups, is monadic over Set and
 has all coequalisers, so it is a reflective subcategory of Grp.</p>
 
-<p>TODO</p>
+<p>TODO Z.L. Low: Algebraic Theories $1.6: constructing monads</p>
 
 <h2 id="johnstone-the-elephant">Johnstone, The Elephant</h2>
 

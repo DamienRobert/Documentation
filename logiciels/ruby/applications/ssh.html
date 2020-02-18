@@ -2,53 +2,53 @@
 
 <h1 id="netssh">Net::SSH</h1>
 
-<pre><code class="language-ruby">require 'net/ssh'
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'net/ssh'</span>
 
-Net::SSH.start('host', 'user', password: "password") do |ssh|
-  # capture all stderr and stdout output from a remote process
-  output = ssh.exec!("hostname")
-  puts output
+<span class="no">Net</span><span class="o">::</span><span class="no">SSH</span><span class="p">.</span><span class="nf">start</span><span class="p">(</span><span class="s1">'host'</span><span class="p">,</span> <span class="s1">'user'</span><span class="p">,</span> <span class="ss">password: </span><span class="s2">"password"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">ssh</span><span class="o">|</span>
+  <span class="c1"># capture all stderr and stdout output from a remote process</span>
+  <span class="n">output</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">.</span><span class="nf">exec!</span><span class="p">(</span><span class="s2">"hostname"</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="n">output</span>
 
-  # capture only stdout matching a particular pattern
-  stdout = ""
-  ssh.exec!("ls -l /home/jamis") do |channel, stream, data|
-    stdout &lt;&lt; data if stream == :stdout
-  end
-  puts stdout
+  <span class="c1"># capture only stdout matching a particular pattern</span>
+  <span class="n">stdout</span> <span class="o">=</span> <span class="s2">""</span>
+  <span class="n">ssh</span><span class="p">.</span><span class="nf">exec!</span><span class="p">(</span><span class="s2">"ls -l /home/jamis"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">channel</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">data</span><span class="o">|</span>
+    <span class="n">stdout</span> <span class="o">&lt;&lt;</span> <span class="n">data</span> <span class="k">if</span> <span class="n">stream</span> <span class="o">==</span> <span class="ss">:stdout</span>
+  <span class="k">end</span>
+  <span class="nb">puts</span> <span class="n">stdout</span>
 
-  # run multiple processes in parallel to completion
-  ssh.exec "sed ..."
-  ssh.exec "awk ..."
-  ssh.exec "rm -rf ..."
-  ssh.loop
+  <span class="c1"># run multiple processes in parallel to completion</span>
+  <span class="n">ssh</span><span class="p">.</span><span class="nf">exec</span> <span class="s2">"sed ..."</span>
+  <span class="n">ssh</span><span class="p">.</span><span class="nf">exec</span> <span class="s2">"awk ..."</span>
+  <span class="n">ssh</span><span class="p">.</span><span class="nf">exec</span> <span class="s2">"rm -rf ..."</span>
+  <span class="n">ssh</span><span class="p">.</span><span class="nf">loop</span>
 
-  # open a new channel and configure a minimal set of callbacks, then run
-  # the event loop until the channel finishes (closes)
-  channel = ssh.open_channel do |ch|
-    ch.exec "/usr/local/bin/ruby /path/to/file.rb" do |ch, success|
-      raise "could not execute command" unless success
+  <span class="c1"># open a new channel and configure a minimal set of callbacks, then run</span>
+  <span class="c1"># the event loop until the channel finishes (closes)</span>
+  <span class="n">channel</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">.</span><span class="nf">open_channel</span> <span class="k">do</span> <span class="o">|</span><span class="n">ch</span><span class="o">|</span>
+    <span class="n">ch</span><span class="p">.</span><span class="nf">exec</span> <span class="s2">"/usr/local/bin/ruby /path/to/file.rb"</span> <span class="k">do</span> <span class="o">|</span><span class="n">ch</span><span class="p">,</span> <span class="n">success</span><span class="o">|</span>
+      <span class="k">raise</span> <span class="s2">"could not execute command"</span> <span class="k">unless</span> <span class="n">success</span>
 
-      # "on_data" is called when the process writes something to stdout
-      ch.on_data do |c, data|
-        $stdout.print data
-      end
+      <span class="c1"># "on_data" is called when the process writes something to stdout</span>
+      <span class="n">ch</span><span class="p">.</span><span class="nf">on_data</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="p">,</span> <span class="n">data</span><span class="o">|</span>
+        <span class="vg">$stdout</span><span class="p">.</span><span class="nf">print</span> <span class="n">data</span>
+      <span class="k">end</span>
 
-      # "on_extended_data" is called when the process writes something to stderr
-      ch.on_extended_data do |c, type, data|
-        $stderr.print data
-      end
+      <span class="c1"># "on_extended_data" is called when the process writes something to stderr</span>
+      <span class="n">ch</span><span class="p">.</span><span class="nf">on_extended_data</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">data</span><span class="o">|</span>
+        <span class="vg">$stderr</span><span class="p">.</span><span class="nf">print</span> <span class="n">data</span>
+      <span class="k">end</span>
 
-      ch.on_close { puts "done!" }
-    end
-  end
+      <span class="n">ch</span><span class="p">.</span><span class="nf">on_close</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s2">"done!"</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
 
-  channel.wait
+  <span class="n">channel</span><span class="p">.</span><span class="nf">wait</span>
 
-  # forward connections on local port 1234 to port 80 of www.capify.org
-  ssh.forward.local(1234, "www.capify.org", 80)
-  ssh.loop { true }
-end
-</code></pre>
+  <span class="c1"># forward connections on local port 1234 to port 80 of www.capify.org</span>
+  <span class="n">ssh</span><span class="p">.</span><span class="nf">forward</span><span class="p">.</span><span class="nf">local</span><span class="p">(</span><span class="mi">1234</span><span class="p">,</span> <span class="s2">"www.capify.org"</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+  <span class="n">ssh</span><span class="p">.</span><span class="nf">loop</span> <span class="p">{</span> <span class="kp">true</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <p>http://net-ssh.github.io/net-ssh/Net/SSH.html</p>
 
@@ -115,21 +115,21 @@ end
 on(in: :sequence, wait: 5) { … }
 on(in: :groups, limit: 2, wait: 5) { … }</p>
 
-<pre><code class="language-ruby">on ["foo", "bar"], in: :sequence, wait: 5 do
-  within "/opt/sites/example.com" do
-    # commands in this block execute in the directory: /opt/sites/example.com
-    as :deploy  do
-      # commands in this block execute as the "deploy" user.
-      with rails_env: :production do
-        # commands in this block execute with the environment variable RAILS_ENV=production
-        rake   "assets:precompile"
-        runner "S3::Sync.notify"
-        execute :rails, :runner, 'MyModel.something'
-      end
-    end
-  end
-end
-</code></pre>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">on</span> <span class="p">[</span><span class="s2">"foo"</span><span class="p">,</span> <span class="s2">"bar"</span><span class="p">],</span> <span class="ss">in: :sequence</span><span class="p">,</span> <span class="ss">wait: </span><span class="mi">5</span> <span class="k">do</span>
+  <span class="n">within</span> <span class="s2">"/opt/sites/example.com"</span> <span class="k">do</span>
+    <span class="c1"># commands in this block execute in the directory: /opt/sites/example.com</span>
+    <span class="n">as</span> <span class="ss">:deploy</span>  <span class="k">do</span>
+      <span class="c1"># commands in this block execute as the "deploy" user.</span>
+      <span class="n">with</span> <span class="ss">rails_env: :production</span> <span class="k">do</span>
+        <span class="c1"># commands in this block execute with the environment variable RAILS_ENV=production</span>
+        <span class="n">rake</span>   <span class="s2">"assets:precompile"</span>
+        <span class="n">runner</span> <span class="s2">"S3::Sync.notify"</span>
+        <span class="n">execute</span> <span class="ss">:rails</span><span class="p">,</span> <span class="ss">:runner</span><span class="p">,</span> <span class="s1">'MyModel.something'</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <ul>
   <li>
@@ -442,23 +442,23 @@ task_prefix 	nil 	A string to prefix to task output. Handy for output collapsing
   <li>Exemple:</li>
 </ul>
 
-<pre><code class="language-ruby">require 'sshkit'
-require "airbrussh"
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'sshkit'</span>
+<span class="nb">require</span> <span class="s2">"airbrussh"</span>
 
-host=SSHKit::Host.new("phare")
-client=SSHKit::Backend::Netssh.new(host) do
-  execute :hostname
-  execute :uptime
-end
+<span class="n">host</span><span class="o">=</span><span class="no">SSHKit</span><span class="o">::</span><span class="no">Host</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"phare"</span><span class="p">)</span>
+<span class="n">client</span><span class="o">=</span><span class="no">SSHKit</span><span class="o">::</span><span class="no">Backend</span><span class="o">::</span><span class="no">Netssh</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">host</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">execute</span> <span class="ss">:hostname</span>
+  <span class="n">execute</span> <span class="ss">:uptime</span>
+<span class="k">end</span>
 
-SSHKit.config.use_format(:pretty) #the default (:simple_text to disable coloring)
-client.run
-SSHKit.config.use_format(:dot) #one green or red dot by command execution (:blackhole to swallow everything)
-client.run 
+<span class="no">SSHKit</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">use_format</span><span class="p">(</span><span class="ss">:pretty</span><span class="p">)</span> <span class="c1">#the default (:simple_text to disable coloring)</span>
+<span class="n">client</span><span class="p">.</span><span class="nf">run</span>
+<span class="no">SSHKit</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">use_format</span><span class="p">(</span><span class="ss">:dot</span><span class="p">)</span> <span class="c1">#one green or red dot by command execution (:blackhole to swallow everything)</span>
+<span class="n">client</span><span class="p">.</span><span class="nf">run</span> 
 
-SSHKit.config.output = Airbrussh::Formatter.new($stdout, command_output: true)
-client.run
-</code></pre>
+<span class="no">SSHKit</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">output</span> <span class="o">=</span> <span class="no">Airbrussh</span><span class="o">::</span><span class="no">Formatter</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="vg">$stdout</span><span class="p">,</span> <span class="ss">command_output: </span><span class="kp">true</span><span class="p">)</span>
+<span class="n">client</span><span class="p">.</span><span class="nf">run</span>
+</code></pre></div></div>
 
 <h2 id="interaction-handler">Interaction Handler</h2>
 

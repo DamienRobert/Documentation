@@ -3,6 +3,14 @@
 <p>[!] Installed [+] Interesting
 Liste de logiciels libres: http://enacit.epfl.ch/logiciel-libre/</p>
 
+<h1 id="password-manager">Password manager</h1>
+
+<ul>
+  <li>lastpass</li>
+  <li>bitwarden
+-&gt; set up bitwarden server, using docker and bitwarden_rs (=bitwarden server reimplemented in rust) https://tech.oeru.org/setting-your-own-bitwarden-password-keeper-and-sync-server</li>
+</ul>
+
 <h1 id="backups">Backups</h1>
 
 <ul>
@@ -19,6 +27,10 @@ Rust: preserve, rdedup, zVault
   https://github.com/dswd/zvault
   Rust, but unmaintened</li>
 </ul>
+
+<p>Borg vs restic:
+https://stickleback.dk/borg-or-restic/
+https://sysadministrivia.com/episodes/S4E5</p>
 
 <p>Commercial: crashplan and backblaze https://lifehacker.com/online-backup-faceoff-crashplan-vs-backblaze-1768101631</p>
 
@@ -233,6 +245,12 @@ also available from within perf, as the ftrace:function tracepoint.)</p>
 <ul>
   <li>Brendan Gregg</li>
   <li>perf-tools: https://github.com/brendangregg/perf-tools, wrappers autour de perf et ftrace</li>
+</ul>
+
+<h2 id="ebpf">EBPF</h2>
+
+<ul>
+  <li>Brendan Gregg</li>
   <li>http://www.brendangregg.com/blog/2015-07-08/choosing-a-linux-tracer.html
 =&gt; ftrace, perf_events, eBPF, SystemTap, sysdig
     <ul>
@@ -253,15 +271,22 @@ And an older version: https://wiert.me/2014/03/19/reference-card-for-linux-perfo
       <li>bcc tracing tools: http://www.brendangregg.com/Perf/bcc_tracing_tools.png</li>
     </ul>
   </li>
-  <li>
-    <p>BPF adds programmatic capabilities to the existing kernel tracing facilities (tracepoints, kprobes, uprobes) and should include both perf and ftrace capabilities and replace them
-=&gt; https://github.com/iovisor/bcc BCC - Tools for BPF-based Linux IO analysis, networking, monitoring, and more
+  <li>BPF adds programmatic capabilities to the existing kernel tracing facilities (tracepoints, kprobes, uprobes) and should include both perf and ftrace capabilities and replace them
+Cf http://www.brendangregg.com/blog/2019-01-01/learn-ebpf-tracing.html</li>
+</ul>
+
+<p>Tools:
+- https://github.com/iovisor/bcc BCC - Tools for BPF-based Linux IO analysis, networking, monitoring, and more
 More modern version of the perf-tools, using ebpf [opensnoop, …]</p>
-  </li>
+
+<ul>
   <li>http://www.brendangregg.com/blog/2018-10-08/dtrace-for-linux-2018.html
 bpftrace, ply
-https://github.com/iovisor/bpftrace</li>
+https://github.com/iovisor/bpftrace High-level tracing language for Linux eBPF
+# bpftrace -e ‘tracepoint:syscalls:sys_enter_* { @[probe] = count(); }’</li>
 </ul>
+
+<p>Exemples: https://blog.cloudflare.com/cloudflare-architecture-and-how-bpf-eats-the-world/</p>
 
 <h2 id="liste">Liste</h2>
 
@@ -484,9 +509,12 @@ docx: docx2txt</p>
   <li>
     <p>https://github.com/ifad/pdfbeads: convert scanned images to a single PDF file</p>
   </li>
-  <li>ebook
+  <li>
+    <p>ebook
 calibre -&gt; transférer les epub
-cool-reader -&gt; surtout pour la lecture</li>
+cool-reader -&gt; surtout pour la lecture</p>
+  </li>
+  <li>Notes: joplin https://joplinapp.org</li>
 </ul>
 
 <h1 id="files">Files</h1>
@@ -553,6 +581,44 @@ http://ubuntu-rescue-remix.org/node/51:
 <ul>
   <li>https://github.com/andreafrancia/trash-cli (arch: trash-cli)
 Command line interface to the freedesktop.org trashcan.</li>
+</ul>
+
+<h2 id="file-transfer">File transfer</h2>
+
+<ul>
+  <li>
+    <p>Overview: https://schollz.com/software/sending-a-file/</p>
+  </li>
+  <li>Sites</li>
+  <li>https://wetransfer.com/</li>
+  <li>https://www.renater.fr/en/filesender</li>
+  <li>
+    <p>https://partage.inria.fr/</p>
+  </li>
+  <li>
+    <p>https://send.firefox.com/
+Cli: https://news.ycombinator.com/item?id=21898310
+Ffsend – Share Files from the CLI: A Firefox Send Client Written in Rust (gitlab.com)</p>
+  </li>
+  <li>web torrent: https://webtorrent.io/faq
+https://news.ycombinator.com/item?id=12526717
+Instant.io – Streaming file transfer over WebTorrent (instant.io)</li>
+  <li>https://instant.io/</li>
+  <li>
+    <p>https://file.pizza/</p>
+  </li>
+  <li>Decentralised:</li>
+  <li>https://ipfs.io/#how
+https://news.ycombinator.com/item?id=18650375
+IPFS, The Interplanetary File System, Simply Explained (achainofblocks.com)</li>
+  <li>
+    <p>https://schollz.com/blog/ipfs-enabled-personal-internet-archive/
+https://schollz.com/blog/how-to-post-a-site-to-ipfs/
+https://macwright.org/2017/08/09/decentralize-ipfs.html (comparison between ipfs and dat)</p>
+  </li>
+  <li>magic wormhole (pake)</li>
+  <li>https://github.com/warner/magic-wormhole</li>
+  <li>https://github.com/schollz/croc (archlinux: croc)</li>
 </ul>
 
 <h1 id="latex">Latex</h1>
@@ -708,6 +774,11 @@ An human readable plain text tasklist syntax.</p>
     <p>http://moo.nac.uci.edu/~hjm/parsync/
 parsyncfp - a parallel rsync wrapper for large data transfers</p>
   </li>
+  <li>
+    <p>https://github.com/davatorium/rofi
+Rofi: A window switcher, application launcher and dmenu replacement
+=&gt; https://blog.wizardsoftheweb.pro/tag/rofi/</p>
+  </li>
 </ul>
 
 <h1 id="web">Web</h1>
@@ -716,7 +787,7 @@ parsyncfp - a parallel rsync wrapper for large data transfers</p>
   <li>
     <p>Cli navigator:
 Simple: links, lynx
-More powerfull: elinks, w3m</p>
+More powerfull: w3m</p>
   </li>
   <li>
     <p>https://github.com/atsepkov/Graphene
@@ -741,9 +812,48 @@ HTTPLabs let you inspect HTTP requests and forge responses.</li>
 <h1 id="emoji">Emoji</h1>
 
 <ul>
+  <li>
+    <p>On arch: gnome-charaters, rofimoji</p>
+  </li>
+  <li>search for emoji</li>
+  <li>https://github.com/sindresorhus/emoj (nodejs)
+Relevant emojis appear when you start writing</li>
+  <li>https://github.com/dematerializer/emoji-finder (nodejs)
+inspired by emoj
+-&gt; can add several emojis at once, better search results</li>
   <li>https://github.com/b4b4r07/emoji-cli
-Emoji completion on the command line</li>
-  <li>https://github.com/mrowa44/emojify
+Emoji completion on the command line (zsh)
+Outputs :emojy:</li>
+  <li>
+    <p>https://github.com/arp242/uni
+Query the Unicode database from the commandline, with good support for emojis
+Has a dmenu and rofi integration
+-&gt; wasm: https://arp242.github.io/uni-wasm/</p>
+
+    <ul>
+      <li>uni i/identify  🏊€
+     cpoint  dec    utf-8       html       name
+‘🏊’ U+1F3CA 127946 f0 9f 8f 8a 🏊  SWIMMER (Other_Symbol)
+‘€’  U+20AC  8364   e2 82 ac    €     EURO SIGN (Currency_Symbol)</li>
+      <li>uni s/search swim</li>
+      <li>uni p/print U+2042; uni print 2042..2044 #range
+uni p Po; #accept a category: https://www.compart.com/en/unicode/category
+uni p arrows #or a block: https://en.wikipedia.org/wiki/Unicode_block</li>
+      <li>$ uni e/emojy cry
+😢 crying face         Smileys &amp; Emotion  face-concerned
+😭 loudly crying face  Smileys &amp; Emotion  face-concerned
+$ uni e -groups cat-face #search group (can match the Smileys &amp; Emotion or face-concerned classification from above)
+😺 grinning cat                    Smileys &amp; Emotion  cat-face
+😸 grinning cat with smiling eyes  Smileys &amp; Emotion  cat-face
+$ uni e -groups cat-face tears
+😹 cat with tears of joy  Smileys &amp; Emotion  cat-face
+$ uni e -tone dark -groups hands #skin tone modifiers: light, mediumlight, medium, mediumdark, dark
+$ uni e -gender man -groups person-gesture # The default is to display all genders (“person”, “man”, “woman”)
+$ uni e -tone light,dark -gender f,m shrug # can pass a list of tones
+and genders; use all to select all, eg uni e -tone all -gender f,m shrug</li>
+    </ul>
+  </li>
+  <li>https://github.com/mrowa44/emojify (shell)
 emojify substitutes emoji aliases that many services (like GitHub) use for emoji raw characters.
 $ emojify “Hey, I just :raising_hand: you, and this is :scream: , but here’s my :calling: , so :telephone_receiver: me, maybe?”</li>
 </ul>
@@ -798,54 +908,94 @@ A fast CSV command line toolkit written in Rust.</li>
 </ul>
 
 <h1 id="rust-cli">Rust cli</h1>
-<p>ripgrep, fd-find, bat, tokei, hyperfine, exa, lsd, skim [=fzf in rust]
-  [TODO: exa, lsd, skim, bat.
-  Note: skim has interactive commands, eg <code>sk --ansi -i -c 'rg --color=always --line-number "{}"'</code>.
-  See also the aliases in https://github.com/mitsuhiko/dotfiles/blob/3c4b18c2190d94655ea64df7bc1d3d45b6abba6e/sh/myprofile#L127-L133
-  ]
-+ uutils: a rewrite of coreutils in rust https://github.com/uutils/coreutils</p>
-
-<p>Legend: [+ installed in rust-cli-utils; ! to install or to configure]</p>
 
 <ul>
-  <li>Informations</li>
-  <li>hyperfine (like bench but in rust) https://github.com/sharkdp/hyperfine
+  <li>
+    <p>ripgrep, fd-find, bat, tokei, hyperfine, exa, lsd, skim [=fzf in rust]
+[TODO: configure exa, lsd, skim, bat. ]</p>
+  </li>
+  <li>
+    <p>Note: skim has interactive commands, eg <code>sk --ansi -i -c 'rg --color=always --line-number "{}"'</code>.
+See also the aliases in https://github.com/mitsuhiko/dotfiles/blob/3c4b18c2190d94655ea64df7bc1d3d45b6abba6e/sh/myprofile#L127-L133</p>
+  </li>
+  <li>
+    <p>uutils: a rewrite of coreutils in rust https://github.com/uutils/coreutils</p>
+  </li>
+</ul>
+
+<p>Legend: [+ installed in rust-cli-utils; ! to install or to configure
+         - potentially interesting; x there are better packages]</p>
+
+<h2 id="informations">Informations</h2>
+
+<ul>
+  <li>
+    <p>hyperfine (like bench but in rust) https://github.com/sharkdp/hyperfine
 [- bench (benchmarking) https://github.com/Gabriel439/bench]
-=&gt; hyperfine -w3 ‘fd . ~/mine’</li>
-  <li>https://lib.rs/crates/bingrep Cross-platform binary parser and colorizer 
-=&gt; bingrep /bin/ls
-! https://lib.rs/crates/procs A modern replacement for ps</li>
-  <li>https://lib.rs/crates/strace-analyzer analyze strace output
+=&gt; hyperfine -w3 ‘fd . ~/mine’</p>
+  </li>
+  <li>
+    <p>https://lib.rs/crates/bingrep Cross-platform binary parser and colorizer 
+=&gt; bingrep /bin/ls</p>
+  </li>
+</ul>
+
+<p>! https://lib.rs/crates/procs A modern replacement for ps</p>
+
+<ul>
+  <li>
+    <p>https://lib.rs/crates/strace-analyzer analyze strace output
 =&gt; strace -s 0 -ff -o cmd.strace /bin/cat haskell-register.log
    strace-analyzer  cmd.strace.23974
-  read 20.7K with 2 ops (128.0K / op) haskell-register.log</li>
-  <li>https://lib.rs/crates/mprober This program aims to collect Linux system information including hostname, kernel version, uptime, RTC time, load average, CPU, memory, network interfaces and block devices. It can be used not only as a normal CLI tool, but also a web application with a front-end webpage and useful HTTP APIs. 
+  read 20.7K with 2 ops (128.0K / op) haskell-register.log</p>
+  </li>
+  <li>
+    <p>https://lib.rs/crates/mprober This program aims to collect Linux system information including hostname, kernel version, uptime, RTC time, load average, CPU, memory, network interfaces and block devices. It can be used not only as a normal CLI tool, but also a web application with a front-end webpage and useful HTTP APIs. 
 =&gt; mprober cpu / memory / …
-   mprober web</li>
-  <li>battop: battery top https://github.com/svartalf/rust-battop
-        (give info on the battery, not on the software consumption)</li>
-  <li>https://crates.io/crates/gptman
-A CLI tool for Linux that allows you to copy a partition from one disk to another and more.</li>
+   mprober web</p>
+  </li>
+  <li>
+    <p>battop: battery top https://github.com/svartalf/rust-battop
+        (give info on the battery, not on the software consumption)</p>
+  </li>
+  <li>
+    <p>https://crates.io/crates/gptman
+A CLI tool for Linux that allows you to copy a partition from one disk to another and more.</p>
+  </li>
   <li>
     <p>https://github.com/GuillaumeGomez/process-viewer
 A process viewer GUI in rust</p>
   </li>
-  <li>Disk
-x https://lib.rs/crates/tin-summer Command-line tool to find build artifacts and thing occupying space on your computer. Shatters records not glass. 
-(Note: default depth is 2; Use file length)
-=&gt; sn fat/f #biggest directories
-=&gt; sn directories/dir/d/all / sn files/l # show dirs / dirs+files [sn files/l = sn d -f]
-=&gt; sn parallel/p # like all but in parallel
-=&gt; sn sort/o #sort biggest dirs
-=&gt; sn artifacts/ar/r / sn clean/c # show artifacts / clean them
-x https://lib.rs/crates/diskus A minimal, fast alternative to ‘du -sh’ 
-Use file length.
-$ hyperfine ‘sn d -d0’ ‘diskus’ ‘du -sh .’
-  ‘diskus’ ran
-  1.23 ± 0.19 times faster than ‘sn d -d0’
-  1.52 ± 0.23 times faster than ‘du -sh .’
-Note: ‘sn p -d0’ ran 1.30 ± 0.18 times faster than ‘diskus’</li>
-  <li>dua-cli https://github.com/Byron/dua-cli
+  <li>
+    <p>https://github.com/kpcyrd/sniffglue [arch: sniffglue]
+Secure multithreaded packet sniffer</p>
+  </li>
+</ul>
+
+<p>! https://github.com/imsnif/bandwhich
+  Terminal bandwidth utilization tool (formerly known as “what”)</p>
+
+<h2 id="disk">Disk</h2>
+
+<p>x https://lib.rs/crates/tin-summer Command-line tool to find build artifacts and thing occupying space on your computer. Shatters records not glass. 
+  (Note: default depth is 2; Use file length)
+  =&gt; sn fat/f #biggest directories
+  =&gt; sn directories/dir/d/all / sn files/l # show dirs / dirs+files [sn files/l = sn d -f]
+  =&gt; sn parallel/p # like all but in parallel
+  =&gt; sn sort/o #sort biggest dirs
+  =&gt; sn artifacts/ar/r / sn clean/c # show artifacts / clean them</p>
+
+<p>x https://lib.rs/crates/diskus A minimal, fast alternative to ‘du -sh’ 
+  Use file length.
+  $ hyperfine ‘sn d -d0’ ‘diskus’ ‘du -sh .’
+    ‘diskus’ ran
+    1.23 ± 0.19 times faster than ‘sn d -d0’
+    1.52 ± 0.23 times faster than ‘du -sh .’
+  Note: ‘sn p -d0’ ran 1.30 ± 0.18 times faster than ‘diskus’</p>
+
+<ul>
+  <li>
+    <p>dua-cli https://github.com/Byron/dua-cli
 =&gt; dua. [warning: I had a dua alias, so call with \dua or =dua. Now renamed to the alias to duh]
    Default to ‘aggregate’ subcmd. Sort.
    Also has an interactive mode: <code>dua i</code>
@@ -855,15 +1005,18 @@ Note: ‘sn p -d0’ ran 1.30 ± 0.18 times faster than ‘diskus’</li>
     ‘dua Music’ ran
         1.24 ± 0.05 times faster than ‘ds Music/’
         1.36 ± 0.09 times faster than ‘sn p Music’
-   Promising (compared to sn) if ui is improved</li>
-  <li>dirstat-rs https://crates.io/crates/dirstat-rs
+   Promising (compared to sn) if ui is improved</p>
+  </li>
+  <li>
+    <p>dirstat-rs https://crates.io/crates/dirstat-rs
 =&gt; ds. Tree like
    Default depth 1. Show size+%
    Use file length. Can use block length with <code>-a</code>
    -d: depth (default 1), -m: min percent (default 0.1)
    └── 100.00% [98.33 MB] ── mine
       ├── 31.77% [31.24 MB] ── .git
-      ├── 17.58% [17.28 MB] ── doc</li>
+      ├── 17.58% [17.28 MB] ── doc</p>
+  </li>
   <li>
     <p>https://github.com/bootandy/dust
 tree like view of <code>du -hd1  | sort -h</code>
@@ -887,59 +1040,124 @@ sn p -d0, diskus: 29MB [Note: dua -f MiB =&gt; 29.79MiB]
 dua, ds: 31.24MB
 dust -s: 30M</p>
   </li>
-  <li>Files</li>
-  <li>https://lib.rs/crates/xcp xcp is a (partial) clone of the Unix cp command with some more user-friendly feedback and some optimisations 
-=&gt; xcp foo bar</li>
-  <li>https://lib.rs/crates/rm-improved rip: a safe and ergonomic alternative to rm 
+  <li>
+    <p>https://ownyourbits.com/2018/03/25/analyze-disk-usage-with-dutree/</p>
+  </li>
+  <li>
+    <p>https://gitlab.com/Dzejkop1/spruce
+yet another du</p>
+  </li>
+</ul>
+
+<h2 id="files-1">Files</h2>
+
+<ul>
+  <li>
+    <p>https://lib.rs/crates/xcp xcp is a (partial) clone of the Unix cp command with some more user-friendly feedback and some optimisations 
+=&gt; xcp foo bar</p>
+  </li>
+  <li>
+    <p>https://lib.rs/crates/rm-improved rip: a safe and ergonomic alternative to rm 
 =&gt; rip file/dir
-   rip -s #see graveyed files
-! broot(=tree)
-! https://lib.rs/crates/lolcate-rs A comically fast way of indexing and querying your filesystem. Replaces locate / mlocate / updatedb. 
-Bug: skip symlinks does not work</li>
-  <li>https://lib.rs/crates/tree-rs tree-rs is a cross platform reimplementation of the linux tree command. It supports colored output and specifying the number of directory levels it should search 
+   rip -s #see graveyed files</p>
+  </li>
+</ul>
+
+<p>! broot(=interactive tree)
+  Voir aussi https://github.com/jarun/nnn</p>
+
+<p>! https://lib.rs/crates/lolcate-rs A comically fast way of indexing and querying your filesystem. Replaces locate / mlocate / updatedb. 
+  Bug: skip symlinks does not work</p>
+
+<ul>
+  <li>
+    <p>https://lib.rs/crates/tree-rs tree-rs is a cross platform reimplementation of the linux tree command. It supports colored output and specifying the number of directory levels it should search 
 $ hyperfine -w3 ‘tree’ ‘tree-rs’
   ‘tree-rs’ ran
-  1.35 ± 0.05 times faster than ‘tree’</li>
-  <li>https://lib.rs/crates/dupe-krill A fast file deduplicator. Replaces duplicate files with identical content with hardlinks. 
-=&gt; dupe-krill -d . #dry-run</li>
-  <li>https://lib.rs/crates/xcompress XCompress is a free file archiver utility on Linux, providing multi-format archiving to and extracting from ZIP, Z, GZIP, BZIP2, LZ, XZ, LZMA, 7ZIP, TAR, RAR and ZSTD 
+  1.35 ± 0.05 times faster than ‘tree’</p>
+  </li>
+  <li>
+    <p>https://lib.rs/crates/dupe-krill A fast file deduplicator. Replaces duplicate files with identical content with hardlinks. 
+=&gt; dupe-krill -d . #dry-run</p>
+  </li>
+  <li>
+    <p>https://lib.rs/crates/xcompress XCompress is a free file archiver utility on Linux, providing multi-format archiving to and extracting from ZIP, Z, GZIP, BZIP2, LZ, XZ, LZMA, 7ZIP, TAR, RAR and ZSTD 
 =&gt; xcompress a foo.wav /root/bar.txt
    xcompress a -o /tmp/out.7z foo.wav
-   xcompress x foo.tar.gz /tmp/out_folder</li>
+   xcompress x foo.tar.gz /tmp/out_folder</p>
+  </li>
   <li>
     <p>https://lib.rs/crates/hunter Fast, lag-free terminal file browser</p>
   </li>
-  <li>Text:</li>
-  <li>https://github.com/chmln/sd
-sd Intuitive find &amp; replace CLI (sed alternative)</li>
-  <li>https://github.com/TankerHQ/ruplacer
+  <li>
+    <p>https://github.com/iqlusioninc/sear
+Signed/Encrypted ARchive: always-encrypted tar-like archive tool with optional signature support</p>
+  </li>
+</ul>
+
+<h2 id="text-1">Text:</h2>
+
+<ul>
+  <li>
+    <p>https://github.com/chmln/sd
+sd Intuitive find &amp; replace CLI (sed alternative)</p>
+  </li>
+  <li>
+    <p>https://github.com/TankerHQ/ruplacer
 Find and replace text in source files (so like sd but handle a whole dir)
 =&gt; ruplacer foo bar
-See https://github.com/TankerHQ/ruplacer/issues/19 for the comparison with ruplacer</li>
-  <li>https://lib.rs/crates/fastmod Fast partial replacement for codemod (find/replace tool for programmers) 
+See https://github.com/TankerHQ/ruplacer/issues/19 for the comparison with ruplacer</p>
+  </li>
+  <li>
+    <p>https://lib.rs/crates/fastmod Fast partial replacement for codemod (find/replace tool for programmers) 
 Like ruplacer, but ask interactively
-=&gt; fastmod foo bar</li>
-  <li>https://github.com/dalance/amber
+=&gt; fastmod foo bar</p>
+  </li>
+  <li>
+    <p>https://github.com/dalance/amber
 =&gt; ambs: like rg
 =&gt; ambr: like fastmod
 Cf https://github.com/dalance/amber/issues/8
-ambr split a large file into several threads, so is faster than rg or fastmod in this case.</li>
-  <li>tabwriter
-=&gt; echo ‘foo\tbar\nploum\tplam’ | tabwriter</li>
+ambr split a large file into several threads, so is faster than rg or fastmod in this case.</p>
+  </li>
+  <li>
+    <p>tabwriter
+=&gt; echo ‘foo\tbar\nploum\tplam’ | tabwriter</p>
+  </li>
   <li>
     <p>xv: https://chrisvest.github.io/xv/
     terminal hex viewer with a text user interface</p>
   </li>
-  <li>Data:</li>
-  <li>https://lib.rs/crates/cw Count Words, a fast wc clone 
+  <li>
+    <p>https://github.com/lunaryorn/mdcat
+cat for markdown</p>
+  </li>
+  <li>
+    <p>https://github.com/jhspetersson/fselect
+Find files with SQL-like queries</p>
+  </li>
+</ul>
+
+<h2 id="data">Data:</h2>
+
+<ul>
+  <li>
+    <p>https://lib.rs/crates/cw Count Words, a fast wc clone 
 $ hyperfine ‘cw /tmp/mine.tar.xz’ ‘wc /tmp/mine.tar.xz’
-‘cw /tmp/mine.tar.xz’ ran 8.08 ± 0.08 times faster than ‘wc /tmp/mine.tar.xz’</li>
-  <li>https://lib.rs/crates/runiq An efficient way to filter duplicate lines from input, à la uniq
+‘cw /tmp/mine.tar.xz’ ran 8.08 ± 0.08 times faster than ‘wc /tmp/mine.tar.xz’</p>
+  </li>
+  <li>
+    <p>https://lib.rs/crates/runiq An efficient way to filter duplicate lines from input, à la uniq
 Cf https://whitfin.io/filtering-unique-logs-using-rust/
-=&gt; runiq -f digest/bloom/naive/sorted</li>
-  <li>https://lib.rs/crates/jql A JSON query language CLI tool
-=&gt; jql ‘“some”.”property”’ example.json</li>
-  <li>xsv a suite of CSV command line utilities.</li>
+=&gt; runiq -f digest/bloom/naive/sorted</p>
+  </li>
+  <li>
+    <p>https://lib.rs/crates/jql A JSON query language CLI tool
+=&gt; jql ‘“some”.”property”’ example.json</p>
+  </li>
+  <li>
+    <p>xsv a suite of CSV command line utilities.</p>
+  </li>
   <li>
     <p>fst
 Construct:
@@ -957,29 +1175,36 @@ Introspect:
    fst fuzzy -d2 myfst maison
    fst range -s maison -e matin myfst</p>
   </li>
+</ul>
+
+<h2 id="git">git</h2>
+
+<p>git-find, git-global: cf [git-applications]</p>
+
+<p>! https://github.com/mookid/diffr
+  An improved diff-highlight script</p>
+
+<h2 id="devel">Devel:</h2>
+
+<ul>
   <li>
-    <p>git: git-find, git-global: cf [git-applications]</p>
+    <p>https://github.com/dbrgn/tealdeer
+A very fast implementation of tldr in Rust. https://github.com/tldr-pages/tldr
+With a better colorscheme =&gt; tldr in rust</p>
   </li>
-  <li>Misc:</li>
-  <li>https://lib.rs/crates/genact A nonsense activity generator 
-=&gt; genact / genact -m module1 module2
-Modules: bootlog botnet cargo cc composer cryptomining simcity download memdump mkinitcpio kernel_compile weblog
-! https://lib.rs/crates/ttdl TTDL - Terminal ToDo List manager (use the http://todotxt.org/ format)
-x (A) 2011-03-02 2011-03-01 Review Tim’s pull request +TodoTxtTouch @github due:2016-02
-Done Priority Completed Created ‘Subject +project @context keyword:value’
-=&gt; ttdl add/list/done/undone/remove/clean/edit/append/prepend/start/stop/stats/postpone
-Special keywords: 
-   due:2019-04-10 rec:1y t:2018-05-01 [=threshold date: ie future todos]
-   spent:78 tmr:off [for start/stop]
-Eg:
- (A) A high priority todo due:2019-11-01
- Faire du sport spent:78 tmr:off
-TODO: config file https://github.com/VladimirMarkelov/ttdl/blob/master/ttdl.toml</li>
-  <li>https://lib.rs/crates/gig A command line tool to rapidly scaffold projects using the power of YAML
+  <li>
+    <p>https://github.com/WindSoilder/hors
+howdoi in rust
+x https://lib.rs/crates/howto-cli instant coding answers via the command line
+[does not compile]</p>
+  </li>
+  <li>
+    <p>https://lib.rs/crates/gig A command line tool to rapidly scaffold projects using the power of YAML
  =&gt; gig [-g] <SCAFFOLD_YAML_FILE> <PROJECT>
  SCAFFOLD:
   folder:
-    file.ext: "The contents of the file"</PROJECT></SCAFFOLD_YAML_FILE></li>
+    file.ext: "The contents of the file"</PROJECT></SCAFFOLD_YAML_FILE></p>
+  </li>
   <li>https://lib.rs/crates/slink Simple remote dev environments over SSH
     <ul>
       <li>slink current / use foo</li>
@@ -992,46 +1217,54 @@ TODO: config file https://github.com/VladimirMarkelov/ttdl/blob/master/ttdl.toml
       <li>slink download <file>: inverse of upload. Has an optional --from flag, to download the file from an arbitrary path on the remote.</file></li>
     </ul>
   </li>
-  <li>https://lib.rs/crates/howto-cli instant coding answers via the command line
-[does not compile]
-x https://gitlab.com/DarrienG/terminal-typeracer
-An open source terminal based version of Typeracer written in rust.
-[Not on cargo, cf
-https://www.reddit.com/r/rust/comments/bsuyx8/release_100_terminal_typeracing_game/ so to install: 
-cargo install [–force] –git https://gitlab.com/DarrienG/terminal-typeracer.git]
-=&gt; typeracer
-:-( core dumped</li>
   <li>
-    <p>https://github.com/dbrgn/tealdeer
-A very fast implementation of tldr in Rust. https://github.com/tldr-pages/tldr
-With a better colorescheme
-=&gt; tldr</p>
+    <p>https://github.com/r-darwish/topgrade
+Upgrade everything (see package manager below for more details)</p>
   </li>
-  <li>New</li>
-  <li>https://ownyourbits.com/2018/03/25/analyze-disk-usage-with-dutree/</li>
-  <li>https://github.com/mookid/diffr
-An improved diff-highlight script</li>
-  <li>https://github.com/starship/starship
-The cross-shell prompt for astronauts. https://starship.rs</li>
-  <li>https://github.com/lunaryorn/mdcat
-cat for markdown</li>
-  <li>https://github.com/r-darwish/topgrade
-Upgrade everything</li>
-  <li>https://github.com/WindSoilder/hors
-howdoi in rust</li>
-  <li>https://github.com/artichoke/artichoke
-ruby in rust</li>
-  <li>https://github.com/iqlusioninc/sear
-Signed/Encrypted ARchive: always-encrypted tar-like archive tool with optional signature support</li>
+  <li>
+    <p>https://github.com/starship/starship
+The cross-shell prompt for astronauts. https://starship.rs
+-&gt; starship prompt
+-&gt; starship module git_branch #output of just one module
+   starship module –list # aws battery character cmd_duration conda directory dotnet env_var git_branch git_commit git_state git_status golang hg_branch hostname java jobs kubernetes line_break memory_usage nix_shell nodejs package python ruby rust php terraform time username</p>
+  </li>
+  <li>
+    <p>https://github.com/artichoke/artichoke
+ruby in rust</p>
+  </li>
   <li>https://github.com/casey/just
 makefile like in rust</li>
-  <li>https://github.com/kpcyrd/sniffglue [arch: sniffglue]
-Secure multithreaded packet sniffer</li>
-  <li>https://gitlab.com/Dzejkop1/spruce
-yet another du</li>
-  <li>https://github.com/jhspetersson/fselect
-Find files with SQL-like queries</li>
 </ul>
+
+<h2 id="misc">Misc:</h2>
+
+<ul>
+  <li>https://lib.rs/crates/genact A nonsense activity generator 
+=&gt; genact / genact -m module1 module2
+Modules: bootlog botnet cargo cc composer cryptomining simcity download memdump mkinitcpio kernel_compile weblog</li>
+</ul>
+
+<p>! https://lib.rs/crates/ttdl TTDL - Terminal ToDo List manager (use the http://todotxt.org/ format)
+  x (A) 2011-03-02 2011-03-01 Review Tim’s pull request +TodoTxtTouch @github due:2016-02
+  Done Priority Completed Created ‘Subject +project @context keyword:value’
+  =&gt; ttdl add/list/done/undone/remove/clean/edit/append/prepend/start/stop/stats/postpone
+  Special keywords: 
+     due:2019-04-10 rec:1y t:2018-05-01 [=threshold date: ie future todos]
+     spent:78 tmr:off [for start/stop]
+  Eg:
+   (A) A high priority todo due:2019-11-01
+   Faire du sport spent:78 tmr:off
+  TODO: config file https://github.com/VladimirMarkelov/ttdl/blob/master/ttdl.toml</p>
+
+<p>x https://gitlab.com/DarrienG/terminal-typeracer
+  An open source terminal based version of Typeracer written in rust.
+  [Not on cargo, cf
+  https://www.reddit.com/r/rust/comments/bsuyx8/release_100_terminal_typeracing_game/ so to install: 
+  cargo install [–force] –git https://gitlab.com/DarrienG/terminal-typeracer.git]
+  =&gt; typeracer
+  :-( core dumped</p>
+
+<h2 id="new">New</h2>
 
 <h1 id="awesome-clis">Awesome clis</h1>
 <ul>
@@ -1128,20 +1361,8 @@ Ultimate Plumber is a tool for writing Linux pipes with instant live preview</li
 Find files with SQL-like queries</li>
   <li>https://github.com/raine/ramda-cli
 Like ru but via nodejs</li>
-  <li>
-    <p>https://github.com/jarun/pdd
-Tiny date, time diff calculator with timers</p>
-  </li>
-  <li>Emojis: (cf aussi gnome-characters)
-    <ul>
-      <li>https://github.com/sindresorhus/emoj</li>
-      <li>
-        <p>https://github.com/dematerializer/emoji-finder</p>
-      </li>
-      <li>https://github.com/mrowa44/emojify
-Emoji on the command line scream, ie convert :raising_hand: into the emoji</li>
-    </ul>
-  </li>
+  <li>https://github.com/jarun/pdd
+Tiny date, time diff calculator with timers</li>
 </ul>
 
 <h2 id="markdown">Markdown</h2>
@@ -1154,7 +1375,9 @@ Styled Terminal Markdown Viewer</li>
 
 <h2 id="help">Help</h2>
 <p>! tldr - Simplified and community-driven man pages.
+  -&gt; tealdeer [rust]
 ! howdoi - Instant coding answers via the command line.
+  -&gt; howrs [rust]
 - how2 - Finds the simplest way to do something on a unix bash command line (Nodejs implementation of howdoi).</p>
 
 <h1 id="easter-eggs">Easter Eggs</h1>
@@ -1192,6 +1415,14 @@ Pearl is a lightweight package manager for automating reproducible environments 
 $ bash install.sh
 =&gt; * Downloading Pearl to /home/dams/.local/share/pearl</p>
 
+<p>A pearl package is a git repo with a pearl-config optional directory which
+contains 
+│   ├── install.sh
+│   ├── config.sh
+…
+- install.sh - contains the hooks functions executed during the install, update and remove events.
+- config.sh - will be sourced whenever a new Bash/Zsh shell is starting up.</p>
+
 <pre><code class="language-install.sh">export PEARL_HOME="$XDG_CONFIG_HOME/pearl" #where the packages are installed
 export PEARL_ROOT="$XDG_DATA_HOME/pearl" #the pearl source code
 
@@ -1218,7 +1449,7 @@ $ git clone --quiet $branch --depth 1  --recurse-submodules \
 </code></pre>
 <p>=&gt; Annoyingly this rewrite (badly) my config files
 So the best to use it is to simply clone it, create the dirs, symlink the
-bin and the conf file, rathern than call <code>pearl init</code></p>
+bin and the conf file, rather than call <code>pearl init</code></p>
 
 <ul>
   <li>Files changed:</li>
@@ -1248,11 +1479,26 @@ bin and the conf file, rathern than call <code>pearl init</code></p>
             PEARL_PKGREPONAME=${reponame}</p>
 
 <ul>
-  <li>Commands
+  <li>
+    <p>buava https://github.com/fsquillace/buava ‘The utility library for Bash you always dreamed of’ commands are available
+and https://github.com/fsquillace/buava/blob/master/lib/utils.sh
+has ‘install_git_repo’</p>
+  </li>
+  <li>
+    <p>Commands
 PEARL_ROOT=”$HOME/.local/share/pearl” $PEARL_ROOT/bin/pearl list
 $ pearl list
 $ pearl search vim
 $ pearl update [pkg]
 $ pearl remove [pkg]
-$ pearl emerge [pkg] # Emerge is an idempotent command for either installing or updating a package</li>
+$ pearl emerge [pkg] # Emerge is an idempotent command for either installing or updating a package</p>
+  </li>
+</ul>
+
+<h1 id="games">Games</h1>
+
+<ul>
+  <li>Worms armaggeddon et world party</li>
+  <li>Blobby volley</li>
+  <li>Icy towers</li>
 </ul>

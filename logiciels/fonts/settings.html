@@ -605,174 +605,174 @@ Xft.dpi         Number  Used to convert point size into pixel size      Vertical
 	case FC_RGBA_VRGB, FC_RGBA_VBGR: mode = FT_RENDER_MODE_LCD_V;
 	default: mode = FT_RENDER_MODE_NORMAL;</p>
 
-<pre><code class="language-c">// xftdpy.c
-static FcPattern *
-_XftDefaultInit (Display *dpy)
-    // reads the following Xft.* variables: scale, dpi, rgba, lcdfilter, antialias, embolden, hintstyle, hinting, minspace, render, maxglyphmemory
-    // and create a FcPattern containing them (which are set)
-    _XftDefaultInitDouble (dpy, pat, FC_SCALE)
-    _XftDefaultInitDouble (dpy, pat, FC_DPI)
-    _XftDefaultInitBool (dpy, pat, XFT_RENDER)
-    _XftDefaultInitInteger (dpy, pat, FC_RGBA)
-    _XftDefaultInitInteger (dpy, pat, FC_LCD_FILTER)
-    _XftDefaultInitBool (dpy, pat, FC_ANTIALIAS)
-    _XftDefaultInitBool (dpy, pat, FC_EMBOLDEN)
-    _XftDefaultInitBool (dpy, pat, FC_AUTOHINT)
-    _XftDefaultInitInteger (dpy, pat, FC_HINT_STYLE)
-    _XftDefaultInitBool (dpy, pat, FC_HINTING)
-    _XftDefaultInitBool (dpy, pat, FC_MINSPACE)
-    _XftDefaultInitInteger (dpy, pat, XFT_MAX_GLYPH_MEMORY)
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// xftdpy.c</span>
+<span class="k">static</span> <span class="n">FcPattern</span> <span class="o">*</span>
+<span class="nf">_XftDefaultInit</span> <span class="p">(</span><span class="n">Display</span> <span class="o">*</span><span class="n">dpy</span><span class="p">)</span>
+    <span class="c1">// reads the following Xft.* variables: scale, dpi, rgba, lcdfilter, antialias, embolden, hintstyle, hinting, minspace, render, maxglyphmemory</span>
+    <span class="c1">// and create a FcPattern containing them (which are set)</span>
+    <span class="n">_XftDefaultInitDouble</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">pat</span><span class="p">,</span> <span class="n">FC_SCALE</span><span class="p">)</span>
+    <span class="n">_XftDefaultInitDouble</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">pat</span><span class="p">,</span> <span class="n">FC_DPI</span><span class="p">)</span>
+    <span class="n">_XftDefaultInitBool</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">pat</span><span class="p">,</span> <span class="n">XFT_RENDER</span><span class="p">)</span>
+    <span class="n">_XftDefaultInitInteger</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">pat</span><span class="p">,</span> <span class="n">FC_RGBA</span><span class="p">)</span>
+    <span class="n">_XftDefaultInitInteger</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">pat</span><span class="p">,</span> <span class="n">FC_LCD_FILTER</span><span class="p">)</span>
+    <span class="n">_XftDefaultInitBool</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">pat</span><span class="p">,</span> <span class="n">FC_ANTIALIAS</span><span class="p">)</span>
+    <span class="n">_XftDefaultInitBool</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">pat</span><span class="p">,</span> <span class="n">FC_EMBOLDEN</span><span class="p">)</span>
+    <span class="n">_XftDefaultInitBool</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">pat</span><span class="p">,</span> <span class="n">FC_AUTOHINT</span><span class="p">)</span>
+    <span class="n">_XftDefaultInitInteger</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">pat</span><span class="p">,</span> <span class="n">FC_HINT_STYLE</span><span class="p">)</span>
+    <span class="n">_XftDefaultInitBool</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">pat</span><span class="p">,</span> <span class="n">FC_HINTING</span><span class="p">)</span>
+    <span class="n">_XftDefaultInitBool</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">pat</span><span class="p">,</span> <span class="n">FC_MINSPACE</span><span class="p">)</span>
+    <span class="n">_XftDefaultInitInteger</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">pat</span><span class="p">,</span> <span class="n">XFT_MAX_GLYPH_MEMORY</span><span class="p">)</span>
 
-static FcResult
-_XftDefaultGet (Display *dpy, const char *object, int screen, FcValue *v)
-{
-    XftDisplayInfo  *info = _XftDisplayInfoGet (dpy, True);
-    FcResult	    r;
-    if (!info) return FcResultNoMatch;
-    if (!info-&gt;defaults)
-    {
-	info-&gt;defaults = _XftDefaultInit (dpy);
-	if (!info-&gt;defaults) return FcResultNoMatch;
-    }
-    r = FcPatternGet (info-&gt;defaults, object, screen, v);
-    if (r == FcResultNoId &amp;&amp; screen &gt; 0)
-	r = FcPatternGet (info-&gt;defaults, object, 0, v);
-    return r;
-}
-_X_HIDDEN XftDisplayInfo *
-_XftDisplayInfoGet (Display *dpy, FcBool createIfNecessary)
-{
-    XftDisplayInfo	*info, **prev;
-    info-&gt;display = dpy;
-    info-&gt;defaults = NULL;
-    info-&gt;solidFormat = NULL;
-    info-&gt;hasRender = (XRenderQueryExtension (dpy, &amp;event_base, &amp;error_base) &amp;&amp; (XRenderFindVisualFormat (dpy, DefaultVisual (dpy, DefaultScreen (dpy))) != NULL));
-    info-&gt;use_free_glyphs = FcTrue;
-    if (info-&gt;hasRender) ...
-    info-&gt;fonts = NULL;
-    info-&gt;next = _XftDisplayInfo;
-    _XftDisplayInfo = info;
-    return NULL;
-    ...
-}
+<span class="k">static</span> <span class="n">FcResult</span>
+<span class="n">_XftDefaultGet</span> <span class="p">(</span><span class="n">Display</span> <span class="o">*</span><span class="n">dpy</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">object</span><span class="p">,</span> <span class="kt">int</span> <span class="n">screen</span><span class="p">,</span> <span class="n">FcValue</span> <span class="o">*</span><span class="n">v</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">XftDisplayInfo</span>  <span class="o">*</span><span class="n">info</span> <span class="o">=</span> <span class="n">_XftDisplayInfoGet</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">True</span><span class="p">);</span>
+    <span class="n">FcResult</span>	    <span class="n">r</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">info</span><span class="p">)</span> <span class="k">return</span> <span class="n">FcResultNoMatch</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">defaults</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="n">info</span><span class="o">-&gt;</span><span class="n">defaults</span> <span class="o">=</span> <span class="n">_XftDefaultInit</span> <span class="p">(</span><span class="n">dpy</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">defaults</span><span class="p">)</span> <span class="k">return</span> <span class="n">FcResultNoMatch</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">FcPatternGet</span> <span class="p">(</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">defaults</span><span class="p">,</span> <span class="n">object</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="n">FcResultNoId</span> <span class="o">&amp;&amp;</span> <span class="n">screen</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+	<span class="n">r</span> <span class="o">=</span> <span class="n">FcPatternGet</span> <span class="p">(</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">defaults</span><span class="p">,</span> <span class="n">object</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">_X_HIDDEN</span> <span class="n">XftDisplayInfo</span> <span class="o">*</span>
+<span class="nf">_XftDisplayInfoGet</span> <span class="p">(</span><span class="n">Display</span> <span class="o">*</span><span class="n">dpy</span><span class="p">,</span> <span class="n">FcBool</span> <span class="n">createIfNecessary</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">XftDisplayInfo</span>	<span class="o">*</span><span class="n">info</span><span class="p">,</span> <span class="o">**</span><span class="n">prev</span><span class="p">;</span>
+    <span class="n">info</span><span class="o">-&gt;</span><span class="n">display</span> <span class="o">=</span> <span class="n">dpy</span><span class="p">;</span>
+    <span class="n">info</span><span class="o">-&gt;</span><span class="n">defaults</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">info</span><span class="o">-&gt;</span><span class="n">solidFormat</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">info</span><span class="o">-&gt;</span><span class="n">hasRender</span> <span class="o">=</span> <span class="p">(</span><span class="n">XRenderQueryExtension</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event_base</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">error_base</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">XRenderFindVisualFormat</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">DefaultVisual</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">DefaultScreen</span> <span class="p">(</span><span class="n">dpy</span><span class="p">)))</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">));</span>
+    <span class="n">info</span><span class="o">-&gt;</span><span class="n">use_free_glyphs</span> <span class="o">=</span> <span class="n">FcTrue</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">hasRender</span><span class="p">)</span> <span class="p">...</span>
+    <span class="n">info</span><span class="o">-&gt;</span><span class="n">fonts</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">info</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">_XftDisplayInfo</span><span class="p">;</span>
+    <span class="n">_XftDisplayInfo</span> <span class="o">=</span> <span class="n">info</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">...</span>
+<span class="p">}</span>
 
-_X_EXPORT void
-XftDefaultSubstitute (Display *dpy, int screen, FcPattern *pattern)
-// Fallback to xft defaults; note that the XftDefault* functions look at
-// the pattern derived from _XftDefaultInit above, they are wrapper around
-// _XftDefaultGet
-{
-    FcValue	v;
-    double	dpi;
+<span class="n">_X_EXPORT</span> <span class="kt">void</span>
+<span class="nf">XftDefaultSubstitute</span> <span class="p">(</span><span class="n">Display</span> <span class="o">*</span><span class="n">dpy</span><span class="p">,</span> <span class="kt">int</span> <span class="n">screen</span><span class="p">,</span> <span class="n">FcPattern</span> <span class="o">*</span><span class="n">pattern</span><span class="p">)</span>
+<span class="c1">// Fallback to xft defaults; note that the XftDefault* functions look at</span>
+<span class="c1">// the pattern derived from _XftDefaultInit above, they are wrapper around</span>
+<span class="c1">// _XftDefaultGet</span>
+<span class="p">{</span>
+    <span class="n">FcValue</span>	<span class="n">v</span><span class="p">;</span>
+    <span class="kt">double</span>	<span class="n">dpi</span><span class="p">;</span>
 
-    if (FcPatternGet (pattern, XFT_RENDER, 0, &amp;v) == FcResultNoMatch)
-    {
-	FcPatternAddBool (pattern, XFT_RENDER,
-			   XftDefaultGetBool (dpy, XFT_RENDER, screen,
-					      XftDefaultHasRender (dpy)));
-    }
-    if (FcPatternGet (pattern, FC_ANTIALIAS, 0, &amp;v) == FcResultNoMatch)
-    {
-	FcPatternAddBool (pattern, FC_ANTIALIAS,
-			   XftDefaultGetBool (dpy, FC_ANTIALIAS, screen,
-					      True));
-    }
-/*=&gt; if FC_ANTIALIAS is not set for the fontconfig 'pattern', then look at
-the Xft ressources (on the current screen) with a fallback to true */
-    if (FcPatternGet (pattern, FC_EMBOLDEN, 0, &amp;v) == FcResultNoMatch)
-    {
-	FcPatternAddBool (pattern, FC_EMBOLDEN,
-			   XftDefaultGetBool (dpy, FC_EMBOLDEN, screen,
-					      False));
-    }
-    if (FcPatternGet (pattern, FC_HINTING, 0, &amp;v) == FcResultNoMatch)
-    {
-	FcPatternAddBool (pattern, FC_HINTING,
-			  XftDefaultGetBool (dpy, FC_HINTING, screen,
-					     True));
-    }
-    if (FcPatternGet (pattern, FC_HINT_STYLE, 0, &amp;v) == FcResultNoMatch)
-    {
-	FcPatternAddInteger (pattern, FC_HINT_STYLE,
-			     XftDefaultGetInteger (dpy, FC_HINT_STYLE, screen,
-						   FC_HINT_FULL));
-    }
-    if (FcPatternGet (pattern, FC_AUTOHINT, 0, &amp;v) == FcResultNoMatch)
-    {
-	FcPatternAddBool (pattern, FC_AUTOHINT,
-			  XftDefaultGetBool (dpy, FC_AUTOHINT, screen,
-					     False));
-    }
-    if (FcPatternGet (pattern, FC_RGBA, 0, &amp;v) == FcResultNoMatch)
-    {
-	int	subpixel = FC_RGBA_UNKNOWN;
- #if RENDER_MAJOR &gt; 0 || RENDER_MINOR &gt;= 6
-	if (XftDefaultHasRender (dpy))
-	{
-	    int render_order = XRenderQuerySubpixelOrder (dpy, screen);
-	    switch (render_order) {
-	    default:
-	    case SubPixelUnknown:	subpixel = FC_RGBA_UNKNOWN; break;
-	    case SubPixelHorizontalRGB:	subpixel = FC_RGBA_RGB; break;
-	    case SubPixelHorizontalBGR:	subpixel = FC_RGBA_BGR; break;
-	    case SubPixelVerticalRGB:	subpixel = FC_RGBA_VRGB; break;
-	    case SubPixelVerticalBGR:	subpixel = FC_RGBA_VBGR; break;
-	    case SubPixelNone:		subpixel = FC_RGBA_NONE; break;
-	    }
-	}
- #endif
-	FcPatternAddInteger (pattern, FC_RGBA,
-			      XftDefaultGetInteger (dpy, FC_RGBA, screen,
-						    subpixel));
-    }
-    if (FcPatternGet (pattern, FC_LCD_FILTER, 0, &amp;v) == FcResultNoMatch)
-    {
-	FcPatternAddInteger (pattern, FC_LCD_FILTER,
-			     XftDefaultGetInteger (dpy, FC_LCD_FILTER, screen,
-						   FC_LCD_DEFAULT));
-    }
-    if (FcPatternGet (pattern, FC_MINSPACE, 0, &amp;v) == FcResultNoMatch)
-    {
-	FcPatternAddBool (pattern, FC_MINSPACE,
-			   XftDefaultGetBool (dpy, FC_MINSPACE, screen,
-					      False));
-    }
-    if (FcPatternGet (pattern, FC_DPI, 0, &amp;v) == FcResultNoMatch)
-    {
-	dpi = (((double) DisplayHeight (dpy, screen) * 25.4) /
-	       (double) DisplayHeightMM (dpy, screen));
-	FcPatternAddDouble (pattern, FC_DPI,
-			    XftDefaultGetDouble (dpy, FC_DPI, screen,
-						 dpi));
-    }
-    if (FcPatternGet (pattern, FC_SCALE, 0, &amp;v) == FcResultNoMatch)
-    {
-	FcPatternAddDouble (pattern, FC_SCALE,
-			    XftDefaultGetDouble (dpy, FC_SCALE, screen, 1.0));
-    }
-    if (FcPatternGet (pattern, XFT_MAX_GLYPH_MEMORY, 0, &amp;v) == FcResultNoMatch)
-    {
-	FcPatternAddInteger (pattern, XFT_MAX_GLYPH_MEMORY,
-			     XftDefaultGetInteger (dpy, XFT_MAX_GLYPH_MEMORY,
-						   screen,
-						   XFT_FONT_MAX_GLYPH_MEMORY));
-    }
-    FcDefaultSubstitute (pattern);
-}
+    <span class="k">if</span> <span class="p">(</span><span class="n">FcPatternGet</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">XFT_RENDER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">FcResultNoMatch</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="n">FcPatternAddBool</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">XFT_RENDER</span><span class="p">,</span>
+			   <span class="n">XftDefaultGetBool</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">XFT_RENDER</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+					      <span class="n">XftDefaultHasRender</span> <span class="p">(</span><span class="n">dpy</span><span class="p">)));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">FcPatternGet</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_ANTIALIAS</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">FcResultNoMatch</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="n">FcPatternAddBool</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_ANTIALIAS</span><span class="p">,</span>
+			   <span class="n">XftDefaultGetBool</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">FC_ANTIALIAS</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+					      <span class="n">True</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="cm">/*=&gt; if FC_ANTIALIAS is not set for the fontconfig 'pattern', then look at
+the Xft ressources (on the current screen) with a fallback to true */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">FcPatternGet</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_EMBOLDEN</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">FcResultNoMatch</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="n">FcPatternAddBool</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_EMBOLDEN</span><span class="p">,</span>
+			   <span class="n">XftDefaultGetBool</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">FC_EMBOLDEN</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+					      <span class="n">False</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">FcPatternGet</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_HINTING</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">FcResultNoMatch</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="n">FcPatternAddBool</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_HINTING</span><span class="p">,</span>
+			  <span class="n">XftDefaultGetBool</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">FC_HINTING</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+					     <span class="n">True</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">FcPatternGet</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_HINT_STYLE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">FcResultNoMatch</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="n">FcPatternAddInteger</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_HINT_STYLE</span><span class="p">,</span>
+			     <span class="n">XftDefaultGetInteger</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">FC_HINT_STYLE</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+						   <span class="n">FC_HINT_FULL</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">FcPatternGet</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_AUTOHINT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">FcResultNoMatch</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="n">FcPatternAddBool</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_AUTOHINT</span><span class="p">,</span>
+			  <span class="n">XftDefaultGetBool</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">FC_AUTOHINT</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+					     <span class="n">False</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">FcPatternGet</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_RGBA</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">FcResultNoMatch</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="kt">int</span>	<span class="n">subpixel</span> <span class="o">=</span> <span class="n">FC_RGBA_UNKNOWN</span><span class="p">;</span>
+ <span class="cp">#if RENDER_MAJOR &gt; 0 || RENDER_MINOR &gt;= 6
+</span>	<span class="k">if</span> <span class="p">(</span><span class="n">XftDefaultHasRender</span> <span class="p">(</span><span class="n">dpy</span><span class="p">))</span>
+	<span class="p">{</span>
+	    <span class="kt">int</span> <span class="n">render_order</span> <span class="o">=</span> <span class="n">XRenderQuerySubpixelOrder</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">screen</span><span class="p">);</span>
+	    <span class="k">switch</span> <span class="p">(</span><span class="n">render_order</span><span class="p">)</span> <span class="p">{</span>
+	    <span class="nl">default:</span>
+	    <span class="k">case</span> <span class="n">SubPixelUnknown</span><span class="p">:</span>	<span class="n">subpixel</span> <span class="o">=</span> <span class="n">FC_RGBA_UNKNOWN</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span>
+	    <span class="k">case</span> <span class="n">SubPixelHorizontalRGB</span><span class="p">:</span>	<span class="n">subpixel</span> <span class="o">=</span> <span class="n">FC_RGBA_RGB</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span>
+	    <span class="k">case</span> <span class="n">SubPixelHorizontalBGR</span><span class="p">:</span>	<span class="n">subpixel</span> <span class="o">=</span> <span class="n">FC_RGBA_BGR</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span>
+	    <span class="k">case</span> <span class="n">SubPixelVerticalRGB</span><span class="p">:</span>	<span class="n">subpixel</span> <span class="o">=</span> <span class="n">FC_RGBA_VRGB</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span>
+	    <span class="k">case</span> <span class="n">SubPixelVerticalBGR</span><span class="p">:</span>	<span class="n">subpixel</span> <span class="o">=</span> <span class="n">FC_RGBA_VBGR</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span>
+	    <span class="k">case</span> <span class="n">SubPixelNone</span><span class="p">:</span>		<span class="n">subpixel</span> <span class="o">=</span> <span class="n">FC_RGBA_NONE</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span>
+	    <span class="p">}</span>
+	<span class="p">}</span>
+ <span class="cp">#endif
+</span>	<span class="n">FcPatternAddInteger</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_RGBA</span><span class="p">,</span>
+			      <span class="n">XftDefaultGetInteger</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">FC_RGBA</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+						    <span class="n">subpixel</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">FcPatternGet</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_LCD_FILTER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">FcResultNoMatch</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="n">FcPatternAddInteger</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_LCD_FILTER</span><span class="p">,</span>
+			     <span class="n">XftDefaultGetInteger</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">FC_LCD_FILTER</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+						   <span class="n">FC_LCD_DEFAULT</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">FcPatternGet</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_MINSPACE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">FcResultNoMatch</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="n">FcPatternAddBool</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_MINSPACE</span><span class="p">,</span>
+			   <span class="n">XftDefaultGetBool</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">FC_MINSPACE</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+					      <span class="n">False</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">FcPatternGet</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_DPI</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">FcResultNoMatch</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="n">dpi</span> <span class="o">=</span> <span class="p">(((</span><span class="kt">double</span><span class="p">)</span> <span class="n">DisplayHeight</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">screen</span><span class="p">)</span> <span class="o">*</span> <span class="mi">25</span><span class="p">.</span><span class="mi">4</span><span class="p">)</span> <span class="o">/</span>
+	       <span class="p">(</span><span class="kt">double</span><span class="p">)</span> <span class="n">DisplayHeightMM</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">screen</span><span class="p">));</span>
+	<span class="n">FcPatternAddDouble</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_DPI</span><span class="p">,</span>
+			    <span class="n">XftDefaultGetDouble</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">FC_DPI</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span>
+						 <span class="n">dpi</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">FcPatternGet</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_SCALE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">FcResultNoMatch</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="n">FcPatternAddDouble</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">FC_SCALE</span><span class="p">,</span>
+			    <span class="n">XftDefaultGetDouble</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">FC_SCALE</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">FcPatternGet</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">XFT_MAX_GLYPH_MEMORY</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">FcResultNoMatch</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="n">FcPatternAddInteger</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">XFT_MAX_GLYPH_MEMORY</span><span class="p">,</span>
+			     <span class="n">XftDefaultGetInteger</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">XFT_MAX_GLYPH_MEMORY</span><span class="p">,</span>
+						   <span class="n">screen</span><span class="p">,</span>
+						   <span class="n">XFT_FONT_MAX_GLYPH_MEMORY</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="n">FcDefaultSubstitute</span> <span class="p">(</span><span class="n">pattern</span><span class="p">);</span>
+<span class="p">}</span>
 
-// xftfont.c
-XftFontMatch (Display		*dpy,
-	      int		screen,
-	      _Xconst FcPattern *pattern,
-	      FcResult		*result)
-{
-    new = FcPatternDuplicate (pattern);
-    FcConfigSubstitute (NULL, new, FcMatchPattern);
-    XftDefaultSubstitute (dpy, screen, new);
-    match = FcFontMatch (NULL, new, result);
-    return match;
-}
-</code></pre>
+<span class="c1">// xftfont.c</span>
+<span class="n">XftFontMatch</span> <span class="p">(</span><span class="n">Display</span>		<span class="o">*</span><span class="n">dpy</span><span class="p">,</span>
+	      <span class="kt">int</span>		<span class="n">screen</span><span class="p">,</span>
+	      <span class="n">_Xconst</span> <span class="n">FcPattern</span> <span class="o">*</span><span class="n">pattern</span><span class="p">,</span>
+	      <span class="n">FcResult</span>		<span class="o">*</span><span class="n">result</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">new</span> <span class="o">=</span> <span class="n">FcPatternDuplicate</span> <span class="p">(</span><span class="n">pattern</span><span class="p">);</span>
+    <span class="n">FcConfigSubstitute</span> <span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">FcMatchPattern</span><span class="p">);</span>
+    <span class="n">XftDefaultSubstitute</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">new</span><span class="p">);</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">FcFontMatch</span> <span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">match</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <ul>
   <li>
@@ -1178,123 +1178,123 @@ return &amp;font-&gt;public; } ~~~
   <li>These infos are then used by XftFontLoadGlyphs in xftglyphs.c</li>
 </ul>
 
-<pre><code class="language-c">XftFontLoadGlyphs (Display	    *dpy,
-		   XftFont	    *pub,
-		   FcBool	    need_bitmaps,
-		   _Xconst FT_UInt  *glyphs,
-		   int		    nglyph)
-{
-    XftDisplayInfo  *info = _XftDisplayInfoGet (dpy, True);
-    XftFontInt	    *font = (XftFontInt *) pub;
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">XftFontLoadGlyphs</span> <span class="p">(</span><span class="n">Display</span>	    <span class="o">*</span><span class="n">dpy</span><span class="p">,</span>
+		   <span class="n">XftFont</span>	    <span class="o">*</span><span class="n">pub</span><span class="p">,</span>
+		   <span class="n">FcBool</span>	    <span class="n">need_bitmaps</span><span class="p">,</span>
+		   <span class="n">_Xconst</span> <span class="n">FT_UInt</span>  <span class="o">*</span><span class="n">glyphs</span><span class="p">,</span>
+		   <span class="kt">int</span>		    <span class="n">nglyph</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">XftDisplayInfo</span>  <span class="o">*</span><span class="n">info</span> <span class="o">=</span> <span class="n">_XftDisplayInfoGet</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">True</span><span class="p">);</span>
+    <span class="n">XftFontInt</span>	    <span class="o">*</span><span class="n">font</span> <span class="o">=</span> <span class="p">(</span><span class="n">XftFontInt</span> <span class="o">*</span><span class="p">)</span> <span class="n">pub</span><span class="p">;</span>
 
-    if (font-&gt;info.antialias)
-    {
-	switch (font-&gt;info.rgba) {
-	case FC_RGBA_RGB:
-	case FC_RGBA_BGR:
-	    mode = FT_RENDER_MODE_LCD;
-	    break;
-	case FC_RGBA_VRGB:
-	case FC_RGBA_VBGR:
-	    mode = FT_RENDER_MODE_LCD_V;
-	    break;
-	default:
-	    mode = FT_RENDER_MODE_NORMAL;
-	}
-    }
+    <span class="k">if</span> <span class="p">(</span><span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">antialias</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="k">switch</span> <span class="p">(</span><span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">rgba</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">case</span> <span class="n">FC_RGBA_RGB</span><span class="p">:</span>
+	<span class="k">case</span> <span class="n">FC_RGBA_BGR</span><span class="p">:</span>
+	    <span class="n">mode</span> <span class="o">=</span> <span class="n">FT_RENDER_MODE_LCD</span><span class="p">;</span>
+	    <span class="k">break</span><span class="p">;</span>
+	<span class="k">case</span> <span class="n">FC_RGBA_VRGB</span><span class="p">:</span>
+	<span class="k">case</span> <span class="n">FC_RGBA_VBGR</span><span class="p">:</span>
+	    <span class="n">mode</span> <span class="o">=</span> <span class="n">FT_RENDER_MODE_LCD_V</span><span class="p">;</span>
+	    <span class="k">break</span><span class="p">;</span>
+	<span class="nl">default:</span>
+	    <span class="n">mode</span> <span class="o">=</span> <span class="n">FT_RENDER_MODE_NORMAL</span><span class="p">;</span>
+	<span class="p">}</span>
+    <span class="p">}</span>
 
-    while (nglyph--)
-    {
-	glyphindex = *glyphs++;
-	xftg = font-&gt;glyphs[glyphindex];
-	FT_Library_SetLcdFilter( _XftFTlibrary, font-&gt;info.lcd_filter);
-	error = FT_Load_Glyph (face, glyphindex, font-&gt;info.load_flags);
-	if (error)
-	{
-	    /*
+    <span class="k">while</span> <span class="p">(</span><span class="n">nglyph</span><span class="o">--</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="n">glyphindex</span> <span class="o">=</span> <span class="o">*</span><span class="n">glyphs</span><span class="o">++</span><span class="p">;</span>
+	<span class="n">xftg</span> <span class="o">=</span> <span class="n">font</span><span class="o">-&gt;</span><span class="n">glyphs</span><span class="p">[</span><span class="n">glyphindex</span><span class="p">];</span>
+	<span class="n">FT_Library_SetLcdFilter</span><span class="p">(</span> <span class="n">_XftFTlibrary</span><span class="p">,</span> <span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">lcd_filter</span><span class="p">);</span>
+	<span class="n">error</span> <span class="o">=</span> <span class="n">FT_Load_Glyph</span> <span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">glyphindex</span><span class="p">,</span> <span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">load_flags</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">error</span><span class="p">)</span>
+	<span class="p">{</span>
+	    <span class="cm">/*
 	     * If anti-aliasing or transforming glyphs and
 	     * no outline version exists, fallback to the
 	     * bitmap and let things look bad instead of
 	     * missing the glyph
-	     */
-	    if (font-&gt;info.load_flags &amp; FT_LOAD_NO_BITMAP)
-		error = FT_Load_Glyph (face, glyphindex,
-				       font-&gt;info.load_flags &amp; ~FT_LOAD_NO_BITMAP);
-	}
- #define FLOOR(x)    ((x) &amp; -64)
- #define CEIL(x)	    (((x)+63) &amp; -64)
- #define TRUNC(x)    ((x) &gt;&gt; 6)
- #define ROUND(x)    (((x)+32) &amp; -64)
-	glyphslot = face-&gt;glyph;
+	     */</span>
+	    <span class="k">if</span> <span class="p">(</span><span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">load_flags</span> <span class="o">&amp;</span> <span class="n">FT_LOAD_NO_BITMAP</span><span class="p">)</span>
+		<span class="n">error</span> <span class="o">=</span> <span class="n">FT_Load_Glyph</span> <span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">glyphindex</span><span class="p">,</span>
+				       <span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">load_flags</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">FT_LOAD_NO_BITMAP</span><span class="p">);</span>
+	<span class="p">}</span>
+ <span class="cp">#define FLOOR(x)    ((x) &amp; -64)
+</span> <span class="cp">#define CEIL(x)	    (((x)+63) &amp; -64)
+</span> <span class="cp">#define TRUNC(x)    ((x) &gt;&gt; 6)
+</span> <span class="cp">#define ROUND(x)    (((x)+32) &amp; -64)
+</span>	<span class="n">glyphslot</span> <span class="o">=</span> <span class="n">face</span><span class="o">-&gt;</span><span class="n">glyph</span><span class="p">;</span>
 
-	/* Embolden if required */
-	if (font-&gt;info.embolden) FT_GlyphSlot_Embolden(glyphslot);
+	<span class="cm">/* Embolden if required */</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">embolden</span><span class="p">)</span> <span class="n">FT_GlyphSlot_Embolden</span><span class="p">(</span><span class="n">glyphslot</span><span class="p">);</span>
 
-	/* Compute glyph metrics from FreeType information */
-	if(font-&gt;info.transform &amp;&amp; glyphslot-&gt;format != FT_GLYPH_FORMAT_BITMAP)
-	...
-	} else {
-	    left  = FLOOR( glyphslot-&gt;metrics.horiBearingX );
-	    right = CEIL( glyphslot-&gt;metrics.horiBearingX + glyphslot-&gt;metrics.width );
-	    top    = CEIL( glyphslot-&gt;metrics.horiBearingY );
-	    bottom = FLOOR( glyphslot-&gt;metrics.horiBearingY - glyphslot-&gt;metrics.height );
-	}
-	width = TRUNC(right - left);
-	height = TRUNC( top - bottom );
+	<span class="cm">/* Compute glyph metrics from FreeType information */</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">transform</span> <span class="o">&amp;&amp;</span> <span class="n">glyphslot</span><span class="o">-&gt;</span><span class="n">format</span> <span class="o">!=</span> <span class="n">FT_GLYPH_FORMAT_BITMAP</span><span class="p">)</span>
+	<span class="p">...</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+	    <span class="n">left</span>  <span class="o">=</span> <span class="n">FLOOR</span><span class="p">(</span> <span class="n">glyphslot</span><span class="o">-&gt;</span><span class="n">metrics</span><span class="p">.</span><span class="n">horiBearingX</span> <span class="p">);</span>
+	    <span class="n">right</span> <span class="o">=</span> <span class="n">CEIL</span><span class="p">(</span> <span class="n">glyphslot</span><span class="o">-&gt;</span><span class="n">metrics</span><span class="p">.</span><span class="n">horiBearingX</span> <span class="o">+</span> <span class="n">glyphslot</span><span class="o">-&gt;</span><span class="n">metrics</span><span class="p">.</span><span class="n">width</span> <span class="p">);</span>
+	    <span class="n">top</span>    <span class="o">=</span> <span class="n">CEIL</span><span class="p">(</span> <span class="n">glyphslot</span><span class="o">-&gt;</span><span class="n">metrics</span><span class="p">.</span><span class="n">horiBearingY</span> <span class="p">);</span>
+	    <span class="n">bottom</span> <span class="o">=</span> <span class="n">FLOOR</span><span class="p">(</span> <span class="n">glyphslot</span><span class="o">-&gt;</span><span class="n">metrics</span><span class="p">.</span><span class="n">horiBearingY</span> <span class="o">-</span> <span class="n">glyphslot</span><span class="o">-&gt;</span><span class="n">metrics</span><span class="p">.</span><span class="n">height</span> <span class="p">);</span>
+	<span class="p">}</span>
+	<span class="n">width</span> <span class="o">=</span> <span class="n">TRUNC</span><span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">);</span>
+	<span class="n">height</span> <span class="o">=</span> <span class="n">TRUNC</span><span class="p">(</span> <span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span> <span class="p">);</span>
 
-	/* Clip charcell glyphs to the bounding box XXX transformed? */
-	if (font-&gt;info.spacing &gt;= FC_CHARCELL &amp;&amp; !font-&gt;info.transform)
-	...
-	if ( glyphslot-&gt;format != FT_GLYPH_FORMAT_BITMAP )
-	{
-	    error = FT_Render_Glyph( face-&gt;glyph, mode );
-	}
-	FT_Library_SetLcdFilter( _XftFTlibrary, FT_LCD_FILTER_NONE );
-	if (font-&gt;info.spacing &gt;= FC_MONO)
-	{
-	    if (font-&gt;info.transform)
-	    ...
-	    else
-		if (font-&gt;info.load_flags &amp; FT_LOAD_VERTICAL_LAYOUT)
-		...
-		else
-		{
-		    xftg-&gt;metrics.xOff = font-&gt;public.max_advance_width;
-		    xftg-&gt;metrics.yOff = 0;
-		}
-	    }
-	}
-	else
-	{
-	    xftg-&gt;metrics.xOff = TRUNC(ROUND(glyphslot-&gt;advance.x));
-	    xftg-&gt;metrics.yOff = -TRUNC(ROUND(glyphslot-&gt;advance.y));
-	}
+	<span class="cm">/* Clip charcell glyphs to the bounding box XXX transformed? */</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">spacing</span> <span class="o">&gt;=</span> <span class="n">FC_CHARCELL</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">transform</span><span class="p">)</span>
+	<span class="p">...</span>
+	<span class="k">if</span> <span class="p">(</span> <span class="n">glyphslot</span><span class="o">-&gt;</span><span class="n">format</span> <span class="o">!=</span> <span class="n">FT_GLYPH_FORMAT_BITMAP</span> <span class="p">)</span>
+	<span class="p">{</span>
+	    <span class="n">error</span> <span class="o">=</span> <span class="n">FT_Render_Glyph</span><span class="p">(</span> <span class="n">face</span><span class="o">-&gt;</span><span class="n">glyph</span><span class="p">,</span> <span class="n">mode</span> <span class="p">);</span>
+	<span class="p">}</span>
+	<span class="n">FT_Library_SetLcdFilter</span><span class="p">(</span> <span class="n">_XftFTlibrary</span><span class="p">,</span> <span class="n">FT_LCD_FILTER_NONE</span> <span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">spacing</span> <span class="o">&gt;=</span> <span class="n">FC_MONO</span><span class="p">)</span>
+	<span class="p">{</span>
+	    <span class="k">if</span> <span class="p">(</span><span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">transform</span><span class="p">)</span>
+	    <span class="p">...</span>
+	    <span class="k">else</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">load_flags</span> <span class="o">&amp;</span> <span class="n">FT_LOAD_VERTICAL_LAYOUT</span><span class="p">)</span>
+		<span class="p">...</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+		    <span class="n">xftg</span><span class="o">-&gt;</span><span class="n">metrics</span><span class="p">.</span><span class="n">xOff</span> <span class="o">=</span> <span class="n">font</span><span class="o">-&gt;</span><span class="n">public</span><span class="p">.</span><span class="n">max_advance_width</span><span class="p">;</span>
+		    <span class="n">xftg</span><span class="o">-&gt;</span><span class="n">metrics</span><span class="p">.</span><span class="n">yOff</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="p">}</span>
+	    <span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">else</span>
+	<span class="p">{</span>
+	    <span class="n">xftg</span><span class="o">-&gt;</span><span class="n">metrics</span><span class="p">.</span><span class="n">xOff</span> <span class="o">=</span> <span class="n">TRUNC</span><span class="p">(</span><span class="n">ROUND</span><span class="p">(</span><span class="n">glyphslot</span><span class="o">-&gt;</span><span class="n">advance</span><span class="p">.</span><span class="n">x</span><span class="p">));</span>
+	    <span class="n">xftg</span><span class="o">-&gt;</span><span class="n">metrics</span><span class="p">.</span><span class="n">yOff</span> <span class="o">=</span> <span class="o">-</span><span class="n">TRUNC</span><span class="p">(</span><span class="n">ROUND</span><span class="p">(</span><span class="n">glyphslot</span><span class="o">-&gt;</span><span class="n">advance</span><span class="p">.</span><span class="n">y</span><span class="p">));</span>
+	<span class="p">}</span>
 
-	// compute the size of the final bitmap
-	...
-	xftg-&gt;metrics.width  = local.width;
-	xftg-&gt;metrics.height = local.rows;
-	xftg-&gt;metrics.x      = - glyphslot-&gt;bitmap_left;
-	xftg-&gt;metrics.y      =   glyphslot-&gt;bitmap_top;
-	...
-	_fill_xrender_bitmap( &amp;local, glyphslot, mode,
-			      (font-&gt;info.rgba == FC_RGBA_BGR ||
-			       font-&gt;info.rgba == FC_RGBA_VBGR ) );
-	xftg-&gt;glyph_memory = size + sizeof (XftGlyph);
-	if (font-&gt;format)
-	{
-	    if (!font-&gt;glyphset)
-		font-&gt;glyphset = XRenderCreateGlyphSet (dpy, font-&gt;format);
-	    if ( mode == FT_RENDER_MODE_MONO )
-	    ...
-	    else if ( mode != FT_RENDER_MODE_NORMAL )
-	    {
-		/* invert ARGB &lt;=&gt; BGRA */
-	}}
-	else
-		    memcpy (xftg-&gt;bitmap, bufBitmap, size);
-}
-</code></pre>
+	<span class="c1">// compute the size of the final bitmap</span>
+	<span class="p">...</span>
+	<span class="n">xftg</span><span class="o">-&gt;</span><span class="n">metrics</span><span class="p">.</span><span class="n">width</span>  <span class="o">=</span> <span class="n">local</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+	<span class="n">xftg</span><span class="o">-&gt;</span><span class="n">metrics</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">local</span><span class="p">.</span><span class="n">rows</span><span class="p">;</span>
+	<span class="n">xftg</span><span class="o">-&gt;</span><span class="n">metrics</span><span class="p">.</span><span class="n">x</span>      <span class="o">=</span> <span class="o">-</span> <span class="n">glyphslot</span><span class="o">-&gt;</span><span class="n">bitmap_left</span><span class="p">;</span>
+	<span class="n">xftg</span><span class="o">-&gt;</span><span class="n">metrics</span><span class="p">.</span><span class="n">y</span>      <span class="o">=</span>   <span class="n">glyphslot</span><span class="o">-&gt;</span><span class="n">bitmap_top</span><span class="p">;</span>
+	<span class="p">...</span>
+	<span class="n">_fill_xrender_bitmap</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">local</span><span class="p">,</span> <span class="n">glyphslot</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span>
+			      <span class="p">(</span><span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">rgba</span> <span class="o">==</span> <span class="n">FC_RGBA_BGR</span> <span class="o">||</span>
+			       <span class="n">font</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">.</span><span class="n">rgba</span> <span class="o">==</span> <span class="n">FC_RGBA_VBGR</span> <span class="p">)</span> <span class="p">);</span>
+	<span class="n">xftg</span><span class="o">-&gt;</span><span class="n">glyph_memory</span> <span class="o">=</span> <span class="n">size</span> <span class="o">+</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">XftGlyph</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">font</span><span class="o">-&gt;</span><span class="n">format</span><span class="p">)</span>
+	<span class="p">{</span>
+	    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">font</span><span class="o">-&gt;</span><span class="n">glyphset</span><span class="p">)</span>
+		<span class="n">font</span><span class="o">-&gt;</span><span class="n">glyphset</span> <span class="o">=</span> <span class="n">XRenderCreateGlyphSet</span> <span class="p">(</span><span class="n">dpy</span><span class="p">,</span> <span class="n">font</span><span class="o">-&gt;</span><span class="n">format</span><span class="p">);</span>
+	    <span class="k">if</span> <span class="p">(</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">FT_RENDER_MODE_MONO</span> <span class="p">)</span>
+	    <span class="p">...</span>
+	    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">mode</span> <span class="o">!=</span> <span class="n">FT_RENDER_MODE_NORMAL</span> <span class="p">)</span>
+	    <span class="p">{</span>
+		<span class="cm">/* invert ARGB &lt;=&gt; BGRA */</span>
+	<span class="p">}}</span>
+	<span class="k">else</span>
+		    <span class="nf">memcpy</span> <span class="p">(</span><span class="n">xftg</span><span class="o">-&gt;</span><span class="n">bitmap</span><span class="p">,</span> <span class="n">bufBitmap</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+<span class="err">}</span>
+</code></pre></div></div>
 
 <h1 id="cairo">Cairo</h1>
 
@@ -3433,34 +3433,34 @@ _gdk_x11_screen_set_window_scale (GdkX11Screen *x11_screen,
 
 <p>https://cs.chromium.org/chromium/src/chrome/browser/ui/libgtkui/gtk_ui.cc?l=1127</p>
 
-<pre><code class="language-c++">float GtkUi::GetRawDeviceScaleFactor() {
-  if (display::Display::HasForceDeviceScaleFactor())
-    return display::Display::GetForcedDeviceScaleFactor();
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="n">GtkUi</span><span class="o">::</span><span class="n">GetRawDeviceScaleFactor</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">display</span><span class="o">::</span><span class="n">Display</span><span class="o">::</span><span class="n">HasForceDeviceScaleFactor</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">display</span><span class="o">::</span><span class="n">Display</span><span class="o">::</span><span class="n">GetForcedDeviceScaleFactor</span><span class="p">();</span>
 
- #if GTK_MAJOR_VERSION == 2
-  GtkSettings* gtk_settings = gtk_settings_get_default();
-  gint gtk_dpi = -1;
-  g_object_get(gtk_settings, "gtk-xft-dpi", &amp;gtk_dpi, nullptr);
-  const float scale_factor = gtk_dpi / (1024 * kDefaultDPI);
- #else
-  GdkScreen* screen = gdk_screen_get_default();
-  gint scale = gtk_widget_get_scale_factor(fake_window_);
-  //NdDams: Gdk/WindowScale
-  DCHECK_GT(scale, 0);
-  gdouble resolution = gdk_screen_get_resolution(screen);
-  //Doc gnome: the resolution for font handling on the screen. This is a scale
-  //  factor between points specified in a PangoFontDescription and cairo
-  //  units. The default value is 96, meaning that a 10 point font will be
-  //  13 units high. (NdDams: ie gtk-xft-dpi/1024)
-  const float scale_factor =
-      resolution &lt;= 0 ? scale : resolution * scale / kDefaultDPI;
- #endif
-
-  // Blacklist scaling factors &lt;120% (crbug.com/484400) and round
-  // to 1 decimal to prevent rendering problems (crbug.com/485183).
-  return scale_factor &lt; 1.2f ? 1.0f : roundf(scale_factor * 10) / 10;
-}
-</code></pre>
+ <span class="cp">#if GTK_MAJOR_VERSION == 2
+</span>  <span class="n">GtkSettings</span><span class="o">*</span> <span class="n">gtk_settings</span> <span class="o">=</span> <span class="n">gtk_settings_get_default</span><span class="p">();</span>
+  <span class="n">gint</span> <span class="n">gtk_dpi</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="n">g_object_get</span><span class="p">(</span><span class="n">gtk_settings</span><span class="p">,</span> <span class="s">"gtk-xft-dpi"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">gtk_dpi</span><span class="p">,</span> <span class="nb">nullptr</span><span class="p">);</span>
+  <span class="k">const</span> <span class="kt">float</span> <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">gtk_dpi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="n">kDefaultDPI</span><span class="p">);</span>
+ <span class="cp">#else
+</span>  <span class="n">GdkScreen</span><span class="o">*</span> <span class="n">screen</span> <span class="o">=</span> <span class="n">gdk_screen_get_default</span><span class="p">();</span>
+  <span class="n">gint</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">gtk_widget_get_scale_factor</span><span class="p">(</span><span class="n">fake_window_</span><span class="p">);</span>
+  <span class="c1">//NdDams: Gdk/WindowScale</span>
+  <span class="n">DCHECK_GT</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="n">gdouble</span> <span class="n">resolution</span> <span class="o">=</span> <span class="n">gdk_screen_get_resolution</span><span class="p">(</span><span class="n">screen</span><span class="p">);</span>
+  <span class="c1">//Doc gnome: the resolution for font handling on the screen. This is a scale</span>
+  <span class="c1">//  factor between points specified in a PangoFontDescription and cairo</span>
+  <span class="c1">//  units. The default value is 96, meaning that a 10 point font will be</span>
+  <span class="c1">//  13 units high. (NdDams: ie gtk-xft-dpi/1024)</span>
+  <span class="k">const</span> <span class="kt">float</span> <span class="n">scale_factor</span> <span class="o">=</span>
+      <span class="n">resolution</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">scale</span> <span class="o">:</span> <span class="n">resolution</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">/</span> <span class="n">kDefaultDPI</span><span class="p">;</span>
+ <span class="cp">#endif
+</span>
+  <span class="c1">// Blacklist scaling factors &lt;120% (crbug.com/484400) and round</span>
+  <span class="c1">// to 1 decimal to prevent rendering problems (crbug.com/485183).</span>
+  <span class="k">return</span> <span class="n">scale_factor</span> <span class="o">&lt;</span> <span class="mf">1.2</span><span class="n">f</span> <span class="o">?</span> <span class="mf">1.0</span><span class="n">f</span> <span class="o">:</span> <span class="n">roundf</span><span class="p">(</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>https://cs.chromium.org/chromium/src/ui/views/widget/desktop_aura/desktop_screen_x11.cc
 ~~~ c++

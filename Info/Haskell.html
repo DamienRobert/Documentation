@@ -1,0 +1,91 @@
+<p>vim: fdm=expr ft=markdownlight</p>
+
+<h1 id="doc">Doc</h1>
+
+<p>http://blog.ezyang.com/2010/10/ocaml-for-haskellers/
+http://science.raphael.poss.name/haskell-for-ocaml-programmers.html</p>
+
+<p>https://github.com/bitemyapp/learnhaskell</p>
+
+<h1 id="functions">Functions</h1>
+
+<ul>
+  <li>Evaluation:
+($) :: (a -&gt; b) -&gt; a -&gt; b
+f 2 = f $ 2 = ($) f 2</li>
+  <li>@ apply
+(&gt;$&gt;) :: a -&gt; (a -&gt; b) -&gt; b
+x &gt;$&gt; f = f x = f $ x as well</li>
+  <li>composition
+(.) :: (b -&gt; c) -&gt; (a -&gt; b) -&gt; (a -&gt; c)
+g . f = \x -&gt; g (f x)</li>
+  <li>@ composition
+(&gt;.&gt;) :: (a -&gt; b) -&gt; (b -&gt; c) -&gt; (a -&gt; c)
+f &gt;.&gt; g = g.f = \x -&gt; g (f x) = \x -&gt; x &gt;$&gt; f &gt;$&gt; g</li>
+</ul>
+
+<h1 id="monades">Monades</h1>
+<p>[see Info/Monades pour plus de détails]</p>
+
+<p>f :: a -&gt; m b
+  g :: b -&gt; m c
+- bind (the monadic version of &gt;$&gt;):
+  (»=) :: m a -&gt; (a -&gt; m b) -&gt; m b</p>
+
+<p>(=«) :: (a -&gt; m b) -&gt; m a -&gt; m b
+  f =« x  =  x »= f
+  ie (=«)= flip (»=)
+  avec flip :: (a -&gt; b -&gt; c) -&gt; (b -&gt; a -&gt; c)
+  flip f = \x y -&gt; f y x</p>
+
+<ul>
+  <li>
+    <p>mcompose:
+(&gt;=&gt;) :: (a -&gt; m b) -&gt; (b -&gt; m c) -&gt; a -&gt; m c
+f &gt;=&gt; g = \x -&gt; (f x »= g)</p>
+
+    <p>(&lt;=&lt;) :: (b -&gt; m c) -&gt; (a -&gt; m b) -&gt; (a -&gt; m c)
+(&lt;=&lt;) = flip (&gt;=&gt;)</p>
+  </li>
+  <li>
+    <p>return :: a -&gt; m a</p>
+  </li>
+  <li>
+    <p>(») :: m a -&gt; m b -&gt; m b
+mv1 » mv2  =  mv »= (_ -&gt; mv2)</p>
+  </li>
+</ul>
+
+<p>class Monad m where
+  (»=) :: m a -&gt; (a -&gt; m b) -&gt; m b
+  return :: a -&gt; m a
+  (») :: m a -&gt; m b -&gt; m b
+  fail :: String -&gt; m a</p>
+
+<p>Monadic laws:
+  1. return &gt;=&gt; f       ==    f
+  2. f &gt;=&gt; return       ==    f
+  3. (f &gt;=&gt; g) &gt;=&gt; h    ==    f &gt;=&gt; (g &gt;=&gt; h)
+Equivalently:
+  1. return x »= f    ==  f x
+  2. mv »= return     ==  mv
+  3. (mv »= f) »= g  ==  mv »= (\x -&gt; (f x »= g))</p>
+
+<p>Do notation:
+  – mv  :: m a
+  – v1  :: a
+  – f   :: a -&gt; m b
+  – v2  :: b
+  – mv3 :: m c
+  do v1 &lt;- mv
+     v2 &lt;- f v1
+     mv3
+     return v2
+is the same as
+  mv »= \v1 -&gt;
+    f v1 »= \v2 -&gt;
+      mv3 » return v2
+[ie with v1 &lt;- mv we keep mv in the bind, while without the &lt;- we use »
+which is like the bind but it throw the given value, ie we don’t use ‘mv3’
+here. We can interpret v1 &lt;- mv in the do as ‘extract mv into v1’, because
+everything is wrapped into monodic operations]</p>
