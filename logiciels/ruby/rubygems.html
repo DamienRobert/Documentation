@@ -121,18 +121,17 @@ rake release  # Create tag v0.1.0 and build and push ploum-0.1.0.gem to Rub…</
 <h2 id="oremine">Ore/Mine</h2>
 <p>[une alternative à ‘ore’ est ‘gemsmith’: https://github.com/bkuhlmann/gemsmith]
 Pour créer un dossier pour la gem:
- mine monprojet –mini-test –markdown –yard –gemspec-yml –bin
-   #si on veut markdown il faut utiliser yard plutôt que rdoc car rdoc force le markup à être rdoc
-   #gemspec-yml pour faire la spec dans un fichier yaml
-   #mini-test pour remplacer rspec qui est le défaut
-Note:
-  J’ai configuré ~/.ore pour avoir par défaut
+ oremine monprojet –bin –github-actions</p>
+
+<p>Note: J’ai configuré ~/.ore pour avoir par défaut
+  –default, qui active (cf default/template.ym):
   –markdown –gemspec_yml –git –minitest –rubygems_taks –yard
   and some custom templates
-  (=&gt; bundler_light, gem_badge)</p>
+  (=&gt; base, bundler_light, gem_badge)
+    - bundler_light = comme bundler, mais sans la dépendance à bundler dans development_dependencies</p>
 
-<p>Try to update a template:
-mine –no-markdown –no-gemspec-yml –no-git –no-minitest –no-rubygems-task –no-yard –no-bundler-light –no-mit –no-gem-badge –travis .</p>
+<p>Try to update a template: [–no-scm]
+THOR_MERGE=meld oremine –no-default –github-actions .</p>
 
 <p>Variables disponibles dans les templates (cf generator.rb):
 @root, @project_dir, @name, @scm,
@@ -150,6 +149,15 @@ Ore default templates: ~gems/ore/data/ore/templates
   bsd/      gem_package_task/  hg/    rdoc/      travis/
   bundler/  gemspec_yml/       lgpl/  rspec/     yard/</p>
 
+<p>Note that in templates, <em>.erb are generated, _</em>.erg are partial templates
+(available via include), *.md are read only if markup=markdown (default)</p>
+
+<p>Used partial templates:
+:gemfile_prelude, :gemfile, :gemfile_development, :badges, :tasks, :gemspec
+Deps uses the variables @dependencies, @development_dependencies (used in
+the gemspec), but we can add extra deps in the Gemfil by using the partial
+templates <em>gemfile</em>*</p>
+
 <h2 id="push-on-github">Push on github</h2>
 <p>hub init -g
 hub create -d ‘description’ #or hub create “toto” -d “ploum”
@@ -161,7 +169,7 @@ git push –tags</p>
 <p>GEM=gem_name
 mine ~rubygems/$GEM
 cd ~rubygems/$GEM
- #vi README.md gemspec.yml
+ # vi README.md gemspec.yml
  # (cd ~mine; git submodule add ./ruby/gems/$GEM ruby/gems/$GEM)
  # (cd ~mine; git subadd ruby/gems/$GEM)</p>
 
@@ -177,6 +185,10 @@ EOS</p>
 
 <p>git remote rename origin github
 git push –set-upstream github master</p>
+
+<h2 id="bumping-a-gem-version">Bumping a gem version</h2>
+<p>rake prepare # rake “prepare[minor]” # rake “prepare[no]” 
+rake release #this will retag with a signed annotated tag</p>
 
 <h2 id="gem-plugins">Gem plugins:</h2>
 <p>https://github.com/rubygems/guides/blob/gh-pages/plugins.md

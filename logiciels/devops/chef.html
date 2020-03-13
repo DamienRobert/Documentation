@@ -337,3 +337,16 @@ sudo chef-client –local-mode –runlist ‘recipe[COOKBOOK]’</p>
 
 <p>Cf the binary ohai to get information on the computer without chef
 require ‘ohai’; Ohai::System.new.all_plugins</p>
+
+<h1 id="exemple">Exemple</h1>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">package</span> <span class="s1">'nginx'</span>
+
+<span class="n">service</span> <span class="s1">'nginx'</span> <span class="k">do</span>
+  <span class="n">action</span> <span class="p">[</span><span class="ss">:enable</span><span class="p">,</span> <span class="ss">:start</span><span class="p">]</span>
+<span class="k">end</span>
+
+<span class="n">file</span> <span class="s1">'motd'</span> <span class="k">do</span>
+  <span class="n">content</span> <span class="s1">'hello world'</span>
+<span class="k">end</span>
+</code></pre></div></div>

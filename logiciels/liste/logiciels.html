@@ -3,12 +3,32 @@
 <p>[!] Installed [+] Interesting
 Liste de logiciels libres: http://enacit.epfl.ch/logiciel-libre/</p>
 
+<h1 id="cloud">Cloud</h1>
+
+<ul>
+  <li>nextcloud (opensource), fork de owncloud</li>
+  <li>https://en.wikipedia.org/wiki/Seafile
+Seafile is an open-source, cross-platform file-hosting software system</li>
+</ul>
+
 <h1 id="password-manager">Password manager</h1>
 
 <ul>
   <li>lastpass</li>
   <li>bitwarden
--&gt; set up bitwarden server, using docker and bitwarden_rs (=bitwarden server reimplemented in rust) https://tech.oeru.org/setting-your-own-bitwarden-password-keeper-and-sync-server</li>
+-&gt; set up bitwarden server, using docker and bitwarden_rs (=bitwarden server reimplemented in rust) https://tech.oeru.org/setting-your-own-bitwarden-password-keeper-and-sync-server
+    <ul>
+      <li>aur server: {bitwarden_rs, bitwarden_rs-vault}{,-git}, bitwarden-server
+  (bitwarden-server is just a docker wrapper)
+aur clients: bitwarden{,-bin,-git}, bitwarden-cli{,-bin,-git}
+  bitwarden: https://github.com/bitwarden/desktop/archive/v${pkgver}.tar.gz
+  bitwarden-bin: https://github.com/bitwarden/desktop/releases/download/v${pkgver}/Bitwarden-${pkgver}-amd64.deb
+  The cli is: https://github.com/bitwarden/cli/archive/v${pkgver}.tar.gz
+  The cli-bin is https://github.com/bitwarden/cli/releases/download/v$pkgver/bw-linux-$pkgver.zip</li>
+      <li>https://github.com/mvdan/bitw, Minimalist BitWarden client in go (aur: bitw-git})</li>
+      <li>https://github.com/mattydebie/bitwarden-rofi (aur: bitwarden-rofi{,-git})</li>
+    </ul>
+  </li>
 </ul>
 
 <h1 id="backups">Backups</h1>
@@ -410,7 +430,8 @@ media links via Navi-X a kodi plugin</li>
        + chromecast: https://unix.stackexchange.com/questions/291975/how-do-i-stream-to-chromecast-using-vlc)
       android =&gt; bubbleupnp (server+client + chromecast)</p>
   </li>
-  <li>serveurs de media: plex, emby, jellyfish (open source)</li>
+  <li>serveurs de media: plex, emby, jellyfish (fork open source de emby)
+Utilisent kodi comme moteur sous jacent</li>
 </ul>
 
 <h2 id="photos">Photos</h2>
@@ -821,9 +842,6 @@ Relevant emojis appear when you start writing</li>
   <li>https://github.com/dematerializer/emoji-finder (nodejs)
 inspired by emoj
 -&gt; can add several emojis at once, better search results</li>
-  <li>https://github.com/b4b4r07/emoji-cli
-Emoji completion on the command line (zsh)
-Outputs :emojy:</li>
   <li>
     <p>https://github.com/arp242/uni
 Query the Unicode database from the commandline, with good support for emojis
@@ -842,7 +860,7 @@ uni p arrows #or a block: https://en.wikipedia.org/wiki/Unicode_block</li>
       <li>$ uni e/emojy cry
 😢 crying face         Smileys &amp; Emotion  face-concerned
 😭 loudly crying face  Smileys &amp; Emotion  face-concerned
-$ uni e -groups cat-face #search group (can match the Smileys &amp; Emotion or face-concerned classification from above)
+$ uni e -groups cat-face #search group (can match the ‘Smileys &amp; Emotion’ or ‘face-concerned’ classification from above)
 😺 grinning cat                    Smileys &amp; Emotion  cat-face
 😸 grinning cat with smiling eyes  Smileys &amp; Emotion  cat-face
 $ uni e -groups cat-face tears
@@ -855,7 +873,10 @@ and genders; use all to select all, eg uni e -tone all -gender f,m shrug</li>
   </li>
   <li>https://github.com/mrowa44/emojify (shell)
 emojify substitutes emoji aliases that many services (like GitHub) use for emoji raw characters.
-$ emojify “Hey, I just :raising_hand: you, and this is :scream: , but here’s my :calling: , so :telephone_receiver: me, maybe?”</li>
+$ emojify “Hey, I just :raising_hand: you, and this is :scream: , but here’s my :calling: , so :telephone_receiver: me, maybe?” -&gt; gives emojis</li>
+  <li>https://github.com/b4b4r07/emoji-cli
+Emoji completion on the command line (zsh)
+Outputs :emojis:</li>
 </ul>
 
 <h1 id="modern-cli">Modern cli</h1>
@@ -905,6 +926,12 @@ lsdeluxe: inspired by lscolor but in rust</li>
 Elastic tabstops for Rust.</li>
   <li>https://github.com/BurntSushi/xsv
 A fast CSV command line toolkit written in Rust.</li>
+  <li>
+    <p>https://github.com/BurntSushi/suffix
+Fast suffix arrays for Rust (with Unicode support).</p>
+  </li>
+  <li>https://github.com/leahneukirchen/xe
+simple xargs and apply replacement</li>
 </ul>
 
 <h1 id="rust-cli">Rust cli</h1>
@@ -1501,4 +1528,25 @@ $ pearl emerge [pkg] # Emerge is an idempotent command for either installing or 
   <li>Worms armaggeddon et world party</li>
   <li>Blobby volley</li>
   <li>Icy towers</li>
+</ul>
+
+<h1 id="enfants">Enfants</h1>
+
+<ul>
+  <li>Godot (2d/3d games)</li>
+  <li>https://godottutorials.pro/how-to-make-games-godot/</li>
+  <li>
+    <p>https://godottutorials.pro/fps-godot-tutorial/</p>
+  </li>
+  <li>
+    <p>snap!/scratch: language
+https://cseducators.stackexchange.com/questions/112/what-can-snap-do-that-scratch-cannot
+https://thestempedia.com/blog/scratch-coding-alternatives-for-teaching-kids-to-code/</p>
+  </li>
+  <li>
+    <p>https://www.turingtumble.com/
+marble powered computers</p>
+  </li>
+  <li>Robots: poppy
+https://www.poppy-project.org/en/</li>
 </ul>

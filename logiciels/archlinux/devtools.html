@@ -254,7 +254,8 @@ Flags:
 </pkg></dir></dir></dir></chrootdir></chrootdir>
   </li>
 </ul>
-<p>Ex: arch-nspawn $CHROOT/root pacman -Syu
+<p>CHROOT=/var/lib/aurbuild/x86_64
+Ex: arch-nspawn $CHROOT/root pacman -Syu
     /var/abs/core/openssh $ makechrootpkg -c -r $CHROOT
     (-&gt; mount bind $CHROOT/root into $CHROOT/dams and build the package in
     $CHROOT/dams)</p>

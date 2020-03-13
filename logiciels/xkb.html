@@ -1,0 +1,206 @@
+<p>vim: ft=markdownlight fdm=expr</p>
+
+<h1 id="xkbmap">Xkbmap</h1>
+
+<p>~/.Xkbmap
+fr(oss)+compose(menu)+capslock(capslock)+altwin(meta_alt)+nbsp(level3n)+srvr_ctrl(xfree86)+terminate(ctrl_alt_bksp)</p>
+
+<p>-&gt; cf /usr/share/X11/xkb/symbols</p>
+
+<h2 id="composemenu">compose(menu):</h2>
+<p>partial modifier_keys
+  xkb_symbols “menu” {
+      key &lt;MENU&gt;  { type[Group1]=”TWO_LEVEL”, [ Multi_key, Multi_key ] };
+  };</p>
+
+<p>nbsp(level3n) groups are given by [None,Shift,AltGr,AltGr+Shift]
+  // Let Space key provide No-Break Space (NBSP), Narrow No-Break Space (NNBSP),
+  // Zero-Width Non-Joiner (ZWNJ), and Zero-Width Joiner (ZWJ) for the desired
+  // levels.</p>
+
+<p>// level3n provides narrow no-breaking space in addition to the normal one
+  partial
+  xkb_symbols “level3n” {
+    key <SPCE> {
+      type[Group1]="FOUR_LEVEL",
+      symbols[Group1]= [ space, space, nobreakspace, 0x100202F ]
+    };
+  };</SPCE></p>
+
+<h2 id="altwinmetaalt-metashiftalt">altwin(meta_alt) (Meta=Shift+Alt)</h2>
+<p>// Meta is mapped to second level of Alt keys.
+  partial modifier_keys
+  xkb_symbols “meta_alt” {
+      key <LALT> { [ Alt_L, Meta_L ] };
+      key <RALT> { type[Group1] = "TWO_LEVEL",
+                   symbols[Group1] = [ Alt_R, Meta_R ] };
+      modifier_map Mod1 { Alt_L, Alt_R, Meta_L, Meta_R };
+  //  modifier_map Mod4 {};
+  };</RALT></LALT></p>
+
+<h2 id="level3raltswitch">level3(ralt_switch)</h2>
+<p>// These partial variants assign ISO_Level3_Shift to various XKB keycodes
+  // so that the third shift level can be reached.</p>
+
+<p>// The default behaviour:
+  // the right Alt key (AltGr) chooses the third symbol engraved on a key.
+  default  partial modifier_keys
+  xkb_symbols “ralt_switch” {
+    key <RALT> {
+      type[Group1]="ONE_LEVEL",
+      symbols[Group1] = [ ISO_Level3_Shift ]
+    };
+    include "level3(modifier_mapping)"
+  };</RALT></p>
+
+<h2 id="srvrctrlxfree86">srvr_ctrl(xfree86)</h2>
+<p>// Actions which control the server’s behavior.
+  partial keypad_keys function_keys
+  xkb_symbols “xfree86” {
+      include “keypad(operators)” #-&gt; Ctrl+Alt+Fn
+      include “srvr_ctrl(fkey2vt)” -&gt; Ctrl+Alt+Keypad
+  };</p>
+
+<h2 id="capslockcapslock">capslock(capslock)</h2>
+<p>default  partial hidden modifier_keys
+  xkb_symbols “capslock” {
+      replace key <CAPS> { [ Caps_Lock ] };
+      modifier_map Lock { Caps_Lock };
+  };</CAPS></p>
+
+<h2 id="terminatectrlaltbksp">terminate(ctrl_alt_bksp)</h2>
+<p>default  partial modifier_keys
+  xkb_symbols “ctrl_alt_bksp” {
+      key <BKSP> {
+          type="CTRL+ALT",
+          symbols[Group1] = [ NoSymbol, NoSymbol, NoSymbol, NoSymbol, Terminate_Server ]
+      };
+  };</BKSP></p>
+
+<h2 id="keypadoss">keypad(oss):</h2>
+<p>keypad_keys
+  xkb_symbols “oss” {
+      include “keypad(core)”
+      include “keypad(ossmath)”
+      include “keypad(ossnumber)”
+      include “kpdl(dotoss)”
+  };
+  #keypad(ossmath):
+  // ┏━━━━━┱─────┬─────┬─────┐
+  // ┃Num  ┃ ∕ ₁ │ . ₂ │ − ₃ │ ₁ <XF86_Ungrab>
+  // ┃Lock⇭┃ / ÷ │ * × │ - − │ ₂ <XF86_ClearGrab>
+  // ┡━━━━━╃─────┼─────┼─────┤ ₃ <XF86_Prev_VMode>
+  //                   │ + ₄ │ ₄ <XF86_Next_VMode>
+  //                   │     │
+  //                   ┤     │ 1 None
+  //                   │     │ 2 Level3 ⇮
+  //                   │ + + │ 3 Shift+Level3 ⇧⇮
+  //                   ╆━━━━━┪ 4 Ctrl+Alt
+  #keypad(ossnumber):
+  // ┏━━━━━┱
+  // ┃Num  ┃                   ⇱ Home
+  // ┃Lock⇭┃                   ⇲ End
+  // ┡━━━━━╃─────┼─────┼       ⇞ Page up
+  // │ 7 ⇖ │ 8 ⇑ │ 9 ⇗ │       ⇟ Page down
+  // │ ⇱ ↖ │ ⇧ ↑ │ ⇞ ↗ │       ⎀ Insert
+  // ├─────┼─────┼─────┤       ␥ Delete
+  // │ 4 ⇐ │ 5 ⇔ │ 6 ⇒ │       ⇦⇧⇨⇩ Directions
+  // │ ⇦ ← │   ↔ │ ⇨ → │       ⍽ narrow no-break space
+  // ├─────┼─────┼─────╆
+  // │ 1 ⇙ │ 2 ⇓ │ 3 ⇘ ┃
+  // │ ⇲ ↙ │ ⇩ ↓ │ ⇟ ↘ ┃       1 None
+  // ├─────┴─────┼─────┨       2 Num Lock ⇭
+  // │ 0       ⇕ │             3 Level3 ⇮
+  // │ ⎀       ↕ │             4 Shift+Level3 ⇧⇮
+  // └───────────┴
+  #kpdl(dotoss):
+  // key <KPDL> { [ KP_Delete, period, comma, 0x100202F ] }; // <delete> . , ⍽ (narrow no-break space)</delete></KPDL></XF86_Next_VMode></XF86_Prev_VMode></XF86_ClearGrab></XF86_Ungrab></p>
+
+<p>fr(oss)
+  // Unicode French derivative
+  // Loose refactoring of the historic Linux French keyboard layout
+  // ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┲━━━━━━━━━┓
+  // │ ³ ¸ │ 1 ̨  │ 2 É │ 3 ˘ │ 4 — │ 5 – │ 6 ‑ │ 7 È │ 8 ™ │ 9 Ç │ 0 À │ ° ≠ │ + ± ┃ ⌫ Retour┃
+  // │ ² ¹ │ &amp; ˇ │ é ~ │ “ # │ ‘ { │ ( [ │ - | │ è ` │ _ \ │ ç ^ │ à @ │ ) ] │ = } ┃  arrière┃
+  // ┢━━━━━┷━┱───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┺━┳━━━━━━━┫
+  // ┃       ┃ A Æ │ Z Â │ E ¢ │ R Ê │ T Þ │ Y Ÿ │ U Û │ I Î │ O Œ │ P Ô │ ¨ ˚ │ £ Ø ┃Entrée ┃
+  // ┃Tab ↹  ┃ a æ │ z â │ e € │ r ê │ t þ │ y ÿ │ u û │ i î │ o œ │ p ô │ ^ ~ │ $ ø ┃   ⏎   ┃
+  // ┣━━━━━━━┻┱────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┺┓      ┃
+  // ┃        ┃ Q Ä │ S „ │ D Ë │ F ‚ │ G ¥ │ H Ð │ J Ü │ K Ï │ L Ŀ │ M Ö │ % Ù │ µ ̄  ┃      ┃
+  // ┃Maj ⇬   ┃ q ä │ s ß │ d ë │ f ‘ │ g ’ │ h ð │ j ü │ k ï │ l ŀ │ m ö │ ù ‘ │ * ` ┃      ┃
+  // ┣━━━━━━━┳┹────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┲┷━━━━━┻━━━━━━┫
+  // ┃       ┃ &gt; ≥ │ W “ │ X ” │ C ® │ V ← │ B ↑ │ N → │ ? … │ . . │ / ∕ │ § − ┃             ┃
+  // ┃Shift ⇧┃ &lt; ≤ │ w « │ x » │ c © │ v ⍽ │ b ↓ │ n ¬ │ , ¿ │ ; × │ : ÷ │ ! ¡ ┃Shift ⇧      ┃
+  // ┣━━━━━━━╋━━━━━┷━┳━━━┷━━━┱─┴─────┴─────┴─────┴─────┴─────┴───┲━┷━━━━━╈━━━━━┻━┳━━━━━━━┳━━━┛
+  // ┃       ┃       ┃       ┃ ␣         Espace fine insécable ⍽ ┃       ┃       ┃       ┃
+  // ┃Ctrl   ┃Meta   ┃Alt    ┃ ␣ Espace       Espace insécable ⍽ ┃AltGr ⇮┃Menu   ┃Ctrl   ┃
+  // ┗━━━━━━━┻━━━━━━━┻━━━━━━━┹───────────────────────────────────┺━━━━━━━┻━━━━━━━┻━━━━━━━┛
+  partial alphanumeric_keys
+  xkb_symbols “oss” {
+      include “latin”
+      include “level3(ralt_switch)”
+      include “nbsp(level4n)”
+      include “level5(rctrl_switch)” -&gt; right Ctrl=Fifth Shift Level
+      include “keypad(oss)”
+      …</p>
+
+<h2 id="divers">Divers</h2>
+<p>REM: the level5(rctrl_switch) is super annoying, this put right control to
+fifth shift level, which is only used for nbsp(level4n) (ie
+ctrl+shift+space-&gt;narrow space), but I use nbsp(level3n) (ie
+altgr+shift+space-&gt;narrow space), so this kills my Right Control Key for
+nothing!</p>
+
+<h1 id="config">Config</h1>
+
+<p>https://who-t.blogspot.com/2020/02/user-specific-xkb-configuration-part-1.html
+&gt; The new libxkbcommon release changes two things:
+&gt; - it prepends $XDG_CONFIG_HOME/xkb/ to the lookup path for XKB rules (and
+&gt; other files). […]
+&gt; - Secondly, rules files now support an include statement. This means you
+&gt; can set your own rules and include system rules.</p>
+
+<p>Exemple of xkb config:</p>
+
+<p>xkb_keymap {
+  xkb_keycodes { include "evdev+aliases(azerty)" };
+  xkb_types { include "complete" };
+  xkb_compat { include "complete" };
+  xkb_geometry { include "pc(pc105)" };
+  xkb_symbols {</p>
+
+<pre><code>// include \"pc+fr+...\"
+include \"pc\"
+include \"fr\"
+include \"inet(evdev)\"
+include \"compose(menu)\"
+include \"altwin(meta_win)\"
+include \"level3(ralt_switch)\"
+include \"terminate(ctrl_alt_bksp)\"
+
+key &lt;LatO&gt; { [ o, O, oe, OE ] };
+key &lt;LatJ&gt; { [ j, J, oslash, Ooblique ] };
+key &lt;LatN&gt; { [ n, N, ntilde, Ntilde ] };
+key &lt;LALT&gt; { [ Alt_L ] };
+key &lt;NMLK&gt; { [ Num_Lock, Pointer_EnableKeys ] };
+key &lt;MENU&gt; { [ Multi_key, Menu ] };
+</code></pre>
+
+<p>$extra_keys
+  };
+};</p>
+
+<h1 id="xcompose">Xcompose</h1>
+
+<p>I use [x] http://github.com/kragen/xcompose.git
+Others are available here:
+https://github.com/rrthomas/pointless-xcompose</p>
+
+<h1 id="gnome">gnome</h1>
+
+<p>Desactivate gnome xkb configuration to let me use my custom ones:
+gconftool-2 –type boolean –set /desktop/gnome/peripherals/keyboard/xkb/overrideSettings false
+gconftool-2 –type boolean –set /apps/gnome_settings_daemon/plugins/keyboard false</p>
+
+<p>Apparently gnome/gtk compose settings was hardcoded, but it seems I can use
+my custom .Xcompose</p>
