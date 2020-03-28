@@ -332,7 +332,7 @@ $ git my topic help
 
 ### Programs
 
-- bfg-1.13.0.jar -> g my bfg
+- bfg-1.13.0.jar -> git my bfg
   Faster git-filter-branch to remove files.
   Ex: java -jar ~/usr/dist/@git/bfg-1.13.0.jar --delete-folders .crypt
       java -jar ~/usr/dist/@git/bfg-1.13.0.jar --delete-files foo.jpg
@@ -351,19 +351,21 @@ $ git my topic help
 - git-related/ (felipec) -> g my related
   who to send patch to
 - git-remote-hg (felipec) -> g my hg
+  (if I need an hg bridge again -> use git cinnabar
+  https://github.com/glandium/git-cinnabar)
 - git-when-merged (mhagger) -> g my topic whenmerged
   find when a commit was merged
-- git_remote_branch/ -> g my grb
+- git_remote_branch/ -> git my grb
   Manipulates published branches
-- gitstats/ -> g my stats-html
+- gitstats/ -> git my stats html
   stats
-- tbdiff/ (trast) -> g my topic diff [obsolete]
+- tbdiff/ (trast) -> git my topic diff [obsoleted by range-diff]
   topic branch interdiff
 - topgit/
   patches via branches [notused]
 - git-deps
   [Not integrated, it is difficult to install]
-- git-sizer -> g my stat size
+- git-sizer -> git my stat size
   Infos on different git object sizes
 
 ### Collection of scripts
@@ -556,11 +558,32 @@ Processing references: 26
 
 ### patches
 
+Note: in the patch, we can specify To, Cc (since I have
+sendemail.(cc|to)cover and In-Reply-To.
+Or via git send-email --to, --cc, --in-reply-to
+
 $ /tmp/git git my patch -- list -g ref-filter_fix
 /home/dams/progs/patches/git/ref-filter_fix/0001-ref-filter-use-correct-branch-for-push-track.patch
 
 $ git my patch format upstream
 $ git my patch format local upstream
+
+* How I handle my patches
+
+! create a dummy branch to store old patches
+git my trivial -- -g -b old-patches
+ #merge patch branch 'noconflict' into old-patches
+git my trivial -- -g --merge -b old-patches noconflict
+
+! rebase
+git co noconflict && git rb -i
+
+ # For patches eventually symlink .patches to ~/var/dist/.patches/prog/
+
+! Generate patches:
+git-mypatch format
+
+! Apply
 
 ## Obsolete exemples
 

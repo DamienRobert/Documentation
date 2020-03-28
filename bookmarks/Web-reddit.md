@@ -1,5 +1,8 @@
 vim: ft=markdownlight
 
+Note: si on a U upvotes à un taux de t%, ça veut dire que le nombre total
+de vote est T=U/(2t-1), ie que le vrai nombre d'upvotes est de tU/(2t-1)
+
 Reddit
 ------
 

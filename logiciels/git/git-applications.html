@@ -358,7 +358,7 @@ Check for mailmap candidates</li>
 
 <ul>
   <li>
-    <p>bfg-1.13.0.jar -&gt; g my bfg
+    <p>bfg-1.13.0.jar -&gt; git my bfg
 Faster git-filter-branch to remove files.
 Ex: java -jar ~/usr/dist/@git/bfg-1.13.0.jar –delete-folders .crypt
     java -jar ~/usr/dist/@git/bfg-1.13.0.jar –delete-files foo.jpg
@@ -376,20 +376,22 @@ Push hook to send mails</li>
 Merge topic branches on base into integration branch</li>
   <li>git-related/ (felipec) -&gt; g my related
 who to send patch to</li>
-  <li>git-remote-hg (felipec) -&gt; g my hg</li>
+  <li>git-remote-hg (felipec) -&gt; g my hg
+(if I need an hg bridge again -&gt; use git cinnabar
+https://github.com/glandium/git-cinnabar)</li>
   <li>git-when-merged (mhagger) -&gt; g my topic whenmerged
 find when a commit was merged</li>
-  <li>git_remote_branch/ -&gt; g my grb
+  <li>git_remote_branch/ -&gt; git my grb
 Manipulates published branches</li>
-  <li>gitstats/ -&gt; g my stats-html
+  <li>gitstats/ -&gt; git my stats html
 stats</li>
-  <li>tbdiff/ (trast) -&gt; g my topic diff [obsolete]
+  <li>tbdiff/ (trast) -&gt; git my topic diff [obsoleted by range-diff]
 topic branch interdiff</li>
   <li>topgit/
 patches via branches [notused]</li>
   <li>git-deps
 [Not integrated, it is difficult to install]</li>
-  <li>git-sizer -&gt; g my stat size
+  <li>git-sizer -&gt; git my stat size
 Infos on different git object sizes</li>
 </ul>
 
@@ -589,11 +591,34 @@ Processing references: 26                      <br />
 
 <h3 id="patches">patches</h3>
 
+<p>Note: in the patch, we can specify To, Cc (since I have
+sendemail.(cc|to)cover and In-Reply-To.
+Or via git send-email –to, –cc, –in-reply-to</p>
+
 <p>$ /tmp/git git my patch – list -g ref-filter_fix
 /home/dams/progs/patches/git/ref-filter_fix/0001-ref-filter-use-correct-branch-for-push-track.patch</p>
 
 <p>$ git my patch format upstream
 $ git my patch format local upstream</p>
+
+<ul>
+  <li>How I handle my patches</li>
+</ul>
+
+<p>! create a dummy branch to store old patches
+git my trivial – -g -b old-patches
+ #merge patch branch ‘noconflict’ into old-patches
+git my trivial – -g –merge -b old-patches noconflict</p>
+
+<p>! rebase
+git co noconflict &amp;&amp; git rb -i</p>
+
+<p># For patches eventually symlink .patches to ~/var/dist/.patches/prog/</p>
+
+<p>! Generate patches:
+git-mypatch format</p>
+
+<p>! Apply</p>
 
 <h2 id="obsolete-exemples">Obsolete exemples</h2>
 

@@ -1,7 +1,10 @@
 vim: ft=markdownlight fdm=expr
 
 [!] Installed [+] Interesting
-Liste de logiciels libres: http://enacit.epfl.ch/logiciel-libre/
+
+Liste de logiciels libres:
+- http://enacit.epfl.ch/logiciel-libre/
+- https://framasoft.org/en/
 
 Cloud
 =====
@@ -58,6 +61,7 @@ Parsing
   jq is a lightweight and flexible command-line JSON processor.
   jq is like sed for JSON data
   $ jq '.foo' {"foo": 42, "bar": "less interesting data"}
+  Tutorial: https://mosermichael.github.io/jq-illustrated/dir/content.html
 - http://kmkeen.com/jshon/
   A similar tool with a different syntax
   jshon -e b -a -t -> bool bool null string
@@ -118,6 +122,8 @@ pt: https://github.com/monochromegane/the_platinum_searcher
 
 rg: https://github.com/BurntSushi/ripgrep
   #the best/fastest one
+ https://github.com/BurntSushi/ripgrep/issues/1497
+ RFC: add ngram indexing support to ripgrep #1497
 
 Benchmark
 ---------
@@ -487,6 +493,22 @@ cool-reader -> surtout pour la lecture
 
 * Notes: joplin https://joplinapp.org
 
+Visio
+-----
+
+Open source:
+- https://jami.net/ (in arch)
+- https://jitsi.org/jitsi-meet/
+  Serveurs: https://framatalk.org/accueil/fr/info/
+            https://ensemble.scaleway.com/
+- BigBlueButton
+
+- https://zoom.us/
+
+Audio: mumble (open source), discord
+
+- Review of visio tools: https://apenwarr.ca/log/20200309
+
 Files
 =====
 Notify
@@ -621,7 +643,7 @@ Web 2.0:
 - irc like: slack, gitter #https://www.quora.com/What-are-the-pros-and-cons-of-Gitter-vs-Slack => gitter is more open source friendly
 - teamspeak/skype like: discord
 - forums: discourse
-Open source: matrix
+Open source: matrix, mattermost
 => https://matrix.org/docs/projects/try-matrix-now.html: riot, weechat
 
 Fonts
@@ -1137,6 +1159,9 @@ x https://gitlab.com/DarrienG/terminal-typeracer
   :-( core dumped
 
 ## New
+
+- https://www.wezm.net/v2/posts/2020/rust-top-alternatives/
+  bb, ytop, bottom, and zenith.
 
 Awesome clis
 ============

@@ -33,6 +33,9 @@ Rust
 - https://interrupt.memfault.com/blog/zero-to-main-rust-1 (rust for embarked devices)
 - https://github.com/spacejam/rio
   pure rust io_uring library, built on libc, thread & async friendly, misuse resistant
+- https://treit.github.io/rust,/c%23,/programming/2020/03/15/StartingRustPart2.html
+  A C# programmer examines Rust - Part 2
+- https://dropbox.tech/infrastructure/rewriting-the-heart-of-our-sync-engine
 
 Go
 ==

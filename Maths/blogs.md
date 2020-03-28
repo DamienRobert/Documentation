@@ -191,6 +191,7 @@ https://terrytao.wordpress.com/2014/07/15/real-analysis-relative-to-a-finite-mea
 Voir aussi:
 - https://terrytao.wordpress.com/2012/04/02/a-cheap-version-of-nonstandard-analysis/
 - https://terrytao.wordpress.com/2010/01/30/the-ultralimit-argument-and-quantitative-algebraic-geometry/
+- https://terrytao.wordpress.com/2020/03/14/course-announcement-math-247b-classical-fourier-analysis/
 
 Gowers
 ======
@@ -324,6 +325,7 @@ https://rjlipton.wordpress.com/2020/01/12/our-thoughts-on-pnp/
 https://rjlipton.wordpress.com/2020/01/25/the-halting-no-go-theorem/
 https://rjlipton.wordpress.com/2020/02/01/subliminal-graph-duals/
 https://rjlipton.wordpress.com/2020/02/03/tricks-of-the-trade/
+https://rjlipton.wordpress.com/2020/03/21/star-free-regular-languages-and-logic/
 
 Shtetl-Optimized
 ================
@@ -445,6 +447,7 @@ https://johncarlosbaez.wordpress.com/2019/06/06/nonstandard-models-of-arithmetic
 https://johncarlosbaez.wordpress.com/2019/05/16/enriched-lawvere-theories/
 https://johncarlosbaez.wordpress.com/2019/10/06/quantales-from-petri-nets/
 https://johncarlosbaez.wordpress.com/2020/01/05/schrodinger-and-einstein/
+https://johncarlosbaez.wordpress.com/2020/03/20/from-the-octahedron-to-e8/
 
 Secret Blogging Seminar
 =======================
@@ -529,6 +532,8 @@ https://golem.ph.utexas.edu/category/archives.html
 - https://golem.ph.utexas.edu/category/2020/02/modal_homotopy_type_theory_the.html
 - https://golem.ph.utexas.edu/category/2020/02/ega1_the_language_of_schemes.html
 - https://golem.ph.utexas.edu/category/2020/02/2dimensional_categories.html
+- https://golem.ph.utexas.edu/category/2020/03/michael_harris_on_virtues_of_p.html
+  On the modularity conjecture history
 
 Choux Romanesco
 ================
@@ -581,6 +586,8 @@ https://www.quantamagazine.org/with-category-theory-mathematics-escapes-from-equ
 https://www.quantamagazine.org/how-simple-math-can-cover-even-the-most-complex-holes-20200108/
 https://www.quantamagazine.org/how-pi-connects-colliding-blocks-to-a-quantum-search-algorithm-20200121/
 https://www.quantamagazine.org/the-grand-unified-theory-of-rogue-waves-20200205/
+https://www.quantamagazine.org/landmark-computer-science-proof-cascades-through-physics-and-math-20200304/
+https://www.quantamagazine.org/rsa-cryptographer-ronald-rivest-seeks-secure-elections-20200312/
 
 # Cryptography
 

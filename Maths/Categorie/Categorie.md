@@ -340,6 +340,13 @@ En allant dans l'autre sens: left exact functors into toposes have left exact le
 end/coend
 ---------
 
+* https://twitter.com/Moinsdeuxcat/status/1240670782654746625
+  => https://arxiv.org/pdf/1501.02503.pdf
+  Coend calculus
+  the book formerly known as ‘This is the co/end’, Fosco Loregian
+  => https://www.maths.ed.ac.uk/~tweelinck/ninja/ends.pdf
+  slides
+
 * https://mathoverflow.net/questions/78471/intuition-for-coends
   https://golem.ph.utexas.edu/category/2014/01/ends.html
 

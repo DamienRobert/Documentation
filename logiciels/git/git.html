@@ -9,10 +9,33 @@
 gittutorial, gittutorial-2: tuto
 giteveryday, gitglossary, gitworkflows, gitcli
 gitcore-tutorial: overview of plumbing</li>
-  <li>gitk: http://sitaramc.github.com/1-basic-usage/gitk.html</li>
   <li>
     <p>http://changelog.com/topic/git Links on git articles</p>
   </li>
+  <li>mailing lists</li>
+  <li>public inbox: https://public-inbox.org/public-inbox-v2-format.html</li>
+  <li>Incorporated in lore.kernel.org: https://lore.kernel.org/git/</li>
+</ul>
+
+<h2 id="devel">Devel:</h2>
+
+<ul>
+  <li>https://git.github.io/rev_news/ Development news
+https://git.github.io/rev_news/archive/</li>
+  <li>bitmaps: https://github.blog/2015-09-22-counting-objects/</li>
+  <li>https://git-repo.info/en/2020/03/agit-flow-and-git-repo/</li>
+  <li>git at scale: https://stolee.dev/docs/git-merge-2020.pdf
+-&gt; https://github.com/microsoft/VFSForGit (was gvfs)
+   gvfs on linux: https://github.com/microsoft/VFSForGit/issues/126
+   -&gt; https://github.com/github/libprojfs Linux projected filesystem library
+-&gt; https://facebook.github.io/watchman/
+-&gt; scalar: https://devblogs.microsoft.com/devops/introducing-scalar/</li>
+  <li>https://github.com/newren/presentations/blob/pdfs/merge-performance/merge-performance-slides.pdf</li>
+</ul>
+
+<h2 id="divers">Divers</h2>
+
+<ul>
   <li>Git workflows</li>
   <li>http://steveko.wordpress.com/2012/02/24/10-things-i-hate-about-git/
 Great diagrams of svn and git workflow</li>
@@ -28,18 +51,13 @@ Cf also the topic-* aliases in https://news.ycombinator.com/item?id=14385813</li
   <li>
     <p>tips: http://gitready.com/ (not updated anymore)</p>
   </li>
-  <li>Devel:</li>
-  <li>https://git.github.io/rev_news/ Development news
-https://git.github.io/rev_news/archive/</li>
-  <li>bitmaps: https://github.blog/2015-09-22-counting-objects/</li>
-  <li>https://git-repo.info/en/2020/03/agit-flow-and-git-repo/</li>
-  <li>git at scale: https://stolee.dev/docs/git-merge-2020.pdf
--&gt; https://github.com/microsoft/VFSForGit (was gvfs)
-   gvfs on linux: https://github.com/microsoft/VFSForGit/issues/126
-   -&gt; https://github.com/github/libprojfs Linux projected filesystem library
--&gt; https://facebook.github.io/watchman/
--&gt; scalar: https://devblogs.microsoft.com/devops/introducing-scalar/</li>
-  <li>https://github.com/newren/presentations/blob/pdfs/merge-performance/merge-performance-slides.pdf</li>
+  <li>Tutorials</li>
+  <li>https://www.smashingmagazine.com/make-life-easier-when-using-git/</li>
+  <li>
+    <p>gitk: http://sitaramc.github.com/1-basic-usage/gitk.html</p>
+  </li>
+  <li>Hash function transition plan
+https://public-inbox.org/git/CA+dhYEViN4-boZLN+5QJyE7RtX+q6a92p0C2O6TA53==BZfTrQ@mail.gmail.com/T/</li>
 </ul>
 
 <h1 id="everyday">Everyday</h1>
@@ -298,34 +316,6 @@ irectory)</file></file></p>
 
 <pre><code>   ../ruby/
 </code></pre>
-
-<h2 id="my-patches">My patches</h2>
-<p>How I handle my patches</p>
-
-<ul>
-  <li>
-    <p>create a dummy branch to store old patches
-git my trivial – -g -b old-patches
- #merge patch branch ‘noconflict’ into old-patches
-git my trivial – -g –merge -b old-patches noconflict</p>
-  </li>
-  <li>
-    <p>rebase
-git co noconflict &amp;&amp; git rb -i</p>
-  </li>
-</ul>
-
-<p># For patches eventually symlink .patches to ~/var/dist/.patches/prog/</p>
-
-<ul>
-  <li>
-    <p>Generate patches:
-git-mypatch format</p>
-  </li>
-  <li>
-    <p>Apply</p>
-  </li>
-</ul>
 
 <h1 id="git-commands-overview">Git commands overview</h1>
 
@@ -693,7 +683,7 @@ git count-objects: count the place taken by unpacked objects
 |git index-pack|
   create the index from a packed archive</p>
 
-<h2 id="divers">Divers</h2>
+<h2 id="divers-1">Divers</h2>
 <p>git config: set git options / |git var|: see git variable
 git gui #gui…
 git instaweb #browse git repo via html
@@ -1517,14 +1507,16 @@ git reset –option commit
 
 <h2 id="git-gc">git gc</h2>
 
-<p>Legacy version:
-    git pack-refs –prune &amp;&amp; # pack references and tags
-    git reflog expire –all &amp;&amp; # gc.reflogExpire (90 days), gc.reflogExpireUnreachable (30 days)
-    git-repack -a -d -l &amp;&amp; # merge all packs in one and run prune-packed
-    $no_prune git prune &amp;&amp; # prune unreachable objects; gc.pruneExpire=2 weeks)
-    git worktree prune –expire #for git worktree; gc.worktreePruneExpire=3.monts.ago
-    git rerere gc || exit #cf gc.rerereUnresolved=15days and gc.rerereResolved=60days
-(<code>$no_prune</code>: désactive le prune seulement si –no-prune passé)</p>
+<ul>
+  <li>Legacy version:
+  git pack-refs –prune &amp;&amp; # pack references and tags
+  git reflog expire –all &amp;&amp; # gc.reflogExpire (90 days), gc.reflogExpireUnreachable (30 days)
+  git-repack -a -d -l &amp;&amp; # merge all packs in one and run prune-packed
+  $no_prune git prune &amp;&amp; # prune unreachable objects; gc.pruneExpire=2 weeks)
+  git worktree prune –expire #for git worktree; gc.worktreePruneExpire=3.monts.ago
+  git rerere gc || exit #cf gc.rerereUnresolved=15days and gc.rerereResolved=60days
+(<code>$no_prune</code>: désactive le prune seulement si –no-prune passé)</li>
+</ul>
 
 <p>–aggressive: repacke plus agressivement; add the option ‘-f’ to repack [-f: recompute deltas]
 –(no-)prune (on by defaut): call prune</p>
@@ -1539,7 +1531,8 @@ git reflog expire (-&gt; git gc calls git reflog expire –all):
 gc.reflogExpire (90 days)
 gc.reflogExpireUnreachable (30 days)
 git gc:
-gc.pruneExpire (2 weeks) (-&gt; git gc calls git prune –expire=”2 weeks ago”)</li>
+gc.pruneExpire (2 weeks) (-&gt; git gc calls git prune –expire=”2 weeks ago”
+  and also pass ‘–unpack-unreachable=… to repack)</li>
 </ul>
 
 <p><em>Forget everything</em>
@@ -1616,11 +1609,7 @@ suite à cause du reflog, il faut d’abord faire
            This flag causes an object that is borrowed from an alternate
            object store to be ignored even if it would have otherwise been
            packed.
-       –incremental
-           This flag causes an object already in a pack to be ignored even if
-           it would have otherwise been packed.</p>
-
-<p>-f: pass no-reuse-delta, -F: pass no-reuse-object to git pack-objects
+  -f: pass no-reuse-delta, -F: pass no-reuse-object to git pack-objects
        –no-reuse-delta
            When creating a packed archive in a repository that has existing
            packs, the command reuses existing deltas. This sometimes results
@@ -1637,17 +1626,17 @@ suite à cause du reflog, il faut d’abord faire
     (ie prevent from passing –honor-pack-keep)</p>
 
 <ul>
-  <li>use the following options to pack-object:
+  <li>pass the following options to pack-object:
+  –keep-true-parents, –non-empty, –all, –reflog, –indexed-objects
+  –exclude-promisor-objects (if has_promisor_remote)
   –honor-pack-keep (except if –pack-kept-objects)
-  –keep-true-parents, –no-empty, –all, –reflog, –indexed-objects
-  –exclude-promisor-objects (if has_promisor_remote)</li>
-  <li>–unpacked –incremental (if -a is not passed)</li>
+  –unpacked –incremental (except if -a)</li>
   <li>pass the following options accordingly: 
   –keep-pack=, –window, –window-memory, –depth,
   –threads, –max-pack-size, –no-reuse-delta, –no-reuse-objects,
   –local, –quiet, –delta-base-offset
   –write-bitmap-index[-quiet], –delta-islands</li>
-  <li>When using -ad, the following options are also passed:
+  <li>Options avaialbe when using -ad:
   -k, –keep-unreachable: add unreachable objects loose and in pack
   -&gt; pass –keep-unreachable and –pack-loose-unreachable
   –unpack-unreachable=<when>
@@ -1676,7 +1665,10 @@ suite à cause du reflog, il faut d’abord faire
            Keep unreachable objects in loose form. This implies --revs.
            -&gt; move packed unreachable objects to loose form
        --delta-islands
-           Restrict delta matches based on "islands". See DELTA ISLANDS below.</n></n></p>
+           Restrict delta matches based on "islands". See DELTA ISLANDS below.
+       --incremental
+           This flag causes an object already in a pack to be ignored even if
+           it would have otherwise been packed.</n></n></p>
 
 <h3 id="on-git-gc---aggressive">on git gc –aggressive</h3>
 <blockquote>
@@ -1710,6 +1702,10 @@ Update: now it uses depth=50, cf git-config:</p>
        pack.depth
            The maximum delta depth used by git-pack-objects(1) when no maximum
            depth is given on the command line. Defaults to 50.</p>
+
+<p>Note: git my gc uses 50/4000 in both cases. And the –now option also calls
+  git reflog expire –expire=now –all
+together with git gc –prune=now</p>
 
 <h3 id="git-pack-refs">git pack-refs:</h3>
 
@@ -3786,19 +3782,18 @@ cacheinfo/info-only, index-info, split index, untracked cache, file system
 monitor (cf man git-update-index)
 
 ### git update-index
-
 --assume-unchanged: git suppose que le fichier n'est pas changé, et donc peut
 le reverter à tout moment.
-si le fichier a changé: git co va refuser de fonctionner, mais git reset va
-rechanger le fichier (et enlever le flag)
+si le fichier a changé: git co va refuser de fonctionner, mais git reset
+--hard va rechanger le fichier (et enlever le flag)
 si le fichier a changé upstream, git co va updater le fichier (et enlever
 le flag)
 Attention: en particulier, git stash va sauver le fichier stagé (car assume
 unchanged) puis faire un git reset, donc le changement sera perdu!
 
 --skip-worktree: ne prend pas en compte le fichier dans le worktree
-si le fichier a changé: git co va refuser de fonctionner, et git reset ne
-fait rien
+si le fichier a changé: git co va refuser de fonctionner, et git reset
+--hard ne fait rien
 si le fichier a changé upstream, git co va updater le fichier (et laisser
 le flag)
 
@@ -3823,6 +3818,45 @@ mais plus dans le working dir
         )
     exec git update-index --cacheinfo $mode $blob_id $path
     for example echo "HELLO WORLD" | ./stage-part 8 10 post_load will replace the three lines from 8-10 with just "HELLO WORLD".
+
+#### More on skip worktree vs assume unchanged
+
+Cf https://stackoverflow.com/questions/13630849/git-difference-between-assume-unchanged-and-skip-worktree
+https://fallengamer.livejournal.com/93321.html git assume-unchanged vs skip-worktree
+
+Note also that these settings are related to the index, so not permanent
+accross checkouts. Use sparse-checkout for permanent skip-index
+
+* File is changed both in local repository and upstream
+  $ git pull:
+  - File with assume-unchanged flag: Git wouldn’t overwrite local file. Instead it would output conflicts and advices how to resolve them
+  - File with skip-worktree flag: Git wouldn’t overwrite local file. Instead it would output conflicts and advices how to resolve them
+  -&gt; Git preserves local changes anyway. Thus you wouldn’t accidentally lose any data that you marked with any of the flags.
+
+* File is changed both in local repository and upstream, trying to pull anyway
+  $ git stash; git pull
+  - File with assume-unchanged flag: Discards all local changes without any possibility to restore them. The effect is like ‘git reset --hard’. ‘git pull’ call will succeed
+  - File with skip-worktree flag: Stash wouldn’t work on skip-worktree files. ‘git pull’ will fail with the same error as above. Developer is forced to manually reset skip-worktree flag to be able to stash and complete the failing pull.
+  -&gt; Using skip-worktree results in some extra manual work but at least you wouldn’t lose any data if you had any local changes.
+
+* No local changes, upstream file changed
+  $ git pull
+  - File with assume-unchanged flag: Content is updated, flag is lost.
+      ‘git ls-files -v’ would show that flag is modified to H (from h).
+  - File with skip-worktree flag: Content is updated, flag is preserved.
+      ‘git ls-files -v' would show the same S flag as before the pull.
+  -&gt; Both flags wouldn’t prevent you from getting upstream changes. Git detects that you broke assume-unchanged promise and choses to reflect the reality by resetting the flag.
+
+* With local file changed
+  $ git reset --hard
+  - File with assume-unchanged flag: File content is reverted. Flag is reset to H (from h).
+  - File with skip-worktree flag: File content is intact. Flag remains the same.
+  -&gt; Git doesn’t touch skip-worktree file and reflects reality (the file promised to be unchanged actually was changed) for assume-unchanged file.
+
+He adds the following analysis:
+- It looks like skip-worktree is trying very hard to preserve your local data. But it doesn’t prevent you to get upstream changes if it is safe. Plus git doesn’t reset the flag on pull.
+  But ignoring the ‘reset --hard' command could become a nasty surprise for a developer.
+- Assume-unchanged flag could be lost on the pull operation and the local changes inside such files doesn’t seem to be important to git.
 
 ### git read-tree
 
@@ -4146,6 +4180,8 @@ git filter-branch $graft-id..HEAD
 Ou bien créer un nouveau commit avec un faux parent, et utiliser git replace
 (les grafts ça fait un peu l'équivalent du script replace_first_parent)
 
+Note: le script replace_first_parent est essentiellement builtin maintenant via `git replace --graft commit parents` (à part que le builtin remplace tous les parents)
+
   # …---o---A---o---o---…
   #
   # …---o---B---b---b---…
@@ -4174,7 +4210,7 @@ Ou bien créer un nouveau commit avec un faux parent, et utiliser git replace
 cf http://stackoverflow.com/questions/3810348/setting-git-parent-pointer-to-a-different-parent
 
 ### git filter-branch
-Le plus puissant: changer les fichiers commités avec git filter-branch
+* Le plus puissant: changer les fichiers commités avec git filter-branch
 
 -env-filter <command />
            This filter may be used if you only need to modify the environment
@@ -4459,8 +4495,7 @@ git remote set-url --add
 ## Sitaram:
 http://sitaramc.github.com/master-toc.html#index
 
-### Recovering a dropped stash:
-    =========================
+### Recovering a dropped stash:
 
     http://sitaramc.github.com/tips/recover-dropped-stash.html#tips_recover_dropped_stash_recovering_a_dropped_stash__
 
@@ -4488,7 +4523,7 @@ xargs git log --no-walk --merges --grep='^\(WIP on \|On \)\((no branch)\|[^
      gitk --all `git reflog | cut -c1-7`
 
 ### conflicts on pull/merge
-    =======================
+
 - try gitk --merge conflictedpath
        --merge
            After an attempt to merge stops with conflicts, show the commits on
@@ -4613,6 +4648,74 @@ By default --rebase-merges will just move A B F G to main and merge with
 the original C D E. With -rebase-merges=rebase-cousins then C D E are also
 moved before the merge
 
+### Prompt (git/contrib)
+
+Checking if work tree dirty:
+$ git diff --no-ext-diff --quiet
+Checking if index changed:
+$ git diff --no-ext-diff --cached --quiet
+
+### potential git aliases
+
+  interdiff = !sh -c 'git show "$1" > .git/commit1 && git show "$2" > .git/commit2 && interdiff .git/commit[12] | less -FRS' - # Calling "interdiff" between commits: if upstream applied a slightly modified patch, and we want to see the modifications, we use the program interdiff of the patchutils package.
+
+  graphviz = !"f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f" # Use graphviz for display. Eg: $ git graphviz --first-parent HEAD~100..HEAD~60 | dotty /dev/stdin
+
+### git ls-files
+
+git ls-tree         # files and directories, top level only
+git ls-tree -l      # also show the size of the object
+git ls-tree -d      # only directories
+git ls-tree -r      # recurse, only files
+git ls-tree -r -d   # recurse, only directories
+git ls-tree -r -t   # recurse, both directories and files
+git ls-files -d -m  # deleted files and modified files (deleted files are also counted as modified, so may come up twice...
+git ls-files -s     # what's in the index; includes files that were "git add"ed
+git ls-files -u     # conflicted files
+git ls-files -o     # "other files"; includes EVERYthing not in d/m/s, I think seems to be equal to untracked + ignored
+git ls-files --exclude-standard -o    # untracked files only
+git ls-files --exclude-standard -o -i # ignored files only
+
+### GIT_PAGER
+       core.pager
+           Text viewer for use by Git commands (e.g., less). The value is
+           meant to be interpreted by the shell. The order of preference is
+           the $GIT_PAGER environment variable, then core.pager configuration,
+           then $PAGER, and then the default chosen at compile time (usually
+           less).
+
+           When the LESS environment variable is unset, Git sets it to FRX (if
+           LESS environment variable is set, Git does not change it at all).
+           If you want to selectively override Git’s default setting for LESS,
+           you can set core.pager to e.g.  less -S. This will be passed to the
+           shell by Git, which will translate the final command to LESS=FRX
+           less -S. The environment does not set the S option but the command
+           line does, instructing less to truncate long lines. Similarly,
+           setting core.pager to less -+F will deactivate the F option
+           specified by the environment from the command-line, deactivating
+           the "quit if one screen" behavior of less. One can specifically
+           activate some flags for particular commands: for example, setting
+           pager.blame to less -S enables line truncation only for git blame.
+
+           Likewise, when the LV environment variable is unset, Git sets it to
+           -c. You can override this setting by exporting LV with another
+           value or setting core.pager to lv +c.
+
+### empty blob and trees
+
+$ git hash-object -t tree /dev/null
+4b825dc642cb6eb9a060e54bf8d69288fbee4904
+
+  Or printf '' | git hash-object --stdin -t tree
+     git hash-object -t tree --stdin < /dev/null
+     empty_tree=$(git mktree </dev/null)
+
+$ git hash-object -t blob /dev/null # -t blog is the default
+e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+
+$ echo '' | GIT_AUTHOR_DATE="Thu, 01 Jan 1970 00:00:00 +0000" GIT_COMMITTER_DATE="Thu, 01 Jan 1970 00:00:00 +0000" GIT_AUTHOR_NAME="foo" GIT_AUTHOR_EMAIL="" GIT_COMMITTER_NAME="foo" GIT_COMMITTER_EMAIL="" git commit-tree 4b825dc642cb6eb9a060e54bf8d69288fbee4904 
+6c48bb47bbe15a21367b2d474e2f692a8e111722
+
 ## Small scripts to do small things
 
 From: https://github.com/ConradIrwin/git-aliae
@@ -4734,49 +4837,6 @@ Remove "gone" branches:
     gone="$BRANCH/.*: gone]"
     git branch -vv | grep "$gone" | awk '{print $1}' | xargs git branch -d
 
-## git ls-files
-
-git ls-tree         # files and directories, top level only
-git ls-tree -l      # also show the size of the object
-git ls-tree -d      # only directories
-git ls-tree -r      # recurse, only files
-git ls-tree -r -d   # recurse, only directories
-git ls-tree -r -t   # recurse, both directories and files
-git ls-files -d -m  # deleted files and modified files (deleted files are also counted as modified, so may come up twice...
-git ls-files -s     # what's in the index; includes files that were "git add"ed
-git ls-files -u     # conflicted files
-git ls-files -o     # "other files"; includes EVERYthing not in d/m/s, I think seems to be equal to untracked + ignored
-git ls-files --exclude-standard -o    # untracked files only
-git ls-files --exclude-standard -o -i # ignored files only
-
-## GIT_PAGER
-       core.pager
-           Text viewer for use by Git commands (e.g., less). The value is
-           meant to be interpreted by the shell. The order of preference is
-           the $GIT_PAGER environment variable, then core.pager configuration,
-           then $PAGER, and then the default chosen at compile time (usually
-           less).
-
-           When the LESS environment variable is unset, Git sets it to FRX (if
-           LESS environment variable is set, Git does not change it at all).
-           If you want to selectively override Git’s default setting for LESS,
-           you can set core.pager to e.g.  less -S. This will be passed to the
-           shell by Git, which will translate the final command to LESS=FRX
-           less -S. The environment does not set the S option but the command
-           line does, instructing less to truncate long lines. Similarly,
-           setting core.pager to less -+F will deactivate the F option
-           specified by the environment from the command-line, deactivating
-           the "quit if one screen" behavior of less. One can specifically
-           activate some flags for particular commands: for example, setting
-           pager.blame to less -S enables line truncation only for git blame.
-
-           Likewise, when the LV environment variable is unset, Git sets it to
-           -c. You can override this setting by exporting LV with another
-           value or setting core.pager to lv +c.
-
-## Hash function transition plan
-https://public-inbox.org/git/CA+dhYEViN4-boZLN+5QJyE7RtX+q6a92p0C2O6TA53==BZfTrQ@mail.gmail.com/T/
-
 ## Performance optimisations
 See also https://public-inbox.org/git/20170403211644.26814-1-avarab@gmail.com/
 
@@ -4793,6 +4853,7 @@ See also https://public-inbox.org/git/20170403211644.26814-1-avarab@gmail.com/
      https://devblogs.microsoft.com/devops/supercharging-the-git-commit-graph-iii-generations/
      https://devblogs.microsoft.com/devops/super-charging-the-git-commit-graph-iv-bloom-filters/
      https://devblogs.microsoft.com/devops/updates-to-the-git-commit-graph-feature/
+  And https://speakerdeck.com/jnareb/graph-operations-in-git-and-how-to-make-them-faster
 
 + Multi pack index: https://git-scm.com/docs/multi-pack-index
   Cf https://github.blog/2019-02-24-highlights-from-git-2-21/
@@ -4821,23 +4882,99 @@ See also https://public-inbox.org/git/20170403211644.26814-1-avarab@gmail.com/
 
   -> pack.useSparse=true: https://devblogs.microsoft.com/devops/exploring-new-frontiers-for-git-push-performance/
 
-## potential git alias
-  interdiff = !sh -c 'git show "$1" > .git/commit1 && git show "$2" > .git/commit2 && interdiff .git/commit[12] | less -FRS' - # Calling "interdiff" between commits: if upstream applied a slightly modified patch, and we want to see the modifications, we use the program interdiff of the patchutils package.
-  graphviz = !"f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f" # Use graphviz for display. Eg: $ git graphviz --first-parent HEAD~100..HEAD~60 | dotty /dev/stdin
+## Detect and replace large files
 
-## mailing lists
-- public inbox: https://public-inbox.org/public-inbox-v2-format.html
-- Incorporated in lore.kernel.org: https://lore.kernel.org/git/
+* https://stackoverflow.com/questions/10622179/how-to-find-identify-large-commits-in-git-history
 
-## Prompt
+git rev-list --objects --all \
+| git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(objectsize:disk) %(rest)' \
+| sed -n 's/^blob //p' \
+| sort --numeric-sort --key=2 \
+| cut -c 1-12,41- \
+| $(command -v gnumfmt || echo numfmt) --field=2,3 --to=iec-i --suffix=B --padding=7 --round=nearest
 
-Checking if work tree dirty:
-$ git diff --no-ext-diff --quiet
-Checking if index changed:
-$ git diff --no-ext-diff --cached --quiet
+1) print all objects:
+   353720a5720deeb0876efa09248bb9887ad30b13 config/.xinitrc
+2) print 'blob b4036fd725cddd495d0c9a64ef0743bec0d102af 5807 code/example.m'
+3) select blobs
+4) sort by size
+5) shorten the sha length to 12 cars
+6) convert size to [KMG]?iB
+Note: we don't use `git cat-file --batch-all-objects ...` because we want the path (this is %(rest))
+=> cf the alias `git filesize`
+
+Slower alternative which uses verify-pack
+git rev-list --objects --all \
+  | grep "$(git verify-pack -v .git/objects/pack/*.idx \
+           | sort -k 3 -n \
+           | tail -10 \
+           | awk '{print$1}')"
+
+* https://stackoverflow.com/questions/223678/which-commit-has-this-blob
+
+Find the hash: $ git hash-object
+
+If we have the hash and the path
+$ git log --all --pretty=format:%H -- <path> | xargs -n1 -I% sh -c "git ls-tree % -- <path> | grep -q <hash> && echo %"
+
+If we only have the hash:
+
+ #!/bin/sh
+obj_name="$1"
+shift
+git log "$@" --pretty=format:'%T %h %s' \
+| while read tree commit subject ; do
+    if git ls-tree -r $tree | grep -q "$obj_name" ; then
+        echo $commit "$subject"
+    fi
+done
+
+One can also use `git describe`, by passing the blob hash or commit:path
+$ git describe --all --always a264835fbc96e9b9accd11068cd1dad3998ebd64
+ee491e77f:config/linux
+
+$ git describe --all --always $(git rev-parse HEAD):Rakefile
+heads/old/moved/config-3547-g20ce78e9c:Rakefile
+
+Alias: `git desc`
+
+* Remove the file
+
+  git filter-repo --path foo.zip --path bar/baz/zips/ --invert-paths
+
+* Replace the file
+*
+  $ git replace b5f74037bb91 $(git hash-object -w -t blob /dev/null)
+(we need to write the null object otherwise git replace complains that the
+object does not exist, even with '-f')
+
+Note that replace refs are not effective in the index. So 'git status'
+shows
+  M	Silverman-Height-NonTorsion.pdf
+where the .pdf is the empty file.
+
+So use sparse-checkout:
+$ cat .git/info/sparse-checkout
+/*
+!Silverman-Height-NonTorsion.pdf
+
+$ git filesize
+b5f74037bb91      0B      9B Silverman-Height-NonTorsion.pdf
+$ GIT_NO_REPLACE_OBJECTS=t git filesize
+b5f74037bb91  272KiB  243KiB Silverman-Height-NonTorsion.pdf
+
+Pack all objects except large blob
+$ git pack-objects --all --filter blob:limit=10k --stdout > pack-smallobjects.pack
+$ git index-pack pack-smallobjects
 
 Devel
 =====
+
+TODO: git my current => use git branch --show-current
+
+Doc:
+- https://public-inbox.org/git/AC2EB721-2979-43FD-922D-C5076A57F24B@jramsay.com.au/
+  Notes from Git Contributor Summit, Los Angeles (April 5, 2020)
 
 Tests:
 - can be run individually

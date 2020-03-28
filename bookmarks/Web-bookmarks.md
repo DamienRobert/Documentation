@@ -301,6 +301,23 @@ Cloud Storage for $2 per TB per month (sia.tech)
 https://news.ycombinator.com/item?id=22564665
 Linux Kernel Lectures and Labs (linux-kernel-labs.github.io)
 
+https://news.ycombinator.com/item?id=22579640
+Linux Kernel Development and Writing a Simple Kernel Module (2018) (devarea.com)
+
+https://news.ycombinator.com/item?id=22630665
+Netflix to cut streaming quality in Europe for 30 days (bbc.co.uk)
+=> https://lars.ingebrigtsen.no/2019/02/14/adventures-in-netflix/
+
+https://news.ycombinator.com/item?id=22644357
+How Tailscale Works (tailscale.com)
+https://tailscale.com/kb/1019/install-subnets
+
+https://news.ycombinator.com/item?id=22660733
+Three typefaces for mathematics (2007) [pdf] (ultrasparky.org)
+
+https://news.ycombinator.com/item?id=22693805
+Show HN: A “living” Linux process with no memory (github.com)
+
 # Programming
 
 https://news.ycombinator.com/item?id=11847529
@@ -667,6 +684,22 @@ MessagePack: like JSON, but fast and small (msgpack.org)
 
 https://news.ycombinator.com/item?id=22548910
 Using WASM with Rust (alopex.li)
+
+https://www.reddit.com/r/rust/comments/fnj12j/rust_async_and_the_terrible_horrible_no_good_very/
+
+http://piqnt.com/stage.js/
+2D JavaScript library for cross-platform HTML5 game development
+
+https://news.ycombinator.com/item?id=22680965
+LambdaMOO takes a new direction (1992) (gatech.edu)
+
+https://news.ycombinator.com/item?id=22679138
+Zig cc: A drop-in replacement for GCC/Clang (andrewkelley.me)
+
+https://news.ycombinator.com/item?id=22682506
+About Musl (libc.org)
+=> http://landley.net/toybox/
+Toybox combines common Linux command line utilities together into a single BSD-licensed executable
 
 # Software
 http://blog.burntsushi.net/ripgrep/
@@ -1134,6 +1167,45 @@ Show HN: Unscreen – Remove Video and GIF Backgrounds (unscreen.com)
 https://news.ycombinator.com/item?id=22498665
 CLUI: Building a Graphical Command Line (repl.it)
 
+https://news.ycombinator.com/item?id=22574603
+The most surprising Unix programs (tuhs.org)
+
+https://news.ycombinator.com/item?id=22582276
+WebAssembly brings extensibility to network proxies (googleblog.com)
+
+https://news.ycombinator.com/item?id=22575775
+Git partial clone lets you fetch only the large file you need (gitlab.com)
+
+https://news.ycombinator.com/item?id=22576940
+Show HN: Kosmi – Hang out with friends and family online (kosmi.io)
+
+https://news.ycombinator.com/item?id=22602888
+Serverless eBook Using Gitbook, GitHub Pages, GitHub Actions, and Calibre (novalagung.com)
+
+https://news.ycombinator.com/item?id=22604835
+What is fsck up to now? (toroid.org)
+SIGINFO, SIGUSR1
+
+https://news.ycombinator.com/item?id=22591311
+Show HN: Intention – DAG Todo App (ntention.app)
+
+https://news.ycombinator.com/item?id=22626346
+Linux maintains bugs: The real reason ifconfig on Linux is deprecated (2018) (farhan.codes)
+=> https://unix.stackexchange.com./questions/504063/ip-vs-ifconfig-commands-pros-and-cons/504084#504084
+=> http://jdebp.eu./Softwares/nosh/
+
+https://news.ycombinator.com/item?id=22657447
+Ffcms – FFmpeg's -filter_complex made simple (stryku.pl)
+
+https://news.ycombinator.com/item?id=22669968
+Jitsi Meet: An open source alternative to Zoom (jit.si)
+
+https://news.ycombinator.com/item?id=22672491
+Setting up Git identities (micah.soy)
+
+https://news.ycombinator.com/item?id=22694891
+Zotero: Personal Research Assistant (zotero.org)
+
 # Web
 
 ## Navigateurs:
@@ -1170,6 +1242,9 @@ Google has a backdoor to track individual users per Chrome installation ID (gith
 
 https://news.ycombinator.com/item?id=22474641
 Firefox 75 on Linux (Wayland) now to have WebGL and video hardware acceleration (phoronix.com)
+
+https://news.ycombinator.com/item?id=22630143
+Things you can do with a browser in 2020 (github.com):q
 
 ## Sites:
 https://news.ycombinator.com/item?id=14209119
@@ -1259,6 +1334,9 @@ https://news.ycombinator.com/item?id=22503220
 Who is Facebook's mysterious “Lan Tim 2”? (shkspr.mobi)
 -> https://www.facebook.com/off_facebook_activity/activity_list
 
+https://news.ycombinator.com/item?id=22681207
+I got my file from Clearview AI (onezero.medium.com)
+
 ## IP
 
 https://news.ycombinator.com/item?id=21611677
@@ -1288,6 +1366,9 @@ New improvements to IPFS Bitswap for faster container image distribution (ipfs.i
 => https://blog.ipfs.io/2020-02-14-improved-bitswap-for-container-distribution/
 https://github.com/ipfs/go-ipfs
 https://github.com/ipfs/go-bitswap
+
+https://news.ycombinator.com/item?id=22571701
+A QUIC look at HTTP/3 (lwn.net)
 
 ## Webdev
 
@@ -1333,6 +1414,10 @@ Parcel – Blazing fast, zero configuration web application bundler (parceljs.or
 
 https://news.ycombinator.com/item?id=22534639
 Why Svelte is our choice for a large web project (github.com)
+
+https://news.ycombinator.com/item?id=22582343
+MathJax Turns 3.0 (bit-player.org)
+MathJax vs KaTex
 
 ## Divers
 
@@ -1395,6 +1480,9 @@ Defacto: Factorio-like game in the browser for the PICO-8 (lexaloffle.com)
 
 https://news.ycombinator.com/item?id=22373006
 Create a First-Person Shooter In Godot (godottutorials.pro)
+
+https://news.ycombinator.com/item?id=22695261
+Dwarf Fortress: An actual look at graphical improvements (steamcommunity.com)
 
 # Computer Science
 https://github.com/alkrauss48/code_samples
@@ -1704,6 +1792,12 @@ https://www.washingtonpost.com/graphics/2020/world/national-security/cia-crypto-
 
 http://cristal.inria.fr/~remy/livre_blanc_cybersecurite/
 
+https://news.ycombinator.com/item?id=22580719
+Lesspass – open-source stateless password manager (lesspass.com)
+
+https://news.ycombinator.com/item?id=22683750
+Speeding up Linux disk encryption (cloudflare.com)
+
 # Machine Learning
 https://news.ycombinator.com/item?id=14034426
 Why Momentum Works (distill.pub)
@@ -1834,6 +1928,9 @@ https://www.deeplearningbook.org/
 https://news.ycombinator.com/item?id=22375774
 A group of ex-NSA and Amazon engineers are building a ‘GitHub for data’ (techcrunch.com)
 https://github.com/geraldb/talks/blob/master/git_for_data.md
+
+https://news.ycombinator.com/item?id=22582047
+Show HN: TLDR This – Auto summarize any article or webpage in a click (tldrthis.com)
 
 # Security
 http://www.tedunangst.com/flak/post/features-are-faults-redux
@@ -2043,6 +2140,14 @@ Landmark computer science proof cascades through physics and math (quantamagazin
 
 https://twitter.com/syzygay1/status/1237219287116525570
 An introductory thread on almost mathematics!
+
+https://news.ycombinator.com/item?id=22572446
+An equation that takes Pythagoras to a new level (medium.com)
+https://medium.com/starts-with-a-bang/this-one-equation-10%C2%B2-11%C2%B2-12%C2%B2-13%C2%B2-14%C2%B2-takes-pythagoras-to-a-whole-new-level-ff588f1d13b6
+
+https://twitter.com/gro_tsen/status/1243542138002051073
+  x->5x+1 génère tous les entiers modulo 2^N:
+Dans le corps ℚ₂ des 2-adiques, x↦x′=5x+1 devient y↦y′=5y, si on pose y=x+¼. Cette fonction envoie la boule B(−¼, 1) sur elle-même, et en norme 2-adique |5^r−1| = ¼·|r| d'où |5^r·y − y| = |r| si y est dans cette boule (donc |y|=4), donc revient à distance 2^−k en 2^k pas.
 
 # Physics
 http://www.teamliquid.net/blogs/483814-a-basic-introduction-to-astrophysics
@@ -2324,9 +2429,23 @@ https://www.lesswrong.com/posts/p9PM2Wc3CSvLKRMwG/get-rich-real-slowly-1
 https://news.ycombinator.com/item?id=21610687
 Collection of Jupyter notebooks for quantitative finance (github.com)
 
+https://news.ycombinator.com/item?id=21282282
+[flagged] A Guy on Reddit Turns $766 into $107,758 on Two Options Trades (bloomberg.com)
+-> https://www.reddit.com/r/explainlikeimfive/comments/ah578l/eli5_box_spreads_and_u1ronyman_50k_loss_on/
+  https://www.marketwatch.com/story/trader-says-he-has-no-money-at-risk-then-promptly-loses-almost-2000-2019-01-22
+  https://www.reddit.com/r/OutOfTheLoop/comments/ao9du2/what_is_going_on_with_rwallstreetbets_freaking/
+
 https://news.ycombinator.com/item?id=22478854
 Reddit has become a guide to personal finance (qz.com)
 https://tech.slashdot.org/story/20/03/04/2023205/reddit-has-become-the-gospel-of-personal-finance
+- https://www.reddit.com/r/investing/
+- https://www.reddit.com/r/stocks/
+- https://www.reddit.com/r/financialindependence/
+- https://www.reddit.com/r/personalfinance/
+- https://www.reddit.com/r/wallstreetbets/
+
+https://news.ycombinator.com/item?id=22573204
+Ask HN: Book recommendations for understanding financial systems?
 
 # Bitcoin
 http://www.righto.com/2014/02/ascii-bernanke-wikileaks-photographs.html
@@ -2377,6 +2496,9 @@ Cryptoqueen: A woman scammed the world, then vanished (bbc.co.uk)
 https://www.wired.com/story/blockchain-bandit-ethereum-weak-private-keys/
 A 'Blockchain Bandit' Is Guessing Private Keys and Scoring Millions
 
+https://news.ycombinator.com/item?id=22562262
+MakerDAO gets stress tested as ETH price plummets (messari.io)
+
 # Books
 
 https://samzdat.com/2017/05/22/man-as-a-rationalist-animal/
@@ -2401,6 +2523,9 @@ http://www.bouletcorp.com/2015/04/10/et-si-cetait-vrai/
 
 https://news.ycombinator.com/item?id=19487611
 Calvin and Hobbes Is Great Literature (lithub.com)
+
+https://news.ycombinator.com/item?id=22677054
+Albert Uderzo has died (theguardian.com)
 
 # Cuisine
 
@@ -2500,6 +2625,9 @@ Study Confirms Climate Models Are Getting Future Warming Projections Right (nasa
 
 https://news.ycombinator.com/item?id=22224141
 Climate Models Are Running Red Hot, and Scientists Don’t Know Why (bloomberg.com)
+
+https://fr.myeurop.info/2020/02/05/lenergie-solaire-promise-a-un-bel-avenir-en-europe/
+Quant aux Français, qui opèrent déjà en Gironde, à Cestas (notre photo), la plus grande centrale photovoltaïque d’Europe, ils sont en train de construire pour 2023 un mastodonte de 2000 hectares de panneaux solaires dans le Lot et Garonne.
 
 # Politique
 http://www.slate.com/articles/news_and_politics/cover_story/2016/08/the_week_democracy_died_how_brexit_nice_turkey_and_trump_are_all_connected.html
@@ -2608,6 +2736,12 @@ Heart doctors 'held back stent death data' (bbc.com)
 
 https://news.ycombinator.com/item?id=22496533
 The human body’s remarkable ability to adapt to the cold (bbc.com)
+
+https://news.ycombinator.com/item?id=22643333
+If the heart is a muscle, why doesn't it ever get tired? (reddit.com)
+
+https://news.ycombinator.com/item?id=22705268
+The theory of infectious origin of the Alzheimer’s disease (padiracinnovation.org)
 
 # Flights
 https://www.google.fr/flights/
